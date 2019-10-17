@@ -19,8 +19,17 @@ body {
 
 button {
     justify-content: center;
-    display: flex;
-    margin: 0 auto;
+    display: block;
+    margin: 7px auto;
+    background-color: white;
+    color: black;
+    border-radius: 7px;
+    box-shadow: 1px 1px 2px;
+    cursor: grab;
+}
+
+button:hover{
+    background-color: rgb(245,245,245);
 }
 
 img {
@@ -30,6 +39,8 @@ img {
     margin-right: auto;
     display: block;
     cursor: grab;
+    border-radius: 7px;
+    box-shadow: 1px 1px 2px;
 }
 
 #pile {
@@ -37,3 +48,13 @@ img {
     width: 100%;
 }
 
+h2{
+    text-align: center;
+}
+
+.jumbotron {
+    background-image: url(../images/egyptian.png);
+    background-size: auto;
+    margin: 0;
+    color: white;
+}
