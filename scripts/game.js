@@ -9,6 +9,12 @@ pile: array of cards in current pile
 playerTurn: counter for player turn
 */
 
+//boolean flag for face cards
+var faceCard = false;
+
+//used to track number of cards needed to play when face card played
+var count;
+
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
 
 
@@ -93,4 +99,47 @@ function PlayCard() {
 	console.log(player1Deck);
 	console.log(player2Deck);
 	console.log(pile);
+}
+
+//used to check if card is face(set false when count is 0)
+function isCardFace(){
+    if(deck.length - 1 === "A" || deck.length - 1 === "J" || deck.length - 1 === "Q" || deck.length - 1 === "K"){
+        faceCard = true;
+    }
+}
+
+//function if card is ace
+function isAce(){
+    //count 4
+    count = 4;
+    faceCard = true;
+    //TODO: insert faceLogic method    
+}
+
+//function if card is jack
+function isJack(){
+    //count 1
+    count = 1;
+    faceCard = true;
+    //TODO: insert faceLogic method    
+}
+
+//function if card is queen
+function isQueen(){
+    //count 2
+    count = 2;
+    faceCard = true;
+    //TODO: insert faceLogic method
+}
+
+//function if card is king
+function isKing(){
+    //count 3
+    count = 3;
+    faceCard = true;
+    //TODO: insert faceLogic method
+}
+
+function faceLogic() {
+    //TODO: right out faceLogic method
 }
