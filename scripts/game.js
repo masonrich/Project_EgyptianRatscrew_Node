@@ -1,6 +1,13 @@
 //window.onload();
 
 var deck, player1Deck, player2Deck, pile, playerTurn;
+/*
+deck: array of all cards
+player1Deck: array of player one cards
+player2Deck: array of player two cards
+pile: array of cards in current pile
+playerTurn: counter for player turn
+*/
 
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
 
