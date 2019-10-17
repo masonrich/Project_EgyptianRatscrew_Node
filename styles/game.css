@@ -12,10 +12,6 @@ input {
    width: 75px;
 }
 
-#middlesection {
-    
-}
-
 body {
     width: 80%;
     margin: 0px auto;
@@ -41,14 +37,3 @@ img {
     width: 100%;
 }
 
-.container {
-    cursor:move;
-}
-#screen {
-    overflow:hidden;
-    clear:both;
-}
-
-div {
-    border-bottom-color: transparent;
-}
