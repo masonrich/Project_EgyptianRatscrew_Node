@@ -1,6 +1,8 @@
 //window.onload();
 
-var deck, player1Deck, player2Deck, pile, playerTurn;
+
+var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable;
+
 /*
 deck: array of all cards
 player1Deck: array of player one cards
@@ -8,6 +10,7 @@ player2Deck: array of player two cards
 pile: array of cards in current pile
 playerTurn: counter for player turn
 */
+
 
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
 
@@ -28,6 +31,8 @@ function whoFirst(){
     else{
         playerTurn = 1;
     }
+	
+	console.log(random);
 }
 
 function ShuffleDeck() {
@@ -64,30 +69,33 @@ function StartGame() {
 	DealDeck();
 	
 	pile = new Array();
-	playerTurn = 0;
+	whoFirst();
+	console.log(playerTurn);
 }
 
 function PlayCard() {
-	if (playerTurn === 0) {	
+	if (playerTurn == 0) {	
 	
-		if (player1Deck.length === 0) {
+		if (player1Deck.length == 0) {
 			//game over
 			return;
 		}
 		
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]);
 		player1Deck.pop();
-		playeTurn = 1;
+		playerTurn = 1;
+		
 	} else {
+		
+		if (player2Deck.length == 0) {
+			//game over
+			return;
+		}
 		
 		pile.splice(0, 0, player2Deck[player2Deck.length - 1]);
 		player2Deck.pop();
 		playerTurn = 0;
 		
-		if (player2Deck.length === 0) {
-			//game over
-			return;
-		}
 	}
 	
 	console.log(player1Deck);
