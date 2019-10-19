@@ -174,10 +174,14 @@ function slap() {
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped = 0) {
 			pile.splice(pile.length - 1, 0, player1Deck[0]);
+            player1Deck.shift();
 			pile.splice(pile.length - 1, 0, player1Deck[0]);
+            player1Deck.shift();
 		} else {
 			pile.splice(pile.length - 1, 0, player2Deck[0]);
+            player2Deck.shift();
 			pile.splice(pile.length - 1, 0, player2Deck[0]);
+            player2Deck.shift();
 		}
 		
 		//check to see if this triggers end game condition
