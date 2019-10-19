@@ -139,10 +139,10 @@ function slap() {
 		//}
 		
 		//thie represents # of cards in pile at time of slap.
-		int length = pile.length;
+		let length = pile.length;
 		
 		if (playerTurn == 0) {
-			for (int i = 0; i < length; i++) {
+			for (let i = 0; i < length; i++) {
 				if (pile.length == 0) {
 					break;
 				}
@@ -151,7 +151,7 @@ function slap() {
 				pile.pop();
 			}
 		} else {
-			for (int i = 0; i < length; i++) {
+			for (let i = 0; i < length; i++) {
 				if (pile.length == 0) {
 					break;
 				}
@@ -191,7 +191,6 @@ function slap() {
 	}
 }
 
-}
 
 //used to check if card is face(set false when count is 0)
 function isCardFace(){
