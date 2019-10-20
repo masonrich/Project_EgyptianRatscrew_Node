@@ -139,11 +139,15 @@ function slap() {
 		//}
 		
 		//thie represents # of cards in pile at time of slap.
-		int length = pile.length;
+		let length = pile.length;
 		
 		if (playerTurn === 0) {    //added additional equals - AC
 			for (int i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
+		if (playerTurn == 0) {
+			for (let i = 0; i < length; i++) {
+				if (pile.length == 0) {
+
 					break;
 				}
 				
@@ -151,8 +155,11 @@ function slap() {
 				pile.pop();
 			}
 		} else {
+
 			for (int i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
+			for (let i = 0; i < length; i++) {
+				if (pile.length == 0) {
 					break;
 				}
 				
@@ -174,10 +181,14 @@ function slap() {
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped = 0) {
 			pile.splice(pile.length - 1, 0, player1Deck[0]);
+            player1Deck.shift();
 			pile.splice(pile.length - 1, 0, player1Deck[0]);
+            player1Deck.shift();
 		} else {
 			pile.splice(pile.length - 1, 0, player2Deck[0]);
+            player2Deck.shift();
 			pile.splice(pile.length - 1, 0, player2Deck[0]);
+            player2Deck.shift();
 		}
 		
 		//check to see if this triggers end game condition
@@ -191,7 +202,6 @@ function slap() {
 	}
 }
 
-}
 
 //used to check if card is face(set false when count is 0)
 function isCardFace(){
@@ -241,3 +251,4 @@ function faceLogic() {
         }
     }
 }
+
