@@ -79,9 +79,9 @@ function StartGame() {
 }
 
 function PlayCard() {
-	if (playerTurn == 0) {	
+	if (playerTurn === 0) {    //added additional equals - AC
 	
-		if (player1Deck.length == 0) {
+		if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//game over logic
 			return;
@@ -93,7 +93,7 @@ function PlayCard() {
 		
 	} else {
 		
-		if (player2Deck.length == 0) {
+		if (player2Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//game over logic
 			return;
@@ -116,7 +116,7 @@ function IsPileSlappable() {
 	if (pile.length < 2) {
 		pileCurrentlySlappable = false;
 	} else {
-		if (pile[0].substring(0, 1) == pile[1].substring(0, 1)) {
+		if (pile[0].substring(0, 1) === pile[1].substring(0, 1)) {    //added additional equals - AC
 			pileCurrentlySlappable = true;
 		} else {
 			pileCurrentlySlappable = false;
@@ -125,7 +125,7 @@ function IsPileSlappable() {
 }
 
 function slap() {
-    if (pile.length == 0) {
+    if (pile.length === 0) {    //added additional equals - AC
 		return;
 	}
 		
@@ -141,9 +141,9 @@ function slap() {
 		//thie represents # of cards in pile at time of slap.
 		int length = pile.length;
 		
-		if (playerTurn == 0) {
+		if (playerTurn === 0) {    //added additional equals - AC
 			for (int i = 0; i < length; i++) {
-				if (pile.length == 0) {
+				if (pile.length === 0) {    //added additional equals - AC
 					break;
 				}
 				
@@ -152,7 +152,7 @@ function slap() {
 			}
 		} else {
 			for (int i = 0; i < length; i++) {
-				if (pile.length == 0) {
+				if (pile.length === 0) {    //added additional equals - AC
 					break;
 				}
 				
@@ -181,10 +181,10 @@ function slap() {
 		}
 		
 		//check to see if this triggers end game condition
-		if (player1Deck.length == 0) {
+		if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//player 2 wins and game ends
-		} else if (player2Deck.length == 0) {
+		} else if (player2Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//player 1 wins and game ends
 		}
@@ -195,7 +195,7 @@ function slap() {
 
 //used to check if card is face(set false when count is 0)
 function isCardFace(){
-    if(deck.length - 1 === "A" || deck.length - 1 === "J" || deck.length - 1 === "Q" || deck.length - 1 === "K"){
+    if(pile.length - 1 === "A" || pile.length - 1 === "J" || pile.length - 1 === "Q" || pile.length - 1 === "K"){
         faceCard = true;
     }
 }
@@ -234,4 +234,10 @@ function isKing(){
 
 function faceLogic() {
     //TODO: right out faceLogic method
+    for(var i = 0, i < count, i--){
+        //something to dictate player needs to laydown card
+        if(isCardFace()){
+            //check for A, Q, K, J
+        }
+    }
 }
