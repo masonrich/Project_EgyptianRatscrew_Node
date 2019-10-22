@@ -11,18 +11,15 @@ pile: array of cards in current pile
 playerTurn: counter for player turn
 */
 
-//boolean flag for face cards
+//boolean flags for face cards
 var faceCard = false;
+var hasPreviousFaceCard = false;
 
 //used to track number of cards needed to play when face card played
 var count;
 
 //store first letter of card - AC
 var firstLetter;
-
-//stores the current player, used in faceLogic
-var currentPlayer;
-
 
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
 
@@ -85,40 +82,68 @@ function StartGame() {
 }
 
 function PlayCard() {
+    
+    if (count > 0) {
+        hasPreviousFaceCard = true;
+    }
+    
 	if (playerTurn === 0) {    //added additional equals - AC
-	
-		if (player1Deck.length === 0) {    //added additional equals - AC
+		
+		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
+		player1Deck.pop();
+        /*******************************/
+        if(count > 0){
+            playerTurn = 0;
+            count--;
+            
+            if(count === 0 && hasPreviousFaceCard){
+                for (var i = 0; i < pile.length; i++) {
+				if (pile.length === 0) {    //added additional equals - AC
+
+					break;
+				}
+				
+				player2Deck.splice(0, 0, pile);
+				pile.pop();
+			}
+        } else {
+		  playerTurn = 1; //mikes original code
+        }
+        
+        if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//game over logic
 			return;
 		}
 		
-		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
-		player1Deck.pop();
-        /*******************************/
-        if(faceCard === true){
-            playerTurn = 0;
-        } else {
-		  playerTurn = 1; //mikes original code
-        }
-        
-		
 	} else {
 		
+		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
+		player2Deck.pop();
+        /*******************************/
+        if(count > 0){
+            playerTurn = 1;
+            count--;
+
+            if(count === 0 && hasPreviousFaceCard){
+               for (var i = 0; i < pile.length; i++) {
+				if (pile.length === 0) {    //added additional equals - AC
+
+					break;
+				}
+				
+				player1Deck.splice(0, 0, pile);
+				pile.pop();
+			}
+        } else {
+		playerTurn = 0; //mikes original code
+        }
+        
 		if (player2Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//game over logic
 			return;
 		}
-		
-		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
-		player2Deck.pop();
-        /*******************************/
-        if(faceCard === true){
-            playerTurn = 1;
-        } else {
-		playerTurn = 0; //mikes original code
-        }
 		
 	}
 	
@@ -128,6 +153,10 @@ function PlayCard() {
 	console.log(player1Deck);
 	console.log(player2Deck);
 	console.log(pile);
+    console.log("Turn: " + playerTurn);
+    console.log("count: " + count);
+    console.log("FaceCard: " + faceCard);
+    console.log("hasPreviousFaceCard: " + hasPreviousFaceCard);
 }
 
 function IsPileSlappable() {
@@ -161,9 +190,6 @@ function slap() {
 		//thie represents # of cards in pile at time of slap.
 		var length = pile.length;
 		
-		//if (playerTurn === 0) {    //added additional equals - AC
-		//	for (var i = 0; i < length; i++) {
-//				if (pile.length === 0) {    //added additional equals - AC
 		if (playerTurn === 0) {             //added additional equals - AC
 			for (var i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
@@ -175,9 +201,6 @@ function slap() {
 				pile.pop();
 			}
 		} else {
-
-		//	for (var i = 0; i < length; i++) {
-		//		if (pile.length === 0) {    //added additional equals - AC
 			for (var i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
 					break;
@@ -228,8 +251,8 @@ function slap() {
 //call before face logic//
 //used to check if card is face(set false when count is 0)
 function isCardFace(){
-    console.log("player turn: " + playerTurn);
-    console.log("your card: " + pile[0]); //used for testing
+    //console.log("player turn: " + playerTurn);
+    //console.log("your card: " + pile[0]); //used for testing
     var card = pile[0];
     
     console.log("first letter: " + card.charAt(0)) //used for testing
@@ -240,7 +263,7 @@ function isCardFace(){
         faceCard = true;
         currentPlayer = playerTurn;
         console.log("is face card: " + faceCard); //used for testing
-                    switch(firstLetter){
+            switch(firstLetter){
                 case 'A':
                     isAce();
                     break;
@@ -255,7 +278,25 @@ function isCardFace(){
                     break;
                 default:
                     console.log("no match");
-            }
+        }
+    } else {
+        faceCard = false;
+    }
+    
+    if (faceCard && hasPreviousFaceCard) {
+            if (playerTurn === 0) {
+                playerTurn = 1;
+                } else {
+                    playerTurn = 0;
+                }
+        }
+    if (count === 0) {
+        hasPreviousFaceCard = false;
+        if (playerTurn === 0) {
+            playerTurn = 1;
+        } else {
+            playerTurn = 0;
+        }
     }
 }
 
@@ -263,18 +304,14 @@ function isCardFace(){
 function isAce(){
     //count 4
     count = 4;
-    faceCard = true;
-    faceLogic();
-    //TODO: insert faceLogic method    
+    faceCard = true;  
 }
 
 //function if card is jack
 function isJack(){
     //count 1
     count = 1;
-    faceCard = true;
-    faceLogic();
-    //TODO: insert faceLogic method    
+    faceCard = true;   
 }
 
 //function if card is queen
@@ -282,8 +319,6 @@ function isQueen(){
     //count 2
     count = 2;
     faceCard = true;
-    faceLogic();
-    //TODO: insert faceLogic method
 }
 
 //function if card is king
@@ -291,11 +326,10 @@ function isKing(){
     //count 3
     count = 3;
     faceCard = true;
-    faceLogic();
-// TODO: insert faceLogic method
 }
 
 /***************works but throws infinite loop because no new card is played*******************/
+/*
 function faceLogic() {
     //TODO: right out faceLogic method
     //console.log(playerTurn);
@@ -313,16 +347,35 @@ function faceLogic() {
         if(playerTurn !== currentPlayer){   //isCardFace method call
             //top card will alway be a match until a new one is played here i think.
             PlayCard(); //does need to be done by player
-            faceCard = true;
+            hasPreviousFaceCard = true;
         }
         
     }
-    faceCard = false;
+    hasPreviousFaceCard = false;
     console.log("the current player is:" + currentPlayer)
     if(currentPlayer === 0){
         playerTurn = 1;
+        for (var i = 0; i < pile.length; i++) {
+            if (pile.length === 0) {    //added additional equals - AC
+					break;
+            }
+				
+				player2Deck.splice(0, 0, pile);
+				pile.pop();
+			}
+        
     }
     else if (currentPlayer === 1){
         playerTurn = 0;
+        for (var i = 0; i < pile.length; i++) {
+				if (pile.length === 0) {    //added additional equals - AC
+
+					break;
+				}
+				
+				player1Deck.splice(0, 0, pile);
+				pile.pop();
+			}
     }
 }
+*/
