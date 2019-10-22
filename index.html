@@ -43,11 +43,14 @@ Date: October 14th, 2019
 
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+<link href="styles/cards.css" rel="stylesheet" type="text/css">
 
     
 <title>Egyptian Ratscrew</title> 
 </head>      
    <body>
+       <div class="container-fluid">
        <!-- Jumbo Tron -->
        <div class="jumbotron">
            <h3><strong>RATSCREW</strong></h3>
@@ -97,7 +100,7 @@ Date: October 14th, 2019
                           <fieldset>
                              <label>Player 1</label>
                                    <div>
-                                      <img src="images/Red_back.jpg" alt="Back of card">
+                                      <img src="cards/RED_BACK.svg" alt="Back of card">
                                    </div>
                            </fieldset>
                         </div>
@@ -108,11 +111,21 @@ Date: October 14th, 2019
                        <div>
                           <fieldset>
                              <label>PILE</label> 
-                                <div id="pile">
-                                   <img src="images/10S.jpg" alt="middle pile of cards">
-                                </div>
+                              <div class="hand fan active-hand" style="width: 318px; height: 154px;">
+                             
+                                    <img class="card" src="cards/QS.svg" style="left: 50px; top: 6px; transform: rotate(350deg) translateZ(0px);">
+                                    <img class="card" src="cards/JS.svg" style="left: 68px; top: 4px; transform: rotate(352deg) translateZ(0px);">
+                                    <img class="card" src="cards/10S.svg" style="left: 86px; top: 2px; transform: rotate(355deg) translateZ(0px);">
+                                    <img class="card" src="cards/9H.svg" style="left: 104px; top: 0px; transform: rotate(357deg) translateZ(0px);">
+                                    <img class="card" src="cards/3H.svg" style="left: 122px; top: 0px; transform: rotate(360deg) translateZ(0px);">
+                                  
+
+                       
+	                           </div>
+                              
                               <button>SLAP</button>
                               <button>PLAY CARD</button>
+
                                   
                            </fieldset>
                         </div>
@@ -123,7 +136,7 @@ Date: October 14th, 2019
                        <div>
                           <fieldset>
                              <label>Player 2</label> 
-                             <img class="draggable" src="images/Red_back.jpg" alt="Back of card">
+                             <img class="draggable" src="cards/RED_BACK.svg" alt="Back of card">
                            </fieldset>
                         </div>
                    </section>
@@ -142,14 +155,23 @@ Date: October 14th, 2019
       
       
       
-      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-       <script src="scripts/game.js"></script>
-<!--
-        <script src="js/jquery.slim.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
--->
+     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     <script src="scripts/game.js"></script>
+
+     <script src="scripts/cards.js"></script>
+     <script>   
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-60043592-1', 'auto');
+            ga('send', 'pageview');
+     </script> 
+</div>
    </body>
 
 </html>

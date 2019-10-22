@@ -42,6 +42,15 @@ img {
     border-radius: 7px;
     box-shadow: 1px 1px 2px;
 }
+img.draggable {
+    display: block;
+    margin: auto;
+}
+
+.active-hand{
+    margin: auto;
+    display: block;
+}
 
 #pile {
     height: 100%;
