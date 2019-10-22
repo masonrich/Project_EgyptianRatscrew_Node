@@ -54,7 +54,32 @@ h2{
 
 .jumbotron {
     background-image: url(../images/egyptian.png);
-    background-size: auto;
+    background-size:cover;
+    background-repeat: no-repeat;
     margin: 0;
-    color: white;
+    color: black;
+    text-shadow: 10px 10px 15px white;
+    opacity: .75;
+}
+
+h3 {
+    font-size: 2.5em;
+    text-align: left;
+}
+
+.navbar{
+    background-color: #E8BB79;
+}
+
+a.nav-link{
+    color: black;
+}
+
+span.fa {
+    color: black;
+}
+
+button.navbar-toggler {
+    text-shadow: none;
+    box-shadow: none;
 }
