@@ -96,18 +96,6 @@ function PlayCard() {
             playerTurn = 0;
             count--;
             
-            //TODO: Losing 1 card here. Mike will fix it.
-            if(count === 0 && hasPreviousFaceCard){
-                
-                var temp = pile.reverse();
-                temp = player2Deck.concat(temp);
-                player2Deck = temp;
-                
-                pile.length = 0;
-                
-                playerTurn = 1;
-                return;
-            }
         } else {
 		  playerTurn = 1; //mikes original code
         }
@@ -126,19 +114,6 @@ function PlayCard() {
         if(count > 0){
             playerTurn = 1;
             count--;
-
-             //TODO: Losing 1 card here. Mike will fix it.
-            if(count === 0 && hasPreviousFaceCard){
-                
-                var temp = pile.reverse();
-                temp = player1Deck.concat(temp);
-                player1Deck = temp;
-                
-                pile.length = 0;
-                
-                playerTurn = 0;
-                return;
-            }
         } else {
 		playerTurn = 0; //mikes original code
         }
@@ -152,7 +127,24 @@ function PlayCard() {
 	}
 	
     isCardFace(); //check for face card on card play
-	IsPileSlappable();
+	IsPileSlappable(); //checks to see if pile is legal to slap
+    
+    
+    if(count === 0 && hasPreviousFaceCard){
+        hasPreviousFaceCard = false;
+        
+        var temp;
+        
+        if (playerTurn === 0) {
+            temp = temp.concat(player1Deck);
+            player1Deck = temp;
+        } else {
+            temp = temp.concat(player2Deck);
+            player2Deck = temp;
+        }
+        
+        pile.length = 0;
+    }
 	
 	console.log(player1Deck);
 	console.log(player2Deck);
@@ -162,6 +154,12 @@ function PlayCard() {
     console.log("FaceCard: " + faceCard);
     console.log("hasPreviousFaceCard: " + hasPreviousFaceCard);
 }
+
+
+
+
+
+
 
 function IsPileSlappable() {
 	if (pile.length < 2) {
@@ -175,7 +173,12 @@ function IsPileSlappable() {
 	}
 }
 
-/*************mismatch parentheses**********************/
+
+
+
+
+
+
 
 function slap() {
     if (pile.length === 0) {    //added additional equals - AC
@@ -264,9 +267,6 @@ function isCardFace(){
     firstLetter = card.charAt(0);
     
     if(firstLetter === 'K' || firstLetter === 'Q'|| firstLetter === 'J' || firstLetter === 'A'){
-        faceCard = true;
-        currentPlayer = playerTurn;
-        console.log("is face card: " + faceCard); //used for testing
             switch(firstLetter){
                 case 'A':
                     isAce();
@@ -287,17 +287,16 @@ function isCardFace(){
         faceCard = false;
     }
     
-    if (faceCard && hasPreviousFaceCard) {
-            if (playerTurn === 0) {
-                playerTurn = 1;
-                } else {
-                    playerTurn = 0;
-                }
-        }
-    if (count === 0) {
-        hasPreviousFaceCard = false;
+    if (!faceCard && hasPreviousFaceCard && count === 0) {
         if (playerTurn === 0) {
             playerTurn = 1;
+            } else {
+                playerTurn = 0;
+            }
+        }
+    else if (faceCard && hasPreviousFaceCard) {
+     if (playerTurn === 0) {
+        playerTurn = 1;
         } else {
             playerTurn = 0;
         }
