@@ -17,6 +17,13 @@ var faceCard = false;
 //used to track number of cards needed to play when face card played
 var count;
 
+//store first letter of card - AC
+var firstLetter;
+
+//stores the current player, used in faceLogic
+var currentPlayer;
+
+
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
 
 
@@ -28,12 +35,11 @@ function BuildDeck() {
 }
 
 //find first player at game start
-function whoFirst(){
+function whoFirst() {
     var random = Math.random();
-    if(random < 0.5){
+    if (random < 0.5) {
         playerTurn = 0;
-    }
-    else{
+    } else {
         playerTurn = 1;
     }
 	
@@ -43,7 +49,7 @@ function whoFirst(){
 function ShuffleDeck() {
        
     deck.sort(function() {
-      return .5 - Math.random();
+        return (0.5 - Math.random());
     });
     
     //console.log(deck);
@@ -54,12 +60,12 @@ function DealDeck() {
 	player1Deck = new Array();
 	player2Deck = new Array();
 	
-	for (let i = 0; i < 26; i++) {
+	for (var i = 0; i < 26; i++) {
 		player1Deck.push(deck[deck.length - 1]);
 		deck.pop();
 	}
 	
-	for (let i = 0; i < 26; i++) {
+	for (var i = 0; i < 26; i++) {
 	player2Deck.push(deck[deck.length - 1]);
 	deck.pop();
 	}
@@ -87,9 +93,15 @@ function PlayCard() {
 			return;
 		}
 		
-		pile.splice(0, 0, player1Deck[player1Deck.length - 1]);
+		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
-		playerTurn = 1;
+        /*******************************/
+        if(faceCard === true){
+            playerTurn = 0;
+        } else {
+		  playerTurn = 1; //mikes original code
+        }
+        
 		
 	} else {
 		
@@ -99,17 +111,23 @@ function PlayCard() {
 			return;
 		}
 		
-		pile.splice(0, 0, player2Deck[player2Deck.length - 1]);
+		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player2Deck.pop();
-		playerTurn = 0;
+        /*******************************/
+        if(faceCard === true){
+            playerTurn = 1;
+        } else {
+		playerTurn = 0; //mikes original code
+        }
 		
 	}
 	
+    isCardFace(); //check for face card on card play
 	IsPileSlappable();
 	
-	//console.log(player1Deck);
-	//console.log(player2Deck);
-	//console.log(pile);
+	console.log(player1Deck);
+	console.log(player2Deck);
+	console.log(pile);
 }
 
 function IsPileSlappable() {
@@ -123,6 +141,8 @@ function IsPileSlappable() {
 		}
 	}
 }
+
+/*************mismatch parentheses**********************/
 
 function slap() {
     if (pile.length === 0) {    //added additional equals - AC
@@ -139,14 +159,14 @@ function slap() {
 		//}
 		
 		//thie represents # of cards in pile at time of slap.
-		let length = pile.length;
+		var length = pile.length;
 		
-		if (playerTurn === 0) {    //added additional equals - AC
-			for (int i = 0; i < length; i++) {
+		//if (playerTurn === 0) {    //added additional equals - AC
+		//	for (var i = 0; i < length; i++) {
+//				if (pile.length === 0) {    //added additional equals - AC
+		if (playerTurn === 0) {             //added additional equals - AC
+			for (var i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
-		if (playerTurn == 0) {
-			for (let i = 0; i < length; i++) {
-				if (pile.length == 0) {
 
 					break;
 				}
@@ -156,10 +176,10 @@ function slap() {
 			}
 		} else {
 
-			for (int i = 0; i < length; i++) {
+		//	for (var i = 0; i < length; i++) {
+		//		if (pile.length === 0) {    //added additional equals - AC
+			for (var i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
-			for (let i = 0; i < length; i++) {
-				if (pile.length == 0) {
 					break;
 				}
 				
@@ -169,7 +189,7 @@ function slap() {
 		}
 		
 	} else {
-		let whoSlapped;
+		var whoSlapped;       //let to var - ac
 		//TODO: Accomplish the below comment
 		//Need asnyc to determine which player incorrectly slapped.
 		if (player1Slapped) {
@@ -203,10 +223,39 @@ function slap() {
 }
 
 
+
+
+//call before face logic//
 //used to check if card is face(set false when count is 0)
 function isCardFace(){
-    if(pile.length - 1 === "A" || pile.length - 1 === "J" || pile.length - 1 === "Q" || pile.length - 1 === "K"){
+    console.log("player turn: " + playerTurn);
+    console.log("your card: " + pile[0]); //used for testing
+    var card = pile[0];
+    
+    console.log("first letter: " + card.charAt(0)) //used for testing
+    
+    firstLetter = card.charAt(0);
+    
+    if(firstLetter === 'K' || firstLetter === 'Q'|| firstLetter === 'J' || firstLetter === 'A'){
         faceCard = true;
+        currentPlayer = playerTurn;
+        console.log("is face card: " + faceCard); //used for testing
+                    switch(firstLetter){
+                case 'A':
+                    isAce();
+                    break;
+                case 'J':
+                    isJack();
+                    break;
+                case 'Q':
+                    isQueen();
+                    break;
+                case 'K':
+                    isKing();
+                    break;
+                default:
+                    console.log("no match");
+            }
     }
 }
 
@@ -215,6 +264,7 @@ function isAce(){
     //count 4
     count = 4;
     faceCard = true;
+    faceLogic();
     //TODO: insert faceLogic method    
 }
 
@@ -223,6 +273,7 @@ function isJack(){
     //count 1
     count = 1;
     faceCard = true;
+    faceLogic();
     //TODO: insert faceLogic method    
 }
 
@@ -231,6 +282,7 @@ function isQueen(){
     //count 2
     count = 2;
     faceCard = true;
+    faceLogic();
     //TODO: insert faceLogic method
 }
 
@@ -239,16 +291,38 @@ function isKing(){
     //count 3
     count = 3;
     faceCard = true;
-    //TODO: insert faceLogic method
+    faceLogic();
+// TODO: insert faceLogic method
 }
 
+/***************works but throws infinite loop because no new card is played*******************/
 function faceLogic() {
     //TODO: right out faceLogic method
-    for(var i = 0, i < count, i--){
+    //console.log(playerTurn);
+    console.log("cards to play: " + count);
+
+    for(var i = 0; i < count; i++){
+        //var cards = i += 1;
         //something to dictate player needs to laydown card
-        if(isCardFace()){
-            //check for A, Q, K, J
+        //swap players if there is a match only after card is played
+        
+        
+        PlayCard(); //does need to be done by player
+        //console.log("cards played: " + cards);
+        //console.log(i);
+        if(playerTurn !== currentPlayer){   //isCardFace method call
+            //top card will alway be a match until a new one is played here i think.
+            PlayCard(); //does need to be done by player
+            faceCard = true;
         }
+        
+    }
+    faceCard = false;
+    console.log("the current player is:" + currentPlayer)
+    if(currentPlayer === 0){
+        playerTurn = 1;
+    }
+    else if (currentPlayer === 1){
+        playerTurn = 0;
     }
 }
-
