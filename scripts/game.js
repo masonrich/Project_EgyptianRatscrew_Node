@@ -95,6 +95,17 @@ function PlayCard() {
         if(count > 0){
             playerTurn = 0;
             count--;
+            
+            if(count === 0 && hasPreviousFaceCard){
+                for (var i = 0; i < pile.length; i++) {
+				if (pile.length === 0) {    //added additional equals - AC
+
+					break;
+				}
+				
+				player2Deck.splice(0, 0, pile);
+				pile.pop();
+			}
         } else {
 		  playerTurn = 1; //mikes original code
         }
@@ -113,6 +124,17 @@ function PlayCard() {
         if(count > 0){
             playerTurn = 1;
             count--;
+
+            if(count === 0 && hasPreviousFaceCard){
+               for (var i = 0; i < pile.length; i++) {
+				if (pile.length === 0) {    //added additional equals - AC
+
+					break;
+				}
+				
+				player1Deck.splice(0, 0, pile);
+				pile.pop();
+			}
         } else {
 		playerTurn = 0; //mikes original code
         }
@@ -238,8 +260,10 @@ function isCardFace(){
     firstLetter = card.charAt(0);
     
     if(firstLetter === 'K' || firstLetter === 'Q'|| firstLetter === 'J' || firstLetter === 'A'){
-        console.log("is face card: " + hasPreviousFaceCard); //used for testing
-                    switch(firstLetter){
+        faceCard = true;
+        currentPlayer = playerTurn;
+        console.log("is face card: " + faceCard); //used for testing
+            switch(firstLetter){
                 case 'A':
                     isAce();
                     break;
@@ -280,16 +304,14 @@ function isCardFace(){
 function isAce(){
     //count 4
     count = 4;
-    faceCard = true;
-    //TODO: insert faceLogic method    
+    faceCard = true;  
 }
 
 //function if card is jack
 function isJack(){
     //count 1
     count = 1;
-    faceCard = true;
-    //TODO: insert faceLogic method    
+    faceCard = true;   
 }
 
 //function if card is queen
@@ -297,7 +319,6 @@ function isQueen(){
     //count 2
     count = 2;
     faceCard = true;
-    //TODO: insert faceLogic method
 }
 
 //function if card is king
@@ -305,10 +326,10 @@ function isKing(){
     //count 3
     count = 3;
     faceCard = true;
-// TODO: insert faceLogic method
 }
 
 /***************works but throws infinite loop because no new card is played*******************/
+/*
 function faceLogic() {
     //TODO: right out faceLogic method
     //console.log(playerTurn);
@@ -334,8 +355,27 @@ function faceLogic() {
     console.log("the current player is:" + currentPlayer)
     if(currentPlayer === 0){
         playerTurn = 1;
+        for (var i = 0; i < pile.length; i++) {
+            if (pile.length === 0) {    //added additional equals - AC
+					break;
+            }
+				
+				player2Deck.splice(0, 0, pile);
+				pile.pop();
+			}
+        
     }
     else if (currentPlayer === 1){
         playerTurn = 0;
+        for (var i = 0; i < pile.length; i++) {
+				if (pile.length === 0) {    //added additional equals - AC
+
+					break;
+				}
+				
+				player1Deck.splice(0, 0, pile);
+				pile.pop();
+			}
     }
 }
+*/
