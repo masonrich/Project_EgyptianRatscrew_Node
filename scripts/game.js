@@ -96,16 +96,18 @@ function PlayCard() {
             playerTurn = 0;
             count--;
             
+            //TODO: Losing 1 card here. Mike will fix it.
             if(count === 0 && hasPreviousFaceCard){
-                for (var i = 0; i < pile.length; i++) {
-				if (pile.length === 0) {    //added additional equals - AC
-
-					break;
-				}
-				
-				player2Deck.splice(0, 0, pile);
-				pile.pop();
-			}
+                
+                var temp = pile.reverse();
+                temp = player2Deck.concat(temp);
+                player2Deck = temp;
+                
+                pile.length = 0;
+                
+                playerTurn = 1;
+                return;
+            }
         } else {
 		  playerTurn = 1; //mikes original code
         }
@@ -125,16 +127,18 @@ function PlayCard() {
             playerTurn = 1;
             count--;
 
+             //TODO: Losing 1 card here. Mike will fix it.
             if(count === 0 && hasPreviousFaceCard){
-               for (var i = 0; i < pile.length; i++) {
-				if (pile.length === 0) {    //added additional equals - AC
-
-					break;
-				}
-				
-				player1Deck.splice(0, 0, pile);
-				pile.pop();
-			}
+                
+                var temp = pile.reverse();
+                temp = player1Deck.concat(temp);
+                player1Deck = temp;
+                
+                pile.length = 0;
+                
+                playerTurn = 0;
+                return;
+            }
         } else {
 		playerTurn = 0; //mikes original code
         }
