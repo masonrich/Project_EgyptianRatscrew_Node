@@ -123,8 +123,8 @@ Date: October 14th, 2019
                        
 	                           </div>
                               
-                              <button>SLAP</button>
-                              <button>PLAY CARD</button>
+                              <button id="slapButton">SLAP</button>
+                              <button id="PlayCardButton">PLAY CARD</button>
 
                                   
                            </fieldset>
@@ -171,8 +171,9 @@ Date: October 14th, 2019
             ga('create', 'UA-60043592-1', 'auto');
             ga('send', 'pageview');
      </script> 
-           
-<script type="text/javascript">  
+
+       
+<script type="text/javascript">    
     function MonitorKeys(e){
         if(!e) e = window.event;
         if((e.charCode) && (e.keyCode === 0)){
@@ -192,7 +193,7 @@ Date: October 14th, 2019
             default:
                 console.log("invalid key");
         }
-    }
+    };
     document.onkeydown = MonitorKeys;
 </script>
 

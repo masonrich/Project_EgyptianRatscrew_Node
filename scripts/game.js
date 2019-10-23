@@ -61,7 +61,8 @@ function ShuffleDeck() {
 
 
 
-
+document.getElementById("slapButton").onclick = function() {slap()};
+document.getElementById("PlayCardButton").onclick = function() {PlayCard()};
 
 
 function DealDeck() {
@@ -95,13 +96,7 @@ function StartGame() {
 }
 
 
-
-
-
-
-
 function PlayCard() {
-    
     if (count > 0) {
         hasPreviousFaceCard = true;
     }
@@ -203,6 +198,7 @@ function IsPileSlappable() {
 
 
 function slap() {
+	console.log("Worked");
     if (pile.length === 0) {    //added additional equals - AC
         console.log("slapped empty pile");
 		return;
