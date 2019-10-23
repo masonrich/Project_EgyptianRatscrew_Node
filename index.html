@@ -172,10 +172,9 @@ Date: October 14th, 2019
             ga('send', 'pageview');
      </script> 
            
-<script type="text/javascript">
-    function GetKeyPressed(e){
-        //if(!e) e=window.event;
-        var result, code;
+<script type="text/javascript">    
+    function MonitorKeys(e){
+        if(!e) e = window.event;
         if((e.charCode) && (e.keyCode === 0)){
             //result = "charCode: " + e.charCode;
             code = e.charCode;
@@ -185,17 +184,16 @@ Date: October 14th, 2019
         }
         switch(code){
             case 38:
-                PlayGame();
-                break;
+                function PlayGame();      //////don't know how to call playgame function
+                break;  
             case 40:
-                slap();
+                function slap();  //////////////don't know how to call slap function
                 break;
             default:
                 console.log("invalid key");
         }
-        
     }
-    document.onkeypress = GetKeyPressed;
+    document.onkeydown = MonitorKeys;
 </script>
 </div>
    </body>
