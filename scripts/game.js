@@ -32,6 +32,9 @@ function BuildDeck() {
             "AceDiamonds", "2Diamonds", "3Diamonds", "4Diamonds", "5Diamonds", "6Diamonds", "7Diamonds", "8Diamonds", "9Diamonds", "10Diamonds", "JackDiamonds", "QueenDiamonds", "KingDiamonds"];
 }
 
+
+
+
 //find first player at game start
 function whoFirst() {
     var random = Math.random();
@@ -52,6 +55,10 @@ function ShuffleDeck() {
     
     //console.log(deck);
 }
+
+
+
+
 
 
 function DealDeck() {
@@ -81,6 +88,12 @@ function StartGame() {
 	whoFirst();
 	console.log(playerTurn);
 }
+
+
+
+
+
+
 
 function PlayCard() {
     
@@ -135,6 +148,7 @@ function PlayCard() {
         hasPreviousFaceCard = false;
         
         var temp;
+        temp = pile;
         
         if (playerTurn === 0) {
             temp = temp.concat(player1Deck);
@@ -202,12 +216,11 @@ function slap() {
 		if (playerTurn === 0) {             //added additional equals - AC
 			for (var i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
-
 					break;
 				}
-				
-				player1Deck.splice(0, 0, pile);
-				pile.pop();
+
+                player1Deck.splice(0, 0, pile[pile.length - 1]);
+                pile.pop();
 			}
 		} else {
 			for (var i = 0; i < length; i++) {
@@ -215,7 +228,7 @@ function slap() {
 					break;
 				}
 				
-				player2Deck.splice(0, 0, pile);
+				player2Deck.splice(0, 0, pile[pile.length - 1]);
 				pile.pop();
 			}
 		}
@@ -231,41 +244,20 @@ function slap() {
 		}
 		
 		//current player plays 2 cards from bottom of deck to bottom of pile
-		if (whoSlapped = 0) {
+		if (whoSlapped === 0) {
             for(var i = 0; i < 2; i++){ 
-                pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
+                pile.splice(pile.length, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
                 //console.log(pile);    //for testing
                 player1Deck.pop();  //because players remove from the top of their decks
                 //console.log(player1Deck); //for testing
             }
-            /* still works but above is condensed
-			pile.splice(pile.length - 1, 0, player1Deck[player1Deck.length - 1]);
-            console.log("pile after first splice: " + pile);
-            player1Deck.shift();
-            console.log("deck after first shift: " + player1Deck);
-			pile.splice(pile.length - 1, 0, player1Deck[player1Deck.length - 1]);
-            console.log("pile after second splice: " + pile);
-            player1Deck.shift();
-            console.log("deck after second shift: " + player1Deck);
-            */
 		} else {
             for(var i = 0; i < 2; i++){ 
-                pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
+                pile.splice(pile.length, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
                 //console.log(pile);    //for testing
                 player2Deck.pop();  //because players remove from the top of their decks -AC
                 //console.log(player2Deck); //for testing
             }
-            
-            /* works but above is condensed
-			pile.splice(pile.length - 1, 0, player2Deck[player2Deck.length - 1]);
-            console.log("pile after first splice: " + pile);
-            player2Deck.shift();
-            console.log("deck after first shift: " + player2Deck);
-			pile.splice(pile.length - 1, 0, player2Deck[player2Deck.length - 1]);
-            console.log("pile after second splice: " + pile);
-            player2Deck.shift();
-            console.log("deck after second shift: " + player2Deck);
-            */
 		}
 		
 		//check to see if this triggers end game condition
@@ -277,6 +269,9 @@ function slap() {
 			//player 1 wins and game ends
 		}
 	}
+    console.log(player1Deck);
+    console.log(player2Deck);
+    console.log(pile);
 }
 
 
