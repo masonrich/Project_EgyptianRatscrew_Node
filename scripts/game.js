@@ -16,6 +16,9 @@ playerTurn: counter for player turn
 var faceCard = false;
 var hasPreviousFaceCard = false;
 
+//used to track gamestart
+var gameStart = false;
+
 //used to track number of cards needed to play when face card played
 var count;
 
@@ -80,6 +83,7 @@ function DealDeck() {
 }
 
 function StartGame() {
+    gameStart = true;
 	BuildDeck();
 	ShuffleDeck();
 	DealDeck();
@@ -87,6 +91,7 @@ function StartGame() {
 	pile = new Array();
 	whoFirst();
 	console.log(playerTurn);
+
 }
 
 
@@ -117,6 +122,7 @@ function PlayCard() {
         if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//game over logic
+            gameStart = false;
 			return;
 		}
 		
@@ -135,6 +141,7 @@ function PlayCard() {
 		if (player2Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//game over logic
+            gameStart = false;
 			return;
 		}
 		
@@ -264,9 +271,11 @@ function slap() {
 		if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//player 2 wins and game ends
+            gameStart = false;
 		} else if (player2Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//player 1 wins and game ends
+            gameStart = false;
 		}
 	}
     console.log(player1Deck);
