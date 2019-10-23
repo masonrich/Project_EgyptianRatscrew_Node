@@ -182,6 +182,7 @@ function IsPileSlappable() {
 
 function slap() {
     if (pile.length === 0) {    //added additional equals - AC
+        console.log("slapped empty pile");
 		return;
 	}
 		
@@ -222,23 +223,48 @@ function slap() {
 		var whoSlapped;       //let to var - ac
 		//TODO: Accomplish the below comment
 		//Need asnyc to determine which player incorrectly slapped.
-		if (player1Slapped) {
+		if (playerTurn === 0) {   //changed original undeclared variable to this one -AC
 			whoSlapped = 0;
-		} else {
+		} else if (playerTurn === 1){
 			whoSlapped = 1;
 		}
 		
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped = 0) {
-			pile.splice(pile.length - 1, 0, player1Deck[0]);
+            for(var i = 0; i < 2; i++){ 
+                pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
+                //console.log(pile);    //for testing
+                player1Deck.pop();  //because players remove from the top of their decks
+                //console.log(player1Deck); //for testing
+            }
+            /* still works but above is condensed
+			pile.splice(pile.length - 1, 0, player1Deck[player1Deck.length - 1]);
+            console.log("pile after first splice: " + pile);
             player1Deck.shift();
-			pile.splice(pile.length - 1, 0, player1Deck[0]);
+            console.log("deck after first shift: " + player1Deck);
+			pile.splice(pile.length - 1, 0, player1Deck[player1Deck.length - 1]);
+            console.log("pile after second splice: " + pile);
             player1Deck.shift();
+            console.log("deck after second shift: " + player1Deck);
+            */
 		} else {
-			pile.splice(pile.length - 1, 0, player2Deck[0]);
+            for(var i = 0; i < 2; i++){ 
+                pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
+                //console.log(pile);    //for testing
+                player2Deck.pop();  //because players remove from the top of their decks -AC
+                //console.log(player2Deck); //for testing
+            }
+            
+            /* works but above is condensed
+			pile.splice(pile.length - 1, 0, player2Deck[player2Deck.length - 1]);
+            console.log("pile after first splice: " + pile);
             player2Deck.shift();
-			pile.splice(pile.length - 1, 0, player2Deck[0]);
+            console.log("deck after first shift: " + player2Deck);
+			pile.splice(pile.length - 1, 0, player2Deck[player2Deck.length - 1]);
+            console.log("pile after second splice: " + pile);
             player2Deck.shift();
+            console.log("deck after second shift: " + player2Deck);
+            */
 		}
 		
 		//check to see if this triggers end game condition
