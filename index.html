@@ -70,8 +70,8 @@ Date: October 14th, 2019
               </a>
                      
               <ul class="navbar-nav ml-auto">
-                 <li class="nav-item"><a class="nav-link" href="#" >Start</a></li>
-                 <li class="nav-item"><a class="nav-link" href="#" >End</a></li>
+                 <li class="nav-item"><a id="start-game" class="nav-link" href="#">Start</a> </li>
+                 <li class="nav-item"><a id="end-game" class="nav-link" href="#" >End</a></li>
                   <li class="nav-item"><a class="nav-link" href="rules.html" ><i class="fa fa-question-circle"></i></a></li>
               </ul> 
            </div>
@@ -173,8 +173,29 @@ Date: October 14th, 2019
      </script> 
 
        
-<script type="text/javascript">    
+<script type="text/javascript">
+    //startGame.valueOf();
+    //if()
+    
+    var gameStarted = false;
+    document.getElementById("start-game").addEventListener("click", Start);
+    document.getElementById("end-game").addEventListener("click", End);
+    
+    function Start(){
+        gameStarted = true;
+        
+        StartGame();
+        console.log("game started");
+    };
+    
+    function End(){
+        gameStarted = false;
+        /// end game function
+        console.log("game end");
+    };
+    
     function MonitorKeys(e){
+        if(gameStarted === true){
         if(!e) e = window.event;
         if((e.charCode) && (e.keyCode === 0)){
             //result = "charCode: " + e.charCode;
@@ -193,8 +214,13 @@ Date: October 14th, 2019
             default:
                 console.log("invalid key");
         }
+        }
     };
+    
+    //set flag to check if startgame true else false
+
     document.onkeydown = MonitorKeys;
+    
 </script>
 
 </div>
