@@ -171,6 +171,32 @@ Date: October 14th, 2019
             ga('create', 'UA-60043592-1', 'auto');
             ga('send', 'pageview');
      </script> 
+           
+<script type="text/javascript">
+    function GetKeyPressed(e){
+        //if(!e) e=window.event;
+        var result, code;
+        if((e.charCode) && (e.keyCode === 0)){
+            //result = "charCode: " + e.charCode;
+            code = e.charCode;
+        } else {
+            //result = "keyCode: " + e.keyCode;
+            code = e.keyCode;
+        }
+        switch(code){
+            case 38:
+                PlayGame();
+                break;
+            case 40:
+                slap();
+                break;
+            default:
+                console.log("invalid key");
+        }
+        
+    }
+    document.onkeypress = GetKeyPressed;
+</script>
 </div>
    </body>
 

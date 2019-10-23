@@ -35,7 +35,7 @@ var cardsScript = document.currentScript;
             var s = card.attr('src');
             return s.substring(s.length - 6, s.length - 4);
         },
-
+/**********************I don't think this is required
         // Play is called whenever a card in an hand is clicked.  If the hand is active
         // then playCard is called.
         play: function (card) {
@@ -43,7 +43,9 @@ var cardsScript = document.currentScript;
                 this.playCard(card);
             }
         },
+*/        
 
+/*******************I don't think this is required
         // Remove a card from the hand.
         remove: function (card) {
             var hand = card.parent();
@@ -54,6 +56,7 @@ var cardsScript = document.currentScript;
                 this.fan(hand);
             }
         },
+        */
 
         fan: function (hand, cfg) {
             var options = $.extend({}, this.options),

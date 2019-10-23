@@ -3,6 +3,7 @@
 
 var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable;
 
+
 /*
 deck: array of all cards
 player1Deck: array of player one cards
