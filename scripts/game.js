@@ -1,7 +1,7 @@
 //window.onload();
 
 
-var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable;
+var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable, pileCount;
 
 
 /*
@@ -92,7 +92,7 @@ function StartGame() {
 	
 	pile = new Array();
 	whoFirst();
-    DisplayTop5();
+    ClearPile(false);
 	console.log(playerTurn);
 
 }
@@ -107,6 +107,7 @@ function PlayCard() {
 		
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
+        DisplayTop5();
         /*******************************/
         if(count > 0){
             playerTurn = 0;
@@ -127,6 +128,7 @@ function PlayCard() {
 		
 		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player2Deck.pop();
+        DisplayTop5();
         /*******************************/
         if(count > 0){
             playerTurn = 1;
@@ -144,9 +146,10 @@ function PlayCard() {
 		
 	}
 	
+    
     isCardFace(); //check for face card on card play
 	IsPileSlappable(); //checks to see if pile is legal to slap
-    DisplayTop5();
+    
     
     if(count === 0 && hasPreviousFaceCard){
         hasPreviousFaceCard = false;
@@ -163,6 +166,9 @@ function PlayCard() {
         }
         
         pile.length = 0;
+        
+        //sleep(2000);
+        ClearPile(true);
     }
 	
 	console.log(player1Deck);
@@ -177,41 +183,72 @@ function PlayCard() {
 
 
 function DisplayTop5() {
-    var imageArray = new Array(5);
-    var pileCount = pile.length;
+    
+    pileCount = pile.length;
     
     if (pileCount > 0) {
-        document.getElementById("card1").src = "cards/" + pile[pile.length - 1] + ".svg";
-    } else {
-      document.getElementById("card1").src = "";   
+        document.getElementById("card5").src = "cards/" + pile[0] + ".svg";
     }
     
     if (pileCount > 1) {
-       document.getElementById("card2").src = "cards/" + pile[pile.length - 2] + ".svg";
-    } else {
-       document.getElementById("card2").src = "";
+       document.getElementById("card4").src = "cards/" + pile[1] + ".svg";
     }
     
     if (pileCount > 2) {
-         document.getElementById("card3").src = "cards/" + pile[pile.length - 3] + ".svg";
-    } else {
-         document.getElementById("card3").src = "";
+         document.getElementById("card3").src = "cards/" + pile[2] + ".svg";
     }
     
     if (pileCount > 3) {
-        document.getElementById("card4").src = "images/" + pile[pile.length - 4] + ".svg";
-    } else {
-         document.getElementById("card4").src = "";
+        document.getElementById("card2").src = "cards/" + pile[3] + ".svg";
     }
     
     if (pileCount > 4) {
-        document.getElementById("card5").src = "images/" + pile[pile.length - 5] + ".svg";
+        document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
+    }   
+    
+    //sleep(2000);
+}
+
+function ClearPile(wait) {
+    
+    if(wait) {
+        document.addEventListener("DOMContentLoaded", function(event) {
+          document.getElementById("slapButton").setAttribute("disabled", "disabled");
+          document.getElementById("playCardButton").removeAttribute("disabled");
+          console.log("made it inside dom content loaded function");
+        });
+  
+
+        setTimeout( function() {
+             document.getElementById("card5").src = ""; 
+             document.getElementById("card4").src = ""; 
+             document.getElementById("card3").src = ""; 
+             document.getElementById("card2").src = ""; 
+             document.getElementById("card1").src = ""; 
+
+             document.addEventListener("DOMContentLoaded", function(event) {
+                 document.getElementById("slapButton").disabled = false;
+                 document.getElementById("playCardButton").disabled = false;
+            });
+        }, 2000);
+        
     } else {
-         document.getElementById("card5").src = "";
+      document.getElementById("card5").src = ""; 
+      document.getElementById("card4").src = ""; 
+      document.getElementById("card3").src = ""; 
+      document.getElementById("card2").src = ""; 
+      document.getElementById("card1").src = "";    
     }
+
 }
 
 
+function sleep(miliseconds) {
+   var currentTime = new Date().getTime();
+
+   while (currentTime + miliseconds >= new Date().getTime()) {
+   }
+}
 
 
 function IsPileSlappable() {
@@ -311,7 +348,7 @@ function slap() {
 		}
 	}
     
-    DisplayTop5();
+    ClearPile(true);
     
     console.log(player1Deck);
     console.log(player2Deck);
