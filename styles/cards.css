@@ -18,6 +18,11 @@ img.card {
 	cursor: pointer;
 }
 
+/*wrapper for child div parent -AC*/
+#middlesection {
+    text-align: center; 
+}
+
 /*
  * A horizontal hand, class="hand hhand".  The enitire card is visible.
  */
@@ -103,3 +108,4 @@ img.card {
 	position: absolute;
 	width: 90px;
 }
+
