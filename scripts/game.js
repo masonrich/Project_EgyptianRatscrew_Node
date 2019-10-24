@@ -84,6 +84,7 @@ function DealDeck() {
 }
 
 function StartGame() {
+    
     gameStart = true;
 	BuildDeck();
 	ShuffleDeck();
@@ -91,6 +92,7 @@ function StartGame() {
 	
 	pile = new Array();
 	whoFirst();
+    DisplayTop5();
 	console.log(playerTurn);
 
 }
@@ -144,7 +146,7 @@ function PlayCard() {
 	
     isCardFace(); //check for face card on card play
 	IsPileSlappable(); //checks to see if pile is legal to slap
-    
+    DisplayTop5();
     
     if(count === 0 && hasPreviousFaceCard){
         hasPreviousFaceCard = false;
@@ -174,6 +176,40 @@ function PlayCard() {
 
 
 
+function DisplayTop5() {
+    var imageArray = new Array(5);
+    var pileCount = pile.length;
+    
+    if (pileCount > 0) {
+        document.getElementById("card1").src = "cards/" + pile[pile.length - 1] + ".svg";
+    } else {
+      document.getElementById("card1").src = "";   
+    }
+    
+    if (pileCount > 1) {
+       document.getElementById("card2").src = "cards/" + pile[pile.length - 2] + ".svg";
+    } else {
+       document.getElementById("card2").src = "";
+    }
+    
+    if (pileCount > 2) {
+         document.getElementById("card3").src = "cards/" + pile[pile.length - 3] + ".svg";
+    } else {
+         document.getElementById("card3").src = "";
+    }
+    
+    if (pileCount > 3) {
+        document.getElementById("card4").src = "images/" + pile[pile.length - 4] + ".svg";
+    } else {
+         document.getElementById("card4").src = "";
+    }
+    
+    if (pileCount > 4) {
+        document.getElementById("card5").src = "images/" + pile[pile.length - 5] + ".svg";
+    } else {
+         document.getElementById("card5").src = "";
+    }
+}
 
 
 
@@ -274,6 +310,9 @@ function slap() {
             gameStart = false;
 		}
 	}
+    
+    DisplayTop5();
+    
     console.log(player1Deck);
     console.log(player2Deck);
     console.log(pile);
