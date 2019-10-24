@@ -172,28 +172,38 @@ Date: October 14th, 2019
             ga('send', 'pageview');
      </script> 
 
-       
+
+<!--javascript function-->
 <script type="text/javascript">
     //startGame.valueOf();
     //if()
-    
+    //variable for checking if game started
     var gameStarted = false;
+    
+    //listener for startgame anchor
     document.getElementById("start-game").addEventListener("click", Start);
+    //listener for endgame anchor
     document.getElementById("end-game").addEventListener("click", End);
     
+    //function for start
     function Start(){
         gameStarted = true;
         
+        //function in game.js
         StartGame();
-        console.log("game started");
+        
+        console.log("game started");    //for testing
     };
     
+    //function for start
     function End(){
         gameStarted = false;
-        /// end game function
-        console.log("game end");
+        //function in game.js
+        EndGame();
+        console.log("game end");    //for testing
     };
     
+    //function to get key stroke
     function MonitorKeys(e){
         if(gameStarted === true){
         if(!e) e = window.event;

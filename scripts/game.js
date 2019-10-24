@@ -61,8 +61,8 @@ function ShuffleDeck() {
 
 
 
-document.getElementById("slapButton").onclick = function() {slap()};
-document.getElementById("PlayCardButton").onclick = function() {PlayCard()};
+document.getElementById("slapButton").onclick = function() { if(gameStart){slap()}};
+document.getElementById("PlayCardButton").onclick = function() {if(gameStart){PlayCard()}};
 
 
 function DealDeck() {
@@ -249,14 +249,14 @@ function slap() {
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped === 0) {
             for(var i = 0; i < 2; i++){ 
-                pile.splice(pile.length, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
+                pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
                 //console.log(pile);    //for testing
                 player1Deck.pop();  //because players remove from the top of their decks
                 //console.log(player1Deck); //for testing
             }
 		} else {
             for(var i = 0; i < 2; i++){ 
-                pile.splice(pile.length, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
+                pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
                 //console.log(pile);    //for testing
                 player2Deck.pop();  //because players remove from the top of their decks -AC
                 //console.log(player2Deck); //for testing
@@ -356,6 +356,11 @@ function isKing(){
     //count 3
     count = 3;
     faceCard = true;
+}
+
+//function for endgame, feel free to change stuff, just keep the false assignment -AC
+function EndGame(){
+    gameStart = false;
 }
 
 /***************works but throws infinite loop because no new card is played*******************/
