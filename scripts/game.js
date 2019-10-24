@@ -29,10 +29,10 @@ var firstLetter;
 
 
 function BuildDeck() {
-     deck = [ "AceSpades", "2Spades", "3Spades", "4Spades", "5Spades", "6Spades", "7Spades", "8Spades", "9Spades", "10Spades", "JackSpades", "QueenSpades", "KingSpades",
-            "AceClubs", "2Clubs", "3Clubs", "4Clubs", "5Clubs", "6Clubs", "7Clubs", "8Clubs", "9Clubs", "10Clubs", "JackClubs", "QueenClubs", "KingClubs",
-            "AceHearts", "2Hearts", "3Hearts", "4Hearts", "5Hearts", "6Hearts", "7Hearts", "8Hearts", "9Hearts", "10Hearts", "JackHearts", "QueenHearts", "KingHearts",
-            "AceDiamonds", "2Diamonds", "3Diamonds", "4Diamonds", "5Diamonds", "6Diamonds", "7Diamonds", "8Diamonds", "9Diamonds", "10Diamonds", "JackDiamonds", "QueenDiamonds", "KingDiamonds"];
+     deck = [ "AS", "2S", "3D", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS",
+              "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C", "JC", "QC", "KC",
+              "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "10H", "JH", "QH", "KH",
+              "AD", "2D", "3D", "4D", "5D", "6D", "7D", "8D", "9D", "10D", "JD", "QD", "KD"];
 }
 
 
@@ -61,8 +61,8 @@ function ShuffleDeck() {
 
 
 
-document.getElementById("slapButton").onclick = function() {slap()};
-document.getElementById("PlayCardButton").onclick = function() {PlayCard()};
+document.getElementById("slapButton").onclick = function() { if(gameStart){slap()}};
+document.getElementById("PlayCardButton").onclick = function() {if(gameStart){PlayCard()}};
 
 
 function DealDeck() {
@@ -285,14 +285,14 @@ function slap() {
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped === 0) {
             for(var i = 0; i < 2; i++){ 
-                pile.splice(pile.length, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
+                pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
                 //console.log(pile);    //for testing
                 player1Deck.pop();  //because players remove from the top of their decks
                 //console.log(player1Deck); //for testing
             }
 		} else {
             for(var i = 0; i < 2; i++){ 
-                pile.splice(pile.length, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
+                pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
                 //console.log(pile);    //for testing
                 player2Deck.pop();  //because players remove from the top of their decks -AC
                 //console.log(player2Deck); //for testing
@@ -395,6 +395,11 @@ function isKing(){
     //count 3
     count = 3;
     faceCard = true;
+}
+
+//function for endgame, feel free to change stuff, just keep the false assignment -AC
+function EndGame(){
+    gameStart = false;
 }
 
 /***************works but throws infinite loop because no new card is played*******************/
