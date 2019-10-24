@@ -212,11 +212,7 @@ function DisplayTop5() {
 function ClearPile(wait) {
     
     if(wait) {
-        document.addEventListener("DOMContentLoaded", function(event) {
-          document.getElementById("slapButton").setAttribute("disabled", "disabled");
-          document.getElementById("playCardButton").removeAttribute("disabled");
-          console.log("made it inside dom content loaded function");
-        });
+        gameStart = false;
   
 
         setTimeout( function() {
@@ -226,10 +222,7 @@ function ClearPile(wait) {
              document.getElementById("card2").src = ""; 
              document.getElementById("card1").src = ""; 
 
-             document.addEventListener("DOMContentLoaded", function(event) {
-                 document.getElementById("slapButton").disabled = false;
-                 document.getElementById("playCardButton").disabled = false;
-            });
+             gameStart = true;
         }, 2000);
         
     } else {
@@ -239,7 +232,6 @@ function ClearPile(wait) {
       document.getElementById("card2").src = ""; 
       document.getElementById("card1").src = "";    
     }
-
 }
 
 
@@ -272,6 +264,7 @@ function IsPileSlappable() {
 
 function slap() {
 	console.log("Worked");
+    
     if (pile.length === 0) {    //added additional equals - AC
         console.log("slapped empty pile");
 		return;
@@ -308,7 +301,8 @@ function slap() {
 				pile.pop();
 			}
 		}
-		
+		ClearPile(true);
+        
 	} else {
 		var whoSlapped;       //let to var - ac
 		//TODO: Accomplish the below comment
@@ -321,19 +315,20 @@ function slap() {
 		
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped === 0) {
-            for(var i = 0; i < 2; i++){ 
-                pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //adds cards to the bottom of pile - AC
+                pile.splice(pile.length, 0, player1Deck[1]); //adds cards to the bottom of pile - AC
+                player1Deck.shift(); 
+                
+                pile.splice(pile.length, 0, player1Deck[0]);
                 //console.log(pile);    //for testing
-                player1Deck.pop();  //because players remove from the top of their decks
+                player1Deck.shift();  //because players remove from the top of their decks
                 //console.log(player1Deck); //for testing
-            }
 		} else {
-            for(var i = 0; i < 2; i++){ 
-                pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //adds cards to the bottom of pile -AC
+                pile.splice(pile.length, 0, player2Deck[1]); //adds cards to the bottom of pile -AC
                 //console.log(pile);    //for testing
-                player2Deck.pop();  //because players remove from the top of their decks -AC
+                player2Deck.shift();  //because players remove from the top of their decks -AC
                 //console.log(player2Deck); //for testing
-            }
+                pile.splice(pile.length, 0, player2Deck[0]);
+                player2Deck.shift();
 		}
 		
 		//check to see if this triggers end game condition
@@ -348,7 +343,7 @@ function slap() {
 		}
 	}
     
-    ClearPile(true);
+    DisplayTop5();
     
     console.log(player1Deck);
     console.log(player2Deck);
