@@ -216,21 +216,21 @@ function ClearPile(wait) {
   
 
         setTimeout( function() {
-             document.getElementById("card5").src = ""; 
-             document.getElementById("card4").src = ""; 
-             document.getElementById("card3").src = ""; 
-             document.getElementById("card2").src = ""; 
-             document.getElementById("card1").src = ""; 
+             document.getElementById("card5").src = "cards/blank.jpeg"; 
+             document.getElementById("card4").src = "cards/blank.jpeg"; 
+             document.getElementById("card3").src = "cards/blank.jpeg"; 
+             document.getElementById("card2").src = "cards/blank.jpeg"; 
+             document.getElementById("card1").src = "cards/blank.jpeg"; 
 
              gameStart = true;
         }, 2000);
         
     } else {
-      document.getElementById("card5").src = ""; 
-      document.getElementById("card4").src = ""; 
-      document.getElementById("card3").src = ""; 
-      document.getElementById("card2").src = ""; 
-      document.getElementById("card1").src = "";    
+      document.getElementById("card5").src = "cards/blank.jpeg"; 
+      document.getElementById("card4").src = "cards/blank.jpeg"; 
+      document.getElementById("card3").src = "cards/blank.jpeg"; 
+      document.getElementById("card2").src = "cards/blank.jpeg"; 
+      document.getElementById("card1").src = "cards/blank.jpeg";    
     }
 }
 
