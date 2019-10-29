@@ -106,9 +106,9 @@ function PlayCard() {
   call_method($console, "log", _concat("count: ", $count));
   call_method($console, "log", _concat("FaceCard: ", $faceCard));
   call_method($console, "log", _concat("hasPreviousFaceCard: ", $hasPreviousFaceCard));
-});
+}
 
-$DisplayTop5 = new Func("DisplayTop5", function() use (&$pileCount, &$pile, &$document) {
+function DisplayTop5() {
   $pileCount = get($pile, "length");
   if ($pileCount > 0.0) {
     set(call_method($document, "getElementById", "card5"), "src", _concat("cards/", get($pile, 0.0), ".svg"));
@@ -125,9 +125,9 @@ $DisplayTop5 = new Func("DisplayTop5", function() use (&$pileCount, &$pile, &$do
   if ($pileCount > 4.0) {
     set(call_method($document, "getElementById", "card1"), "src", _concat("cards/", get($pile, 4.0), ".svg"));
   }
-});
+}
 
-$ClearPile = new Func("ClearPile", function($wait = null) use (&$gameStart, &$setTimeout, &$document) {
+function ClearPile() {
   if (is($wait)) {
     $gameStart = false;
     call($setTimeout, new Func(function() use (&$document, &$gameStart) {
@@ -146,15 +146,15 @@ $ClearPile = new Func("ClearPile", function($wait = null) use (&$gameStart, &$se
     set(call_method($document, "getElementById", "card1"), "src", "");
   }
 
-});
+}
 
-$sleep = new Func("sleep", function($miliseconds = null) use (&$Date) {
+function mySleep() {
   $currentTime = call_method(_new($Date), "getTime");
   while (_plus($currentTime, $miliseconds) >= call_method(_new($Date), "getTime")) {
   }
-});
+}
 
-$IsPileSlappable = new Func("IsPileSlappable", function() use (&$pile, &$pileCurrentlySlappable) {
+function IsPileSlappable() {
   if (get($pile, "length") < 2.0) {
     $pileCurrentlySlappable = false;
   } else {

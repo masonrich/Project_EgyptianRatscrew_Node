@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <?php
+        include 'scripts/game.php';
+    ?>
 <!--
 Honor Code: I acknowledge that this code represents my own work: 
 Initials: MJR    
@@ -50,6 +54,9 @@ Date: October 14th, 2019
 <title>Egyptian Ratscrew</title> 
 </head>      
    <body>
+       
+
+       
        <div class="container-fluid">
        <!-- Jumbo Tron -->
        <div class="jumbotron">
@@ -70,9 +77,11 @@ Date: October 14th, 2019
               </a>
                      
               <ul class="navbar-nav ml-auto">
-                 <li class="nav-item"><a id="start-game" onclick='<?php include 'scripts/game.php'; echo "$StartGame()"; ?>' class="nav-link" href="#">Start</a> </li>
-                 <li class="nav-item"><a id="end-game" class="nav-link" href="#" >End</a></li>
-                  <li class="nav-item"><a class="nav-link" href="rules.html" ><i class="fa fa-question-circle"></i></a></li>
+                  <form method="post">
+                      <li class="nav-item"><a id="start-game" type="submit" name="StartGame" class="nav-link" href="#">Start</a> </li>
+                      <li class="nav-item"><a id="end-game" name="EndGame" class="nav-link" href="#" >End</a></li>
+                      <li class="nav-item"><a class="nav-link" href="rules.html" ><i class="fa fa-question-circle"></i></a></li>
+                  </form>
               </ul> 
            </div>
        
