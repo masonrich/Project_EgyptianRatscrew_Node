@@ -14,6 +14,26 @@ function whoFirst() {
   call_method($console, "log", $random);
 }
 
+function ShuffleDeck() {
+  call_method($deck, "sort", new Func(function() use (&$Math) {
+    return 0.5 - to_number(call_method($Math, "random"));
+  }));
+}
+
+function DealDeck() {
+  $player1Deck = _new($Array);
+  $player2Deck = _new($Array);
+  for ($i = 0.0; $i < 26.0; $i++) {
+    call_method($player1Deck, "push", get($deck, to_number(get($deck, "length")) - 1.0));
+    call_method($deck, "pop");
+  }
+  for ($i = 0.0; $i < 26.0; $i++) {
+    call_method($player2Deck, "push", get($deck, to_number(get($deck, "length")) - 1.0));
+    call_method($deck, "pop");
+  }
+  call_method($console, "log", $player1Deck);
+  call_method($console, "log", $player2Deck);
+}
 
 function StartGame() {
   $gameStart = true;
