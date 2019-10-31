@@ -1,10 +1,4 @@
 <?php
-    
-    if(isset($_POST['StartGame'])) { 
-            
-        StartGame(); 
-        }
-
 function BuildDeck() {
   $deck = new Arr("AS", "2S", "3D", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS", "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C", "JC", "QC", "KC", "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "10H", "JH", "QH", "KH", "AD", "2D", "3D", "4D", "5D", "6D", "7D", "8D", "9D", "10D", "JD", "QD", "KD");
 }
@@ -20,6 +14,26 @@ function whoFirst() {
   call_method($console, "log", $random);
 }
 
+function ShuffleDeck() {
+  call_method($deck, "sort", new Func(function() use (&$Math) {
+    return 0.5 - to_number(call_method($Math, "random"));
+  }));
+}
+
+function DealDeck() {
+  $player1Deck = _new($Array);
+  $player2Deck = _new($Array);
+  for ($i = 0.0; $i < 26.0; $i++) {
+    call_method($player1Deck, "push", get($deck, to_number(get($deck, "length")) - 1.0));
+    call_method($deck, "pop");
+  }
+  for ($i = 0.0; $i < 26.0; $i++) {
+    call_method($player2Deck, "push", get($deck, to_number(get($deck, "length")) - 1.0));
+    call_method($deck, "pop");
+  }
+  call_method($console, "log", $player1Deck);
+  call_method($console, "log", $player2Deck);
+}
 
 function StartGame() {
   $gameStart = true;
