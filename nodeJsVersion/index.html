@@ -128,7 +128,7 @@ Date: October 14th, 2019
                               <button id="slapButton">SLAP</button>
                               
                               
-                              <button id="PlayCardButton">PLAY CARD</button>
+                              <button id="PlayCardButton" onclick='playCard()'>PLAY CARD</button>
 
                                   
                            </fieldset>
@@ -177,13 +177,94 @@ Date: October 14th, 2019
 
        </script> 
            
-<script>
-    function startGame() {
-        $.get('/getGame', function(data, status) {
-           console.log(data); 
-        });
-    }   
-</script>
+    <script>
+        function startGame() {
+            $.get('/getGame', function(data, status) {
+               console.log(data); 
+                //TODO: display who goes first.
+            });
+        }   
+        
+        function playCard() {
+            
+            $.get('/playCard', function(data, status) {
+                
+                let count = DisplayTop5();
+
+                
+                $.get('/hasPreviousFaceCard', function(data2, status2) {
+                    console.log('got here');
+                    if (count === 0 && data2) {
+                        $.get('/getWait', function(data3, status3) {
+                            if(data3) {
+                                
+                                $.get('/toggleGameStart', function(data4, status4) {
+                                    
+                                });
+
+                                setTimeout( function() {
+                                 document.getElementById("card5").src = "cards/blank.jpeg"; 
+                                 document.getElementById("card4").src = "cards/blank.jpeg"; 
+                                 document.getElementById("card3").src = "cards/blank.jpeg"; 
+                                 document.getElementById("card2").src = "cards/blank.jpeg"; 
+                                 document.getElementById("card1").src = "cards/blank.jpeg"; 
+
+                                 $.get('/toggleGameStart', function(data5, status5) {
+                                    
+                                });
+                                    
+                            }, 2000);
+
+                            } else {
+                              document.getElementById("card5").src = "cards/blank.jpeg"; 
+                              document.getElementById("card4").src = "cards/blank.jpeg"; 
+                              document.getElementById("card3").src = "cards/blank.jpeg"; 
+                              document.getElementById("card2").src = "cards/blank.jpeg"; 
+                              document.getElementById("card1").src = "cards/blank.jpeg";    
+                            }
+                        })
+                        
+                    }
+                });      
+            });
+        }
+        
+        function DisplayTop5() {
+            
+            console.log('Before top 5');
+            
+            $.get('/displayTop5', function(data, status) {
+                
+                console.log('Inside top 5');
+                
+                let pile = JSON.parse(data);
+
+                if (pile.length > 0) {
+                    document.getElementById("card5").src = "cards/" + pile[0] + ".svg";
+                }
+
+                if (pile.length > 1) {
+                   document.getElementById("card4").src = "cards/" + pile[1] + ".svg";
+                }
+
+                if (pile.length > 2) {
+                     document.getElementById("card3").src = "cards/" + pile[2] + ".svg";
+                }
+
+                if (pile.length > 3) {
+                    document.getElementById("card2").src = "cards/" + pile[3] + ".svg";
+                }
+
+                if (pile.length > 4) {
+                    document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
+                } 
+                
+                return pile.length;
+            });  
+            
+            console.log('Shouldnt get here');
+        }       
+    </script>
            
 </div>
    </body>

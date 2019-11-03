@@ -25,10 +25,39 @@ function route(server) {
     
     server.get('/getGame', function(reqeust, response, next) {
         
-       //What needs to get called --> StartGame();
         let temp = game.StartGame();
         
        response.send('' + temp); 
+    });
+    
+    server.get('/playCard', function(reqeust, response, next) {
+        
+        let temp = game.PlayCard();
+        
+       response.send('' + temp); 
+    });
+    
+    server.get('/hasPreviousFaceCard', function(request, response, next) {
+       let temp = game.HasPreviousFaceCard();
+        
+        return temp;
+    });
+    
+    server.get('/getWait', function(request, response, next) {
+       let temp = game.GetWait();
+        
+        return temp;
+    });
+    
+    server.get('/getWait', function(request, response, next) {
+       game.ToggleGameStart();
+        
+    });
+    
+    server.get('/displayTop5', function(request, response, next) {
+       let temp = game.DisplayTop5();
+        
+         return temp;
     });
 }
 

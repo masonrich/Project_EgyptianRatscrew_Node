@@ -85,12 +85,11 @@ function DealDeck() {
 
 function StartGame() {
     
-    console.log('made it to start game');
-    
     gameStart = true;
 	BuildDeck();
 	ShuffleDeck();
 	DealDeck();
+    count = 0;
 	
 	pile = new Array();
 	whoFirst();
@@ -100,19 +99,31 @@ function StartGame() {
 
 
 function PlayCard() {
+    
+    console.log('log: 1');
+    
     if (count > 0) {
         hasPreviousFaceCard = true;
     }
+    
+        console.log('log: 2');
     
 	if (playerTurn === 0) {    //added additional equals - AC
 		
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
-        DisplayTop5();
+        
+            console.log('log: 3');
+        
+        //Mostly Client Side Now
+        //DisplayTop5();
+        
         /*******************************/
         if(count > 0){
             playerTurn = 0;
             count--;
+            
+                console.log('log: 4');
             
         } else {
 		  playerTurn = 1; //mikes original code
@@ -127,13 +138,18 @@ function PlayCard() {
 		
 	} else {
 		
+            console.log('log: 5');
 		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player2Deck.pop();
-        DisplayTop5();
+        
+         //Mostly Client side now
+        //DisplayTop5();
+        
         /*******************************/
         if(count > 0){
             playerTurn = 1;
             count--;
+                console.log('log: 6');
         } else {
 		playerTurn = 0; //mikes original code
         }
@@ -143,10 +159,10 @@ function PlayCard() {
 			//game over logic
             gameStart = false;
 			return;
-		}
-		
+		}		
 	}
 	
+        console.log('log: 7');
     
     isCardFace(); //check for face card on card play
 	IsPileSlappable(); //checks to see if pile is legal to slap
@@ -154,6 +170,8 @@ function PlayCard() {
     
     if(count === 0 && hasPreviousFaceCard){
         hasPreviousFaceCard = false;
+        
+            console.log('log: 8');
         
         var temp;
         temp = pile;
@@ -166,10 +184,12 @@ function PlayCard() {
             player2Deck = temp;
         }
         
+            console.log('log: 9');
+        
         pile.length = 0;
         
-        //sleep(2000);
-        ClearPile(true);
+        //Client Side Now
+        //ClearPile(true);
     }
 	
 	console.log(player1Deck);
@@ -181,66 +201,35 @@ function PlayCard() {
     console.log("hasPreviousFaceCard: " + hasPreviousFaceCard);
 }
 
+//TODO: DOM End game scenario within PlayCard()
 
+function HasPreviousFaceCard() {
+        console.log('made it to js hasPreviousFaceCard');
+    return hasPreviousFaceCard;
+}
 
 function DisplayTop5() {
-    
-    pileCount = pile.length;
-    
-    if (pileCount > 0) {
-        document.getElementById("card5").src = "cards/" + pile[0] + ".svg";
+    let temp = JSON.stringify(pile);
+    console.log(temp);
+    return temp;    
+}
+
+function GetWait() {
+    return wait;
+}
+
+function ToggleGameStart() {
+    if (gameStart) {
+        gameStart = false;
+    } else {
+        gameStart = true;
     }
-    
-    if (pileCount > 1) {
-       document.getElementById("card4").src = "cards/" + pile[1] + ".svg";
-    }
-    
-    if (pileCount > 2) {
-         document.getElementById("card3").src = "cards/" + pile[2] + ".svg";
-    }
-    
-    if (pileCount > 3) {
-        document.getElementById("card2").src = "cards/" + pile[3] + ".svg";
-    }
-    
-    if (pileCount > 4) {
-        document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
-    }   
-    
-    //sleep(2000);
 }
 
 function ClearPile(wait) {
     
-    if(wait) {
-        gameStart = false;
-  
+    //TODO: DOM this whole function
 
-        setTimeout( function() {
-             document.getElementById("card5").src = "cards/blank.jpeg"; 
-             document.getElementById("card4").src = "cards/blank.jpeg"; 
-             document.getElementById("card3").src = "cards/blank.jpeg"; 
-             document.getElementById("card2").src = "cards/blank.jpeg"; 
-             document.getElementById("card1").src = "cards/blank.jpeg"; 
-
-             gameStart = true;
-        }, 2000);
-        
-    } else {
-      document.getElementById("card5").src = "cards/blank.jpeg"; 
-      document.getElementById("card4").src = "cards/blank.jpeg"; 
-      document.getElementById("card3").src = "cards/blank.jpeg"; 
-      document.getElementById("card2").src = "cards/blank.jpeg"; 
-      document.getElementById("card1").src = "cards/blank.jpeg";    
-    }
-}
-
-
-function sleep(miliseconds) {
-   var currentTime = new Date().getTime();
-
-   while (currentTime + miliseconds >= new Date().getTime()) {
-   }
 }
 
 
@@ -302,7 +291,9 @@ function slap() {
 				pile.pop();
 			}
 		}
+        //TODO: DOM this
 		ClearPile(true);
+        //TODO: DOM this
         
 	} else {
 		var whoSlapped;       //let to var - ac
@@ -344,14 +335,16 @@ function slap() {
 		}
 	}
     
+    //TODO: DOM this
     DisplayTop5();
+    //TODO: DOM this
     
     console.log(player1Deck);
     console.log(player2Deck);
     console.log(pile);
 }
 
-
+//TODO: DOM end game scenario in slap function
 
 
 //call before face logic//
@@ -435,4 +428,4 @@ function EndGame(){
     gameStart = false;
 }
 
-module.exports = { StartGame: StartGame }
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, Slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5 }
