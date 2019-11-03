@@ -61,8 +61,8 @@ function ShuffleDeck() {
 
 
 
-document.getElementById("slapButton").onclick = function() { if(gameStart){slap()}};
-document.getElementById("PlayCardButton").onclick = function() {if(gameStart){PlayCard()}};
+//document.getElementById("slapButton").onclick = function() { if(gameStart){slap()}};
+//document.getElementById("PlayCardButton").onclick = function() {if(gameStart){PlayCard()}};
 
 
 function DealDeck() {
@@ -85,6 +85,8 @@ function DealDeck() {
 
 function StartGame() {
     
+    console.log('made it to start game');
+    
     gameStart = true;
 	BuildDeck();
 	ShuffleDeck();
@@ -92,9 +94,8 @@ function StartGame() {
 	
 	pile = new Array();
 	whoFirst();
-    ClearPile(false);
-	console.log(playerTurn);
-
+    //ClearPile(false);
+	return(playerTurn);
 }
 
 
@@ -434,54 +435,4 @@ function EndGame(){
     gameStart = false;
 }
 
-/***************works but throws infinite loop because no new card is played*******************/
-/*
-function faceLogic() {
-    //TODO: right out faceLogic method
-    //console.log(playerTurn);
-    console.log("cards to play: " + count);
-
-    for(var i = 0; i < count; i++){
-        //var cards = i += 1;
-        //something to dictate player needs to laydown card
-        //swap players if there is a match only after card is played
-        
-        
-        PlayCard(); //does need to be done by player
-        //console.log("cards played: " + cards);
-        //console.log(i);
-        if(playerTurn !== currentPlayer){   //isCardFace method call
-            //top card will alway be a match until a new one is played here i think.
-            PlayCard(); //does need to be done by player
-            hasPreviousFaceCard = true;
-        }
-        
-    }
-    hasPreviousFaceCard = false;
-    console.log("the current player is:" + currentPlayer)
-    if(currentPlayer === 0){
-        playerTurn = 1;
-        for (var i = 0; i < pile.length; i++) {
-            if (pile.length === 0) {    //added additional equals - AC
-					break;
-            }
-				
-				player2Deck.splice(0, 0, pile);
-				pile.pop();
-			}
-        
-    }
-    else if (currentPlayer === 1){
-        playerTurn = 0;
-        for (var i = 0; i < pile.length; i++) {
-				if (pile.length === 0) {    //added additional equals - AC
-
-					break;
-				}
-				
-				player1Deck.splice(0, 0, pile);
-				pile.pop();
-			}
-    }
-}
-*/
+module.exports = { StartGame: StartGame }
