@@ -64,6 +64,12 @@ function route(server) {
                let temp = game.slap();
             return temp;
     });
+    
+    server.get('/isPileSlappable', function(request, response, next){
+        let temp = game.IsPileSlappable();
+        
+        return temp;
+    })
                
 }
 
