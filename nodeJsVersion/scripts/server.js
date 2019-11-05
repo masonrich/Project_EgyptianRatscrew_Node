@@ -59,6 +59,12 @@ function route(server) {
         
          return temp;
     });
+    
+    server.get('/slap', function(request, response, next) {
+               let temp = game.slap();
+            return temp;
+    });
+               
 }
 
 //JSON.stringify();     packages up an array for client side

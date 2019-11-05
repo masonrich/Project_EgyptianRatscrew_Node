@@ -125,7 +125,7 @@ Date: October 14th, 2019
                        
 	                           </div>
                               
-                              <button id="slapButton">SLAP</button>
+                              <button id="slapButton" onclick='slap()'>SLAP</button>
                               
                               
                               <button id="PlayCardButton" onclick='playCard()'>PLAY CARD</button>
@@ -263,7 +263,17 @@ Date: October 14th, 2019
             });  
             
             console.log('Shouldnt get here');
-        }       
+        }  
+        
+        function slap(){
+            $.get('slap', function(data, status)) {
+                  console.log('Slap button clicked');
+                    $.get('/isPileSlappable'), function(data, status)) {
+                        console.log('check for slappable');
+                    }
+                  }
+        }
+        
     </script>
            
 </div>
