@@ -100,10 +100,11 @@ Date: October 14th, 2019
                        <div>
                           <fieldset>
                              <label>Player 1</label>
-                                   <div>
-                                      <img src="/cards/RED_BACK.svg" alt="Back of card">
-                                   </div>
-                           </fieldset>
+                              <hr>
+                             <img src="/cards/RED_BACK.svg" alt="Back of card">
+                             <p class="cardsP">CARDS</p>
+                             <p id=numCardsPlayer1>26</p>
+                          </fieldset>
                         </div>
                    </section>
                    
@@ -112,6 +113,7 @@ Date: October 14th, 2019
                        <div>
                           <fieldset>
                              <label>PILE</label> 
+                              <hr>
 
                               <div id="cardHolder" class="hand fan active-hand" style="width: 318px; height: 154px;">
 
@@ -140,7 +142,10 @@ Date: October 14th, 2019
                        <div>
                           <fieldset>
                              <label>Player 2</label> 
+                              <hr>
                              <img class="draggable" src="/cards/RED_BACK.svg" alt="Back of card">
+                             <p class="cardsP">CARDS</p>
+                             <p id=numCardsPlayer2>26</p>
                            </fieldset>
                         </div>
                    </section>
@@ -178,61 +183,39 @@ Date: October 14th, 2019
        </script> 
            
     <script>
+        
         function startGame() {
             $.get('/getGame', function(data, status) {
                console.log(data); 
+                
+                 document.getElementById("card5").src = "cards/blank.jpeg"; 
+                 document.getElementById("card4").src = "cards/blank.jpeg"; 
+                 document.getElementById("card3").src = "cards/blank.jpeg"; 
+                 document.getElementById("card2").src = "cards/blank.jpeg"; 
+                 document.getElementById("card1").src = "cards/blank.jpeg"; 
+                
                 //TODO: display who goes first.
+                
             });
         }   
         
         function playCard() {
             
+            let count;
+            
             $.get('/playCard', function(data, status) {
                 
-                let count = DisplayTop5();
-
+                count = DisplayTop5();
                 
-                $.get('/hasPreviousFaceCard', function(data2, status2) {
-                    console.log('got here');
-                    if (count === 0 && data2) {
-                        $.get('/getWait', function(data3, status3) {
-                            if(data3) {
-                                
-                                $.get('/toggleGameStart', function(data4, status4) {
-                                    
-                                });
-
-                                setTimeout( function() {
-                                 document.getElementById("card5").src = "cards/blank.jpeg"; 
-                                 document.getElementById("card4").src = "cards/blank.jpeg"; 
-                                 document.getElementById("card3").src = "cards/blank.jpeg"; 
-                                 document.getElementById("card2").src = "cards/blank.jpeg"; 
-                                 document.getElementById("card1").src = "cards/blank.jpeg"; 
-
-                                 $.get('/toggleGameStart', function(data5, status5) {
-                                    
-                                });
-                                    
-                            }, 2000);
-
-                            } else {
-                              document.getElementById("card5").src = "cards/blank.jpeg"; 
-                              document.getElementById("card4").src = "cards/blank.jpeg"; 
-                              document.getElementById("card3").src = "cards/blank.jpeg"; 
-                              document.getElementById("card2").src = "cards/blank.jpeg"; 
-                              document.getElementById("card1").src = "cards/blank.jpeg";    
-                            }
-                        })
-                        
-                    }
-                });      
-            });
+            }); 
+            
+            console.log('Count: ' + count)
+            HasPreviousFaceCard(count);
         }
         
+        
         function DisplayTop5() {
-            
-            console.log('Before top 5');
-            
+                       
             $.get('/displayTop5', function(data, status) {
                 
                 console.log('Inside top 5');
@@ -261,7 +244,58 @@ Date: October 14th, 2019
                 
                 return pile.length;
             });  
+        }  
+        
+        function HasPreviousFaceCard(count)
+        {
+            $.get('/hasPreviousFaceCard', function(data2, status2) {
+
+                console.log("got to HasPreviousFaceCard");
+                
+                if (count === 0 && data2) {
+                    GetWait();
+                }
+            });   
+        }
+        
+        function GetWait()
+        {
+            $.get('/getWait', function(data3, status3) {
+            if(data3) {
+                
+                console.log("got to GetWait");
+
+                ToggleGameStart();
+
+                 setTimeout( function() {
+                 document.getElementById("card5").src = "cards/blank.jpeg"; 
+                 document.getElementById("card4").src = "cards/blank.jpeg"; 
+                 document.getElementById("card3").src = "cards/blank.jpeg"; 
+                 document.getElementById("card2").src = "cards/blank.jpeg"; 
+                 document.getElementById("card1").src = "cards/blank.jpeg"; 
+
+                 ToggleGameStart();
+
+                }, 2000);
+
+                } else {
+                  document.getElementById("card5").src = "cards/blank.jpeg"; 
+                  document.getElementById("card4").src = "cards/blank.jpeg"; 
+                  document.getElementById("card3").src = "cards/blank.jpeg"; 
+                  document.getElementById("card2").src = "cards/blank.jpeg"; 
+                  document.getElementById("card1").src = "cards/blank.jpeg";    
+                }
+            })
+        }
+        
+        function ToggleGameStart()
+        {
+            console.log("Got to ToggleGameStart");
             
+            $.get('/toggleGameStart', function(data4, status4) {
+
+            });
+
             console.log('Shouldnt get here');
         }  
         

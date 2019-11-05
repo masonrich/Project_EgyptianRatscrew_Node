@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var express = require('express');
 var path = require('path');
-var game = require('./game');
+var game = require('./game'); 
 
 //express is a package that node uses
 var server = express();
@@ -40,13 +40,13 @@ function route(server) {
     server.get('/hasPreviousFaceCard', function(request, response, next) {
        let temp = game.HasPreviousFaceCard();
         
-        return temp;
+        response.send(temp);
     });
     
     server.get('/getWait', function(request, response, next) {
        let temp = game.GetWait();
         
-        return temp;
+        response.send(temp);
     });
     
     server.get('/getWait', function(request, response, next) {
@@ -55,9 +55,9 @@ function route(server) {
     });
     
     server.get('/displayTop5', function(request, response, next) {
-       let temp = game.DisplayTop5();
+       let myPile = game.DisplayTop5();
         
-         return temp;
+         response.send(myPile);
     });
     
     
