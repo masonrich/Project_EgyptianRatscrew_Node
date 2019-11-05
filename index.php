@@ -70,7 +70,7 @@ Date: October 14th, 2019
               </a>
                      
               <ul class="navbar-nav ml-auto">
-                 <li class="nav-item"><a id="start-game" class="nav-link" href="#">Start</a> </li>
+                 <li class="nav-item"><a id="start-game" onclick='<?php include 'scripts/game.php'; echo "$StartGame()"; ?>' class="nav-link" href="#">Start</a> </li>
                  <li class="nav-item"><a id="end-game" class="nav-link" href="#" >End</a></li>
                   <li class="nav-item"><a class="nav-link" href="rules.html" ><i class="fa fa-question-circle"></i></a></li>
               </ul> 
@@ -175,6 +175,8 @@ Date: October 14th, 2019
 
 
 <!--javascript function-->
+          
+<!--
 <script type="text/javascript">
     //startGame.valueOf();
     //if()
@@ -203,6 +205,7 @@ Date: October 14th, 2019
         EndGame();
         console.log("game end");    //for testing
     };
+    
     
     //function to get key stroke
     function MonitorKeys(e){
@@ -233,6 +236,7 @@ Date: October 14th, 2019
     document.onkeydown = MonitorKeys;
     
 </script>
+-->
 
 </div>
    </body>
