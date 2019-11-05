@@ -130,7 +130,7 @@ function PlayCard() {
         }
         
         if (player1Deck.length === 0) {    //added additional equals - AC
-			//TODO: Accomplish the below comment
+			
 			//game over logic
             gameStart = false;
 			return;
@@ -155,7 +155,7 @@ function PlayCard() {
         }
         
 		if (player2Deck.length === 0) {    //added additional equals - AC
-			//TODO: Accomplish the below comment
+			
 			//game over logic
             gameStart = false;
 			return;

@@ -59,6 +59,18 @@ function route(server) {
         
          response.send(myPile);
     });
+    
+    server.get('/slap', function(request, response, next) {
+               let temp = game.slap();
+            return temp;
+    });
+    
+    server.get('/isPileSlappable', function(request, response, next){
+        let temp = game.IsPileSlappable();
+        
+        return temp;
+    })
+               
 }
 
 //JSON.stringify();     packages up an array for client side
