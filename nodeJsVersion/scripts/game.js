@@ -235,12 +235,12 @@ function ClearPile(wait) {
 
 function IsPileSlappable() {
 	if (pile.length < 2) {
-		pileCurrentlySlappable = false;
+		return pileCurrentlySlappable = false;
 	} else {
 		if (pile[0].substring(0, 1) === pile[1].substring(0, 1)) {    //added additional equals - AC
-			pileCurrentlySlappable = true;
+			return pileCurrentlySlappable = true;
 		} else {
-			pileCurrentlySlappable = false;
+			return pileCurrentlySlappable = false;
 		}
 	}
 }
@@ -428,4 +428,5 @@ function EndGame(){
     gameStart = false;
 }
 
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, Slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5 }
+//add functions here that you need to access in html or whatever -- mike 2019
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable}

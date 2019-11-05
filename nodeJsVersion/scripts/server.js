@@ -60,15 +60,17 @@ function route(server) {
          return temp;
     });
     
+    
     server.get('/slap', function(request, response, next) {
-               let temp = game.slap();
-            return temp;
+            let temp = game.slap();
+            response.send(temp);
     });
     
-    server.get('/isPileSlappable', function(request, response, next){
+    
+    server.get('/IsPileSlappable', function(request, response, next){
         let temp = game.IsPileSlappable();
         
-        return temp;
+        response.send(temp);
     })
                
 }
