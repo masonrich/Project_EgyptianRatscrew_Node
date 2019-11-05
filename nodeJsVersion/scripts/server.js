@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var express = require('express');
 var path = require('path');
-var game = require('./game');
+var game = require('./game'); 
 
 //express is a package that node uses
 var server = express();

@@ -1,6 +1,7 @@
 label {
    text-align: center;
    display: block;
+   font-size: 1.2em;
 }
 
 input {
@@ -100,4 +101,22 @@ button.navbar-toggler {
 
 #takePile {
     
+}
+
+.cardsP {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+#numCardsPlayer1 {
+    text-align: center;
+    color: darkcyan;
+    font-size: 1.2em;
+}
+
+#numCardsPlayer2 {
+    text-align: center;
+    color: darkcyan;
+    font-size: 1.2em;
 }
