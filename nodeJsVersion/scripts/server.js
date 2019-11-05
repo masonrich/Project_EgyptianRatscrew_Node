@@ -40,13 +40,13 @@ function route(server) {
     server.get('/hasPreviousFaceCard', function(request, response, next) {
        let temp = game.HasPreviousFaceCard();
         
-        return temp;
+        response.send(temp);
     });
     
     server.get('/getWait', function(request, response, next) {
        let temp = game.GetWait();
         
-        return temp;
+        response.send(temp);
     });
     
     server.get('/getWait', function(request, response, next) {
@@ -55,10 +55,22 @@ function route(server) {
     });
     
     server.get('/displayTop5', function(request, response, next) {
-       let temp = game.DisplayTop5();
+       let myPile = game.DisplayTop5();
         
-         return temp;
+         response.send(myPile);
     });
+    
+    server.get('/slap', function(request, response, next) {
+               let temp = game.slap();
+            return temp;
+    });
+    
+    server.get('/isPileSlappable', function(request, response, next){
+        let temp = game.IsPileSlappable();
+        
+        return temp;
+    })
+               
 }
 
 //JSON.stringify();     packages up an array for client side

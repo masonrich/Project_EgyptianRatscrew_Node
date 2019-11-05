@@ -130,7 +130,7 @@ function PlayCard() {
         }
         
         if (player1Deck.length === 0) {    //added additional equals - AC
-			//TODO: Accomplish the below comment
+			
 			//game over logic
             gameStart = false;
 			return;
@@ -155,7 +155,7 @@ function PlayCard() {
         }
         
 		if (player2Deck.length === 0) {    //added additional equals - AC
-			//TODO: Accomplish the below comment
+			
 			//game over logic
             gameStart = false;
 			return;
@@ -209,9 +209,10 @@ function HasPreviousFaceCard() {
 }
 
 function DisplayTop5() {
-    let temp = JSON.stringify(pile);
-    console.log(temp);
-    return temp;    
+    let myPile = JSON.stringify(pile);
+    console.log(myPile);
+    console.log("Made it inside JS side DisplayTop5");
+    return myPile;    
 }
 
 function GetWait() {
@@ -224,12 +225,6 @@ function ToggleGameStart() {
     } else {
         gameStart = true;
     }
-}
-
-function ClearPile(wait) {
-    
-    //TODO: DOM this whole function
-
 }
 
 
