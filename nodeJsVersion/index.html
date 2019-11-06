@@ -299,13 +299,60 @@ Date: October 14th, 2019
             console.log('Shouldnt get here');
         }  
         
+        //still not done, need to look into it more
         function slap(){
             $.get('/slap', function(data, status){
-                  console.log('Slap button clicked');
-                    $.get('/IsPileSlappable', function(data, status){
-                        console.log('check for slappable');
-                        });
+                console.log('Slap button clicked');
+                let canSlap = IsSlappable();
+                
+                console.log("Slappable: " + canSlap);
+                if(IsSlappable()){
+                    console.log('got here');
+                }
+//                    $.get('/IsPileSlappable', function(data, status){
+//                                    $.get('/displayTop5', function(data, status) {
+//                
+//                                        console.log('Inside top 5 at slap');
+//                
+//                                            let pile = JSON.parse(data);
+//                                            if(pile.length < 2){
+//                                                console.log('not enought cards to slap');
+//                                                
+//                                            }
+//                                            else{
+//                                                
+//                                            }
+// 
+//                
+//                                            //return pile.length;
+//                                        }); 
             });                             
+        }
+        
+        //user clicks play card, then slap, should stay in first if, goes to else.
+        function IsSlappable(){
+            $.get('/IsPileSlappable', function(data, status){
+                let slappable;
+                    $.get('/displayTop5', function(data, status) {
+                            console.log('Inside top 5 at slap');            
+                                    let pile = JSON.parse(data);
+                                        if(pile.length < 2){
+                                            console.log('not enought cards to slap');
+                                                return slappable = true;
+                                            }
+                                            else if (pile[0].substring(0, 1) === pile[1].substring(0, 1)){  //just ripped this from the javascript code -AC
+                                                console.log('top two cards match');
+                                                return slappable = true;
+                                            }
+                                            else{
+                                                console.log('more than two cards, no match');
+                                                return slappable = false;
+                                            }
+                                            //return pile.length;
+                    
+                    }); 
+                return slappable;
+            });
         }
         
     </script>
