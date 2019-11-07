@@ -93,7 +93,7 @@ function StartGame() {
 	
 	pile = new Array();
 	whoFirst();
-    //ClearPile(false);
+    ClearPile();
 	return(playerTurn);
 }
 
@@ -138,7 +138,7 @@ function PlayCard() {
 		
 	} else {
 		
-            console.log('log: 5');
+        console.log('log: 5');
 		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player2Deck.pop();
         
@@ -189,7 +189,7 @@ function PlayCard() {
         pile.length = 0;
         
         //Client Side Now
-        //ClearPile(true);
+        ClearPile();
     }
 	
 	console.log(player1Deck);
@@ -204,7 +204,7 @@ function PlayCard() {
 //TODO: DOM End game scenario within PlayCard()
 
 function HasPreviousFaceCard() {
-        console.log('made it to js hasPreviousFaceCard');
+    console.log('made it to js hasPreviousFaceCard');
     return hasPreviousFaceCard;
 }
 
@@ -227,14 +227,36 @@ function ToggleGameStart() {
     }
 }
 
+//needs to be called somewhere when before the game is started -AC
+function ClearPile(){
+    var isEmpty;
+    console.log("Made it inside JS side ClearPile");
+    if ((gameStart === true || gameStart === false) && pile.length === 0){  //not sure on this logic -AC
+        isEmpty = true;
+        console.log("isEmpty = " + isEmpty);
+        return isEmpty;
+    }
+    else
+    {
+        isEmpty = false;
+        console.log("isEmpty = " + isEmpty);
+        return isEmpty;
+    }
+}
+
 
 function IsPileSlappable() {
+    console.log("Made it inside JS side IsPileSlappable");
+    console.log("Pile length JS side: " + pile.length);
 	if (pile.length < 2) {
+        console.log("not enought cards");
 		return pileCurrentlySlappable = false;
 	} else {
 		if (pile[0].substring(0, 1) === pile[1].substring(0, 1)) {    //added additional equals - AC
+            console.log("pile is slappable");
 			return pileCurrentlySlappable = true;
 		} else {
+            console.log("no matching cards");
 			return pileCurrentlySlappable = false;
 		}
 	}
@@ -287,7 +309,7 @@ function slap() {
 			}
 		}
         //TODO: DOM this
-		ClearPile(true);
+		ClearPile();
         //TODO: DOM this
         
 	} else {
@@ -424,4 +446,4 @@ function EndGame(){
 }
 
 //add functions here that you need to access in html or whatever -- mike 2019
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable}
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile}

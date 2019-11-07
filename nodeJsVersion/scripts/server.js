@@ -71,7 +71,13 @@ function route(server) {
         let temp = game.IsPileSlappable();
         
         response.send(temp);
-    })
+    });
+    
+    server.get('/ClearPile', function(request, response, next){
+        let temp = game.ClearPile();
+        
+        response.send(temp);
+    });
                
 }
 

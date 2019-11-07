@@ -206,6 +206,7 @@ Date: October 14th, 2019
             $.get('/playCard', function(data, status) {
                 
                 count = DisplayTop5();
+
                 
             }); 
             
@@ -302,13 +303,14 @@ Date: October 14th, 2019
         //still not done, need to look into it more
         function slap(){
             $.get('/slap', function(data, status){
+                ClearPile();
                 console.log('Slap button clicked');
                 let canSlap = IsSlappable();
                 
                 console.log("Slappable: " + canSlap);
-                if(IsSlappable()){
-                    console.log('got here');
-                }
+                //if(IsSlappable()){
+                //    console.log('got here');
+                //}
 //                    $.get('/IsPileSlappable', function(data, status){
 //                                    $.get('/displayTop5', function(data, status) {
 //                
@@ -336,6 +338,7 @@ Date: October 14th, 2019
                     $.get('/displayTop5', function(data, status) {
                             console.log('Inside top 5 at slap');            
                                     let pile = JSON.parse(data);
+                                    console.log("pile length:" +pile.length);
                                         if(pile.length < 2){
                                             console.log('not enought cards to slap');
                                                 return slappable = true;
@@ -351,7 +354,25 @@ Date: October 14th, 2019
                                             //return pile.length;
                     
                     }); 
-                return slappable;
+                //return slappable;
+            });
+        }
+        
+        //i think this will work, not sure where to put it though - AC
+        function ClearPile(){
+            console.log("made it to clearpile");
+            $.get('/ClearPile', function(data, status){
+                let thePile = JSON.parse(data);
+                //let currentPile = JSON.parse(thePile);
+                console.log("the pile:" + thePile);
+                if(thePile === true){
+                  document.getElementById("card5").src = "cards/blank.jpeg"; 
+                  document.getElementById("card4").src = "cards/blank.jpeg"; 
+                  document.getElementById("card3").src = "cards/blank.jpeg"; 
+                  document.getElementById("card2").src = "cards/blank.jpeg"; 
+                  document.getElementById("card1").src = "cards/blank.jpeg";   
+                }
+                
             });
         }
         
