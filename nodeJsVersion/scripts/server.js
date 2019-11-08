@@ -1,8 +1,10 @@
+//modules
 var http = require('http');
 var fs = require('fs');
 var express = require('express');
 var path = require('path');
-var game = require('./game'); 
+var game = require('./game');
+
 
 //express is a package that node uses
 var server = express();
@@ -19,7 +21,7 @@ var serverInstance = http.createServer(server).listen(1337);
 function route(server) {
     server.get('/', function(reqeust, response, next) {
         
-        response.sendFile(path.resolve(__dirname + '/../index.html'));
+    response.sendFile(path.resolve(__dirname + '/../index.html'));
         //return next();
     });
     
