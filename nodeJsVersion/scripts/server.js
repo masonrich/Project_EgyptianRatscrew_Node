@@ -49,10 +49,10 @@ function route(server) {
         response.send(temp);
     });
     
-    server.get('/getWait', function(request, response, next) {
-       game.ToggleGameStart();
-        
-    });
+//    server.get('/getWait', function(request, response, next) {
+//       game.ToggleGameStart();
+//        
+//    });
     
     server.get('/displayTop5', function(request, response, next) {
        let myPile = game.DisplayTop5();
@@ -78,7 +78,18 @@ function route(server) {
         
         response.send(temp);
     });
-               
+         
+    server.get('/emptyPile', function(request, response, next){
+        let temp = game.emptyPile();
+        
+        response.send(temp);
+    });
+    
+    server.get('/getCount', function(request, response, next){
+        let temp = game.GetCount();
+        
+        response.send('' + temp);
+    });
 }
 
 //JSON.stringify();     packages up an array for client side

@@ -131,7 +131,8 @@ Date: October 14th, 2019
                               
                               
                               <button id="PlayCardButton" onclick='playCard()'>PLAY CARD</button>
-
+                              
+                              <p style="font-size: 48px;" id="label"></p>
                                   
                            </fieldset>
                         </div>
@@ -201,25 +202,18 @@ Date: October 14th, 2019
         
         function playCard() {
             
-            let count;
-            
             $.get('/playCard', function(data, status) {
-                
-                count = DisplayTop5();
-
                 
             }); 
             
-            console.log('Count: ' + count)
-            HasPreviousFaceCard(count);
+            DisplayTop5();
+            
         }
         
         
         function DisplayTop5() {
                        
             $.get('/displayTop5', function(data, status) {
-                
-                console.log('Inside top 5');
                 
                 let pile = JSON.parse(data);
 
@@ -243,32 +237,88 @@ Date: October 14th, 2019
                     document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
                 } 
                 
-                return pile.length;
-            });  
+                console.log("Pile's length: " + pile.length);
+                
+                GetCount();
+            }); 
+            
         }  
+        
+        function GetCount() {
+             $.get('/getCount', function(data, status) {
+                    HasPreviousFaceCard(data);
+             });
+        }
+        
+        function DisplayTop5Simple()
+        {
+            console.log('made it inside display top 5 simple');
+            
+            $.get('/displayTop5', function(data, status) {
+                
+                let pile = JSON.parse(data);
+
+                if (pile.length > 0) {
+                    document.getElementById("card5").src = "cards/" + pile[0] + ".svg";
+                }
+
+                if (pile.length > 1) {
+                   document.getElementById("card4").src = "cards/" + pile[1] + ".svg";
+                }
+
+                if (pile.length > 2) {
+                     document.getElementById("card3").src = "cards/" + pile[2] + ".svg";
+                }
+
+                if (pile.length > 3) {
+                    document.getElementById("card2").src = "cards/" + pile[3] + ".svg";
+                }
+
+                if (pile.length > 4) {
+                    document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
+                } 
+            }); 
+        }
         
         function HasPreviousFaceCard(count)
         {
             $.get('/hasPreviousFaceCard', function(data2, status2) {
 
-                console.log("got to HasPreviousFaceCard");
+                console.log("count: " + count + " data2: " + data2);
                 
-                if (count === 0 && data2) {
+                if (count === '0' && data2) {
+                    console.log("iajsd;kljf;lkasdjf");
+                    DisplayTop5Simple();
+                    ClearServerPile();
                     GetWait();
                 }
             });   
         }
         
+        function EmptyPile() {
+            $.get('/emptyPile', function(data2, status2) {
+                
+            })
+        }
+        
+        function ClearServerPile() {
+            $.get('/clearPile', function(data2, status2) {
+                
+            })
+        }
+        
         function GetWait()
         {
-            $.get('/getWait', function(data3, status3) {
-            if(data3) {
-                
-                console.log("got to GetWait");
-
+            
+            $.get('/getWait', function(data, status) {
+            if(data) {
+                console.log('made it inside client side getWait');
                 ToggleGameStart();
+                
+                document.getElementById("label").innerHTML = "Pile Won!"; 
 
                  setTimeout( function() {
+                 
                  document.getElementById("card5").src = "cards/blank.jpeg"; 
                  document.getElementById("card4").src = "cards/blank.jpeg"; 
                  document.getElementById("card3").src = "cards/blank.jpeg"; 
@@ -276,10 +326,13 @@ Date: October 14th, 2019
                  document.getElementById("card1").src = "cards/blank.jpeg"; 
 
                  ToggleGameStart();
+                 document.getElementById("label").innerHTML = "";
+
 
                 }, 2000);
-
+                
                 } else {
+                    
                   document.getElementById("card5").src = "cards/blank.jpeg"; 
                   document.getElementById("card4").src = "cards/blank.jpeg"; 
                   document.getElementById("card3").src = "cards/blank.jpeg"; 
@@ -290,14 +343,10 @@ Date: October 14th, 2019
         }
         
         function ToggleGameStart()
-        {
-            console.log("Got to ToggleGameStart");
-            
+        {            
             $.get('/toggleGameStart', function(data4, status4) {
 
             });
-
-            console.log('Shouldnt get here');
         }  
         
         //still not done, need to look into it more

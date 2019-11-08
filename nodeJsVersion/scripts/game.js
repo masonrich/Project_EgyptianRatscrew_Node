@@ -1,7 +1,7 @@
 //window.onload();
 
 
-var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable, pileCount;
+var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable, pileCount, hadPreviousFaceCard, wait;
 
 
 /*
@@ -100,20 +100,18 @@ function StartGame() {
 
 function PlayCard() {
     
-    console.log('log: 1');
+    hadPreviousFaceCard = false;
+    wait = false;
     
     if (count > 0) {
         hasPreviousFaceCard = true;
     }
-    
-        console.log('log: 2');
     
 	if (playerTurn === 0) {    //added additional equals - AC
 		
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
         
-            console.log('log: 3');
         
         //Mostly Client Side Now
         //DisplayTop5();
@@ -123,7 +121,6 @@ function PlayCard() {
             playerTurn = 0;
             count--;
             
-                console.log('log: 4');
             
         } else {
 		  playerTurn = 1; //mikes original code
@@ -137,8 +134,7 @@ function PlayCard() {
 		}
 		
 	} else {
-		
-        console.log('log: 5');
+
 		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player2Deck.pop();
         
@@ -149,7 +145,7 @@ function PlayCard() {
         if(count > 0){
             playerTurn = 1;
             count--;
-                console.log('log: 6');
+
         } else {
 		playerTurn = 0; //mikes original code
         }
@@ -162,7 +158,6 @@ function PlayCard() {
 		}		
 	}
 	
-        console.log('log: 7');
     
     isCardFace(); //check for face card on card play
 	IsPileSlappable(); //checks to see if pile is legal to slap
@@ -170,8 +165,8 @@ function PlayCard() {
     
     if(count === 0 && hasPreviousFaceCard){
         hasPreviousFaceCard = false;
-        
-            console.log('log: 8');
+        hadPreviousFaceCard = true;
+
         
         var temp;
         temp = pile;
@@ -179,17 +174,15 @@ function PlayCard() {
         if (playerTurn === 0) {
             temp = temp.concat(player1Deck);
             player1Deck = temp;
+            wait = true;
         } else {
             temp = temp.concat(player2Deck);
             player2Deck = temp;
+            wait = true;
         }
         
-            console.log('log: 9');
-        
-        pile.length = 0;
-        
         //Client Side Now
-        ClearPile();
+        //ClearPile();
     }
 	
 	console.log(player1Deck);
@@ -204,13 +197,12 @@ function PlayCard() {
 //TODO: DOM End game scenario within PlayCard()
 
 function HasPreviousFaceCard() {
-    console.log('made it to js hasPreviousFaceCard');
-    return hasPreviousFaceCard;
+
+    return hadPreviousFaceCard;
 }
 
 function DisplayTop5() {
     let myPile = JSON.stringify(pile);
-    console.log(myPile);
     console.log("Made it inside JS side DisplayTop5");
     return myPile;    
 }
@@ -227,8 +219,13 @@ function ToggleGameStart() {
     }
 }
 
+function emptyPile() {
+     pile.length = 0;
+}
+
 //needs to be called somewhere when before the game is started -AC
 function ClearPile(){
+    emptyPile();
     var isEmpty;
     console.log("Made it inside JS side ClearPile");
     if ((gameStart === true || gameStart === false) && pile.length === 0){  //not sure on this logic -AC
@@ -412,6 +409,10 @@ function isCardFace(){
     }
 }
 
+function GetCount() {
+    return count;
+}
+
 //function if card is ace
 function isAce(){
     //count 4
@@ -446,4 +447,4 @@ function EndGame(){
 }
 
 //add functions here that you need to access in html or whatever -- mike 2019
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile}
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount}
