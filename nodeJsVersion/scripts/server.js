@@ -1,3 +1,7 @@
+//TODO: REMINDER!!!!!!! Don't forget to pull files up a level in directory for deployment.
+
+
+
 //modules
 var http = require('http');
 var fs = require('fs');
@@ -15,7 +19,7 @@ route(server);
 server.use(express.static(path.resolve(__dirname + '/../assets')));
 
 //express server based off node
-var serverInstance = http.createServer(server).listen(1337);
+var serverInstance = http.createServer(server).listen(process.env.PORT || 1337);
 
 
 function route(server) {
