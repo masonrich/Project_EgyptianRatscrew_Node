@@ -1,5 +1,4 @@
-//window.onload();
-
+//TODO: Once 2 player stuff works, we need slap to determine who slapped, so pile goes to correct player / correct player places 2 cards on bottom of pile on incorrecty slap
 
 var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable, pileCount, hadPreviousFaceCard, wait;
 
@@ -202,8 +201,9 @@ function HasPreviousFaceCard() {
 }
 
 function DisplayTop5() {
+    
     let myPile = JSON.stringify(pile);
-    console.log("Made it inside JS side DisplayTop5");
+
     return myPile;    
 }
 
@@ -270,7 +270,6 @@ function slap() {
 	console.log("Worked");
     
     if (pile.length === 0) {    //added additional equals - AC
-        console.log("slapped empty pile");
 		return;
 	}
 		
@@ -305,9 +304,7 @@ function slap() {
 				pile.pop();
 			}
 		}
-        //TODO: DOM this
 		ClearPile();
-        //TODO: DOM this
         
 	} else {
 		var whoSlapped;       //let to var - ac
@@ -321,7 +318,7 @@ function slap() {
 		
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped === 0) {
-                pile.splice(pile.length, 0, player1Deck[1]); //adds cards to the bottom of pile - AC
+                pile.splice(pile.length, 0, player1Deck[0]); //adds cards to the bottom of pile - AC
                 player1Deck.shift(); 
                 
                 pile.splice(pile.length, 0, player1Deck[0]);
@@ -329,7 +326,7 @@ function slap() {
                 player1Deck.shift();  //because players remove from the top of their decks
                 //console.log(player1Deck); //for testing
 		} else {
-                pile.splice(pile.length, 0, player2Deck[1]); //adds cards to the bottom of pile -AC
+                pile.splice(pile.length, 0, player2Deck[0]); //adds cards to the bottom of pile -AC
                 //console.log(pile);    //for testing
                 player2Deck.shift();  //because players remove from the top of their decks -AC
                 //console.log(player2Deck); //for testing
@@ -349,9 +346,7 @@ function slap() {
 		}
 	}
     
-    //TODO: DOM this
     DisplayTop5();
-    //TODO: DOM this
     
     console.log(player1Deck);
     console.log(player2Deck);
@@ -441,10 +436,20 @@ function isKing(){
     faceCard = true;
 }
 
+function getGameStart() {
+    return gameStart;
+}
+
 //function for endgame, feel free to change stuff, just keep the false assignment -AC
 function EndGame(){
     gameStart = false;
+    pile.length = 0;
+    player1Deck.length = 0;
+    player2Deck.length = 0;
+    hasPreviousFaceCard = false;
+    hadPreviousFaceCard = false;
+    count = 0;
 }
 
 //add functions here that you need to access in html or whatever -- mike 2019
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount}
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart}

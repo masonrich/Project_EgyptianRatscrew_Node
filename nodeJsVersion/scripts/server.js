@@ -92,6 +92,16 @@ function route(server) {
         
         response.send('' + temp);
     });
+    
+    server.get('/end', function(request, response, next){
+            game.EndGame();
+    });
+    
+    server.get('/gameStart', function(request, response, next){
+        let temp = game.getGameStart();
+        
+        response.send(temp);
+    });
 }
 
 //JSON.stringify();     packages up an array for client side
