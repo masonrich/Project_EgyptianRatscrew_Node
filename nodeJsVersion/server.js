@@ -16,7 +16,7 @@ route(server);
 
 //sets up to serve css and images
 
-server.use(express.static(path.resolve(__dirname + '/../assets')));
+server.use(express.static(path.resolve(__dirname + '/assets')));
 //var appDir = path.dirname(require.)
 
 //express server based off node
@@ -26,7 +26,7 @@ var serverInstance = http.createServer(server).listen(process.env.PORT || 1337);
 function route(server) {
     server.get('/', function(request, response, next) {
         
-    response.sendFile(path.resolve(__dirname + '/../index.html'));
+    response.sendFile(path.resolve(__dirname + '/index.html'));
         //return next();
     });
     
