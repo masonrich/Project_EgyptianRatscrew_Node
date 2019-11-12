@@ -13,26 +13,27 @@ route(server);
 //sets up to serve css and images
 
 server.use(express.static(path.resolve(__dirname + '/../assets')));
+//var appDir = path.dirname(require.)
 
 //express server based off node
 var serverInstance = http.createServer(server).listen(1337);
 
 
 function route(server) {
-    server.get('/', function(reqeust, response, next) {
+    server.get('/', function(request, response, next) {
         
     response.sendFile(path.resolve(__dirname + '/../index.html'));
         //return next();
     });
     
-    server.get('/getGame', function(reqeust, response, next) {
+    server.get('/getGame', function(request, response, next) {
         
         let temp = game.StartGame();
         
        response.send('' + temp); 
     });
     
-    server.get('/playCard', function(reqeust, response, next) {
+    server.get('/playCard', function(request, response, next) {
         
         let temp = game.PlayCard();
         
