@@ -1,0 +1,103 @@
+label {
+   text-align: center;
+   display: block;
+}
+
+input {
+   margin: auto;
+   text-align: center;
+   display: block;
+   border: 1px solid black;
+   border-radius: 3px;
+   width: 75px;
+}
+
+body {
+    width: 80%;
+    margin: 0px auto;
+}
+
+button {
+    justify-content: center;
+    display: block;
+    margin: 7px auto;
+    background-color: white;
+    color: black;
+    border-radius: 7px;
+    box-shadow: 1px 1px 2px;
+    cursor: grab;
+}
+
+button:hover{
+    background-color: rgb(245,245,245);
+}
+
+
+img {
+    height: 150px;
+    width: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    cursor: grab;
+    border-radius: 7px;
+    box-shadow: 1px 1px 2px;
+}
+
+#card3 {
+    filter: brightness(90%);
+}
+
+#card2 {
+    filter: brightness(75%);
+}
+
+#card1 {
+    filter: brightness(60%);
+}
+
+
+#pile {
+    height: 100%;
+    width: 100%;
+}
+
+h2{
+    text-align: center;
+}
+
+.jumbotron {
+    background-image: url(../images/egyptian.png);
+    background-size:cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    color: black;
+    text-shadow: 10px 10px 15px white;
+    opacity: .75;
+}
+
+h3 {
+    font-size: 2.5em;
+    text-align: left;
+}
+
+.navbar{
+    background-color: #E8BB79;
+}
+
+a.nav-link{
+    color: black;
+}
+
+span.fa {
+    color: black;
+}
+
+button.navbar-toggler {
+    text-shadow: none;
+    box-shadow: none;
+}
+
+#takePile {
+    
+}
