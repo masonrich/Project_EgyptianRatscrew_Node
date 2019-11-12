@@ -1,3 +1,7 @@
+//TODO: REMINDER!!!!!!! Don't forget to pull files up a level in directory for deployment.
+
+
+
 //modules
 var http = require('http');
 var fs = require('fs');
@@ -16,7 +20,7 @@ server.use(express.static(path.resolve(__dirname + '/../assets')));
 //var appDir = path.dirname(require.)
 
 //express server based off node
-var serverInstance = http.createServer(server).listen(1337);
+var serverInstance = http.createServer(server).listen(process.env.PORT || 1337);
 
 
 function route(server) {
@@ -92,6 +96,16 @@ function route(server) {
         let temp = game.GetCount();
         
         response.send('' + temp);
+    });
+    
+    server.get('/end', function(request, response, next){
+            game.EndGame();
+    });
+    
+    server.get('/gameStart', function(request, response, next){
+        let temp = game.getGameStart();
+        
+        response.send(temp);
     });
 }
 
