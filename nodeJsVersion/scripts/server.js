@@ -1,8 +1,14 @@
+//TODO: REMINDER!!!!!!! Don't forget to pull files up a level in directory for deployment.
+
+
+
+//modules
 var http = require('http');
 var fs = require('fs');
 var express = require('express');
 var path = require('path');
-var game = require('./game'); 
+var game = require('./game');
+
 
 //express is a package that node uses
 var server = express();
@@ -13,13 +19,13 @@ route(server);
 server.use(express.static(path.resolve(__dirname + '/../assets')));
 
 //express server based off node
-var serverInstance = http.createServer(server).listen(1337);
+var serverInstance = http.createServer(server).listen(process.env.PORT || 1337);
 
 
 function route(server) {
     server.get('/', function(reqeust, response, next) {
         
-        response.sendFile(path.resolve(__dirname + '/../index.html'));
+    response.sendFile(path.resolve(__dirname + '/../index.html'));
         //return next();
     });
     
@@ -49,10 +55,10 @@ function route(server) {
         response.send(temp);
     });
     
-    server.get('/getWait', function(request, response, next) {
-       game.ToggleGameStart();
-        
-    });
+//    server.get('/getWait', function(request, response, next) {
+//       game.ToggleGameStart();
+//        
+//    });
     
     server.get('/displayTop5', function(request, response, next) {
        let myPile = game.DisplayTop5();
@@ -78,7 +84,28 @@ function route(server) {
         
         response.send(temp);
     });
-               
+         
+    server.get('/emptyPile', function(request, response, next){
+        let temp = game.emptyPile();
+        
+        response.send(temp);
+    });
+    
+    server.get('/getCount', function(request, response, next){
+        let temp = game.GetCount();
+        
+        response.send('' + temp);
+    });
+    
+    server.get('/end', function(request, response, next){
+            game.EndGame();
+    });
+    
+    server.get('/gameStart', function(request, response, next){
+        let temp = game.getGameStart();
+        
+        response.send(temp);
+    });
 }
 
 //JSON.stringify();     packages up an array for client side

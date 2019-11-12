@@ -1,7 +1,6 @@
-//window.onload();
+//TODO: Once 2 player stuff works, we need slap to determine who slapped, so pile goes to correct player / correct player places 2 cards on bottom of pile on incorrecty slap
 
-
-var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable, pileCount;
+var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable, pileCount, hadPreviousFaceCard, wait;
 
 
 /*
@@ -100,20 +99,18 @@ function StartGame() {
 
 function PlayCard() {
     
-    console.log('log: 1');
+    hadPreviousFaceCard = false;
+    wait = false;
     
     if (count > 0) {
         hasPreviousFaceCard = true;
     }
-    
-        console.log('log: 2');
     
 	if (playerTurn === 0) {    //added additional equals - AC
 		
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
         
-            console.log('log: 3');
         
         //Mostly Client Side Now
         //DisplayTop5();
@@ -123,7 +120,6 @@ function PlayCard() {
             playerTurn = 0;
             count--;
             
-                console.log('log: 4');
             
         } else {
 		  playerTurn = 1; //mikes original code
@@ -137,8 +133,7 @@ function PlayCard() {
 		}
 		
 	} else {
-		
-        console.log('log: 5');
+
 		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player2Deck.pop();
         
@@ -149,7 +144,7 @@ function PlayCard() {
         if(count > 0){
             playerTurn = 1;
             count--;
-                console.log('log: 6');
+
         } else {
 		playerTurn = 0; //mikes original code
         }
@@ -162,7 +157,6 @@ function PlayCard() {
 		}		
 	}
 	
-        console.log('log: 7');
     
     isCardFace(); //check for face card on card play
 	IsPileSlappable(); //checks to see if pile is legal to slap
@@ -170,8 +164,8 @@ function PlayCard() {
     
     if(count === 0 && hasPreviousFaceCard){
         hasPreviousFaceCard = false;
-        
-            console.log('log: 8');
+        hadPreviousFaceCard = true;
+
         
         var temp;
         temp = pile;
@@ -179,17 +173,15 @@ function PlayCard() {
         if (playerTurn === 0) {
             temp = temp.concat(player1Deck);
             player1Deck = temp;
+            wait = true;
         } else {
             temp = temp.concat(player2Deck);
             player2Deck = temp;
+            wait = true;
         }
         
-            console.log('log: 9');
-        
-        pile.length = 0;
-        
         //Client Side Now
-        ClearPile();
+        //ClearPile();
     }
 	
 	console.log(player1Deck);
@@ -204,14 +196,14 @@ function PlayCard() {
 //TODO: DOM End game scenario within PlayCard()
 
 function HasPreviousFaceCard() {
-    console.log('made it to js hasPreviousFaceCard');
-    return hasPreviousFaceCard;
+
+    return hadPreviousFaceCard;
 }
 
 function DisplayTop5() {
+    
     let myPile = JSON.stringify(pile);
-    console.log(myPile);
-    console.log("Made it inside JS side DisplayTop5");
+
     return myPile;    
 }
 
@@ -227,8 +219,13 @@ function ToggleGameStart() {
     }
 }
 
+function emptyPile() {
+     pile.length = 0;
+}
+
 //needs to be called somewhere when before the game is started -AC
 function ClearPile(){
+    emptyPile();
     var isEmpty;
     console.log("Made it inside JS side ClearPile");
     if ((gameStart === true || gameStart === false) && pile.length === 0){  //not sure on this logic -AC
@@ -273,7 +270,6 @@ function slap() {
 	console.log("Worked");
     
     if (pile.length === 0) {    //added additional equals - AC
-        console.log("slapped empty pile");
 		return;
 	}
 		
@@ -308,9 +304,7 @@ function slap() {
 				pile.pop();
 			}
 		}
-        //TODO: DOM this
 		ClearPile();
-        //TODO: DOM this
         
 	} else {
 		var whoSlapped;       //let to var - ac
@@ -324,7 +318,7 @@ function slap() {
 		
 		//current player plays 2 cards from bottom of deck to bottom of pile
 		if (whoSlapped === 0) {
-                pile.splice(pile.length, 0, player1Deck[1]); //adds cards to the bottom of pile - AC
+                pile.splice(pile.length, 0, player1Deck[0]); //adds cards to the bottom of pile - AC
                 player1Deck.shift(); 
                 
                 pile.splice(pile.length, 0, player1Deck[0]);
@@ -332,7 +326,7 @@ function slap() {
                 player1Deck.shift();  //because players remove from the top of their decks
                 //console.log(player1Deck); //for testing
 		} else {
-                pile.splice(pile.length, 0, player2Deck[1]); //adds cards to the bottom of pile -AC
+                pile.splice(pile.length, 0, player2Deck[0]); //adds cards to the bottom of pile -AC
                 //console.log(pile);    //for testing
                 player2Deck.shift();  //because players remove from the top of their decks -AC
                 //console.log(player2Deck); //for testing
@@ -352,9 +346,7 @@ function slap() {
 		}
 	}
     
-    //TODO: DOM this
     DisplayTop5();
-    //TODO: DOM this
     
     console.log(player1Deck);
     console.log(player2Deck);
@@ -412,6 +404,10 @@ function isCardFace(){
     }
 }
 
+function GetCount() {
+    return count;
+}
+
 //function if card is ace
 function isAce(){
     //count 4
@@ -440,10 +436,20 @@ function isKing(){
     faceCard = true;
 }
 
+function getGameStart() {
+    return gameStart;
+}
+
 //function for endgame, feel free to change stuff, just keep the false assignment -AC
 function EndGame(){
     gameStart = false;
+    pile.length = 0;
+    player1Deck.length = 0;
+    player2Deck.length = 0;
+    hasPreviousFaceCard = false;
+    hadPreviousFaceCard = false;
+    count = 0;
 }
 
 //add functions here that you need to access in html or whatever -- mike 2019
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile}
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart}
