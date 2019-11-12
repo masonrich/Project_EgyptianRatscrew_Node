@@ -72,7 +72,7 @@ Date: October 14th, 2019
                      
               <ul class="navbar-nav ml-auto">
                  <li class="nav-item" onclick='startGame()'><a id="start-game" class="nav-link" href="#">Start</a> </li>
-                 <li class="nav-item"><a id="end-game" class="nav-link" href="#" >End</a></li>
+                 <li class="nav-item" onclick='endGame()'><a id="end-game" class="nav-link" href="#" >End</a></li>
                   <li class="nav-item"><a class="nav-link" href="rules.html" ><i class="fa fa-question-circle"></i></a></li>
               </ul> 
            </div>
@@ -127,10 +127,10 @@ Date: October 14th, 2019
                        
 	                           </div>
                               
-                              <button id="slapButton" onclick='slap()'>SLAP</button>
+                              <button id="slapButton" onclick='preSlap()'>SLAP</button>
                               
                               
-                              <button id="PlayCardButton" onclick='playCard()'>PLAY CARD</button>
+                              <button id="PlayCardButton" onclick='prePlayCard()'>PLAY CARD</button>
                               
                               <p style="font-size: 48px;" id="label"></p>
                                   
@@ -187,7 +187,6 @@ Date: October 14th, 2019
         
         function startGame() {
             $.get('/getGame', function(data, status) {
-               console.log(data); 
                 
                  document.getElementById("card5").src = "cards/blank.jpeg"; 
                  document.getElementById("card4").src = "cards/blank.jpeg"; 
@@ -195,13 +194,38 @@ Date: October 14th, 2019
                  document.getElementById("card2").src = "cards/blank.jpeg"; 
                  document.getElementById("card1").src = "cards/blank.jpeg"; 
                 
-                //TODO: display who goes first.
+                //TODO: Replace 'Player 1'/'Player 2' with the name they give
+                 if (data === '0') {
+                       document.getElementById("label").innerHTML = "Player 1 goes first"; 
+                 } else {
+                      document.getElementById("label").innerHTML = "Player 2 goes first";  
+                 }
                 
             });
         }   
         
-        function playCard() {
+        function prePlayCard() {
+                        let start;
             
+            $.get('/gameStart', function(data, status) {
+                
+                start = data;
+
+                playCard(start);
+            });
+            
+
+        }
+        
+        function playCard(start) {
+            
+            document.getElementById("label").innerHTML = "";
+            
+            if (!start) {
+                console.log('bleh');
+                return;
+            }
+                
             $.get('/playCard', function(data, status) {
                 
             }); 
@@ -237,8 +261,6 @@ Date: October 14th, 2019
                     document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
                 } 
                 
-                console.log("Pile's length: " + pile.length);
-                
                 GetCount();
             }); 
             
@@ -251,9 +273,7 @@ Date: October 14th, 2019
         }
         
         function DisplayTop5Simple()
-        {
-            console.log('made it inside display top 5 simple');
-            
+        {            
             $.get('/displayTop5', function(data, status) {
                 
                 let pile = JSON.parse(data);
@@ -284,10 +304,9 @@ Date: October 14th, 2019
         {
             $.get('/hasPreviousFaceCard', function(data2, status2) {
 
-                console.log("count: " + count + " data2: " + data2);
+                //console.log("count: " + count + " data2: " + data2);
                 
                 if (count === '0' && data2) {
-                    console.log("iajsd;kljf;lkasdjf");
                     DisplayTop5Simple();
                     ClearServerPile();
                     GetWait();
@@ -312,7 +331,7 @@ Date: October 14th, 2019
             
             $.get('/getWait', function(data, status) {
             if(data) {
-                console.log('made it inside client side getWait');
+
                 ToggleGameStart();
                 
                 document.getElementById("label").innerHTML = "Pile Won!"; 
@@ -328,8 +347,7 @@ Date: October 14th, 2019
                  ToggleGameStart();
                  document.getElementById("label").innerHTML = "";
 
-
-                }, 2000);
+                }, 1300);
                 
                 } else {
                     
@@ -349,63 +367,73 @@ Date: October 14th, 2019
             });
         }  
         
-        //still not done, need to look into it more
-        function slap(){
-            $.get('/slap', function(data, status){
-                ClearPile();
-                console.log('Slap button clicked');
-                let canSlap = IsSlappable();
-                
-                console.log("Slappable: " + canSlap);
-                //if(IsSlappable()){
-                //    console.log('got here');
-                //}
-//                    $.get('/IsPileSlappable', function(data, status){
-//                                    $.get('/displayTop5', function(data, status) {
-//                
-//                                        console.log('Inside top 5 at slap');
-//                
-//                                            let pile = JSON.parse(data);
-//                                            if(pile.length < 2){
-//                                                console.log('not enought cards to slap');
-//                                                
-//                                            }
-//                                            else{
-//                                                
-//                                            }
-// 
-//                
-//                                            //return pile.length;
-//                                        }); 
-            });                             
-        }
-        
-        //user clicks play card, then slap, should stay in first if, goes to else.
-        function IsSlappable(){
-            $.get('/IsPileSlappable', function(data, status){
-                let slappable;
-                    $.get('/displayTop5', function(data, status) {
-                            console.log('Inside top 5 at slap');            
-                                    let pile = JSON.parse(data);
-                                    console.log("pile length:" +pile.length);
-                                        if(pile.length < 2){
-                                            console.log('not enought cards to slap');
-                                                return slappable = true;
-                                            }
-                                            else if (pile[0].substring(0, 1) === pile[1].substring(0, 1)){  //just ripped this from the javascript code -AC
-                                                console.log('top two cards match');
-                                                return slappable = true;
-                                            }
-                                            else{
-                                                console.log('more than two cards, no match');
-                                                return slappable = false;
-                                            }
-                                            //return pile.length;
-                    
-                    }); 
-                //return slappable;
+        function preSlap() {
+            
+            $.get('/gameStart', function(data, status) {
+            
+                if (!data) {
+
+                    return;
+                }
+                slap();
             });
         }
+        
+        //still not done, need to look into it more
+        function slap(){
+            
+
+            
+            $.get('/IsPileSlappable', function(data, status){
+            
+                let slappable = data;
+
+                if (slappable) {
+                    ClearPile(); 
+                } 
+                
+                console.log('Slappable: ' + slappable);       
+                
+                callSlap(slappable);
+                
+//                $.get('/displayTop5', function(data2, status2) {
+//         
+//                    let pile = JSON.parse(data2);
+//                    
+//                    console.log('Pile length: ' + pile.length);
+//                    
+//                    if(pile.length < 2){
+//                        
+//                        slappable = false;
+//                        return slappable;
+//                    }
+//                    else if (pile[0].substring(0, 1) === pile[1].substring(0, 1)){  //just ripped this from the javascript code -AC
+//                        slappable = true;
+//                        return slappable;
+//                    }
+//                    else{
+//                        console.log('more than two cards, no match');
+//                        slappable = false;
+//                        return slappable;
+//                    }
+//
+//                }); 
+            });            
+        }
+        
+        function callSlap(slappable) {
+            $.get('/slap', function(data, status){
+                
+            });    
+            
+            
+            if (slappable) {
+                document.getElementById("label").innerHTML = "SLAP!";
+            }
+            
+            DisplayTop5Simple();
+        }
+        
         
         //i think this will work, not sure where to put it though - AC
         function ClearPile(){
@@ -423,6 +451,16 @@ Date: October 14th, 2019
                 }
                 
             });
+        }
+        
+        function endGame() {
+            
+            ClearPile();
+            document.getElementById("label").innerHTML = "";
+            
+             $.get('/end', function(data, status){
+                 
+             });
         }
         
     </script>
