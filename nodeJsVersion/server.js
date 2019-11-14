@@ -22,7 +22,7 @@ server.use(express.static(path.resolve(__dirname + '/assets')));
 //express server based off node
 var serverInstance = http.createServer(server).listen(process.env.PORT || 1337);
 
-
+var io = require('socket.io')(serverInstance);
 
 //Connect to io and use the sockets to "create" player when they connect the server. delete upon disconnection
 
@@ -30,8 +30,8 @@ var serverInstance = http.createServer(server).listen(process.env.PORT || 1337);
 //var io = require('../..')(server);
 var connections = [null, null];
 
-serverInstance.on('connection', function (socket) {
-    var playerIndex = -1;
+io.on('connection', function (socket) {
+    let playerIndex = -1;
     for (var i in connections) {
         if (connections[i] == null) {
             playerIndex = i;
@@ -39,11 +39,11 @@ serverInstance.on('connection', function (socket) {
     }
     
     socket.emit('player-number', playerIndex);
-    console.log('Player ${playerIndex} has connected');
+    console.log(playerIndex);
     if (playerIndex == -1) return;
     
     socket.on('disconnect', () => {
-        console.log('Player ${playerIndex} Disconnected');
+        console.log(playerIndex);
         connections[playerIndex] = null;
     })
 });
