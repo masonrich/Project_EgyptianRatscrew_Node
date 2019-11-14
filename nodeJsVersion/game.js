@@ -448,9 +448,9 @@ function isKing(){
 
 function GetGameOver() {
     if (player1Deck.length === 0) {
-        return "0";
-    } else if (player2Deck.length === 0) {
         return "1";
+    } else if (player2Deck.length === 0) {
+        return "0";
     } else {
         return "2";
     }
