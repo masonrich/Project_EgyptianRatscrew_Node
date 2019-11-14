@@ -241,6 +241,16 @@ function ClearPile(){
     }
 }
 
+function updatePlayerOneScore()
+{
+    return player1Deck.length;
+}
+
+function updatePlayerTwoScore()
+{
+    return player2Deck.length;
+}
+
 
 function IsPileSlappable() {
     console.log("Made it inside JS side IsPileSlappable");

@@ -103,7 +103,7 @@ Date: October 14th, 2019
                               <hr>
                              <img src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
-                             <p id=numCardsPlayer1>26</p>
+                             <p id=numCardsPlayer1></p>
                           </fieldset>
                         </div>
                    </section>
@@ -146,7 +146,7 @@ Date: October 14th, 2019
                               <hr>
                              <img class="draggable" src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
-                             <p id=numCardsPlayer2>26</p>
+                             <p id=numCardsPlayer2></p>
                            </fieldset>
                         </div>
                    </section>
@@ -357,6 +357,9 @@ Date: October 14th, 2019
                   document.getElementById("card2").src = "cards/blank.jpeg"; 
                   document.getElementById("card1").src = "cards/blank.jpeg";    
                 }
+                
+                updatePlayerOneScore();
+                updatePlayerTwoScore();
             })
         }
         
@@ -452,6 +455,21 @@ Date: October 14th, 2019
                 
             });
         }
+        
+        function updatePlayerOneScore()
+        {
+             $.get('/updatePlayerOneScore', function(data, status){
+                   document.getElementById("numCardsPlayer1").innerHTML = data;
+             });
+        }
+        
+        function updatePlayerTwoScore()
+        {
+             $.get('/updatePlayerTwoScore', function(data, status){
+                   document.getElementById("numCardsPlayer2").innerHTML = data;
+             });
+        }
+        
         
         function endGame() {
             
