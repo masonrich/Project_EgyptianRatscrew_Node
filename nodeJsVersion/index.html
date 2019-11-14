@@ -270,6 +270,8 @@ Date: October 14th, 2019
              $.get('/getCount', function(data, status) {
                     HasPreviousFaceCard(data);
              });
+            
+             DidGameEnd();
         }
         
         function DisplayTop5Simple()
@@ -450,6 +452,19 @@ Date: October 14th, 2019
                   document.getElementById("card1").src = "cards/blank.jpeg";   
                 }
                 
+            });
+        }
+        
+        function DidGameEnd() {
+            $.get('/gameOver', function(data, status) {
+               if (data === "2")
+                   return;
+                
+                if (data == "0") {
+                    document.getElementById("label").innerHTML = "Player 1 wins!";
+                } else {
+                    document.getElementById("label").innerHTML = "Player 2 wins!";
+                } 
             });
         }
         

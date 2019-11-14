@@ -436,6 +436,16 @@ function isKing(){
     faceCard = true;
 }
 
+function GetGameOver() {
+    if (player1Deck.length === 0) {
+        return "0";
+    } else if (player2Deck.length === 0) {
+        return "1";
+    } else {
+        return "2";
+    }
+}
+
 function getGameStart() {
     return gameStart;
 }
@@ -452,4 +462,4 @@ function EndGame(){
 }
 
 //add functions here that you need to access in html or whatever -- mike 2019
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart}
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart, GetGameOver: GetGameOver}
