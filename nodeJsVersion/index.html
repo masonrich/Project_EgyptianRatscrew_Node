@@ -103,7 +103,7 @@ Date: October 14th, 2019
                               <hr>
                              <img src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
-                             <p id=numCardsPlayer1>26</p>
+                             <p id=numCardsPlayer1>0</p>
                           </fieldset>
                         </div>
                    </section>
@@ -146,7 +146,7 @@ Date: October 14th, 2019
                               <hr>
                              <img class="draggable" src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
-                             <p id=numCardsPlayer2>26</p>
+                             <p id=numCardsPlayer2>0</p>
                            </fieldset>
                         </div>
                    </section>
@@ -230,6 +230,9 @@ Date: October 14th, 2019
                 
             }); 
             
+        
+            updatePlayerOneScore();
+            updatePlayerTwoScore();
             DisplayTop5();
             
         }
@@ -359,6 +362,7 @@ Date: October 14th, 2019
                   document.getElementById("card2").src = "cards/blank.jpeg"; 
                   document.getElementById("card1").src = "cards/blank.jpeg";    
                 }
+                
             })
         }
         
@@ -398,28 +402,9 @@ Date: October 14th, 2019
                 
                 callSlap(slappable);
                 
-//                $.get('/displayTop5', function(data2, status2) {
-//         
-//                    let pile = JSON.parse(data2);
-//                    
-//                    console.log('Pile length: ' + pile.length);
-//                    
-//                    if(pile.length < 2){
-//                        
-//                        slappable = false;
-//                        return slappable;
-//                    }
-//                    else if (pile[0].substring(0, 1) === pile[1].substring(0, 1)){  //just ripped this from the javascript code -AC
-//                        slappable = true;
-//                        return slappable;
-//                    }
-//                    else{
-//                        console.log('more than two cards, no match');
-//                        slappable = false;
-//                        return slappable;
-//                    }
-//
-//                }); 
+                 updatePlayerOneScore();
+                 updatePlayerTwoScore();
+
             });            
         }
         
@@ -455,6 +440,7 @@ Date: October 14th, 2019
             });
         }
         
+
         function DidGameEnd() {
             $.get('/gameOver', function(data, status) {
                if (data === "2")
@@ -468,6 +454,23 @@ Date: October 14th, 2019
             });
         }
         
+
+        function updatePlayerOneScore()
+        {
+             $.get('/updatePlayerOneScore', function(data, status){
+                   document.getElementById("numCardsPlayer1").innerHTML = data;
+                 console.log("Got inside updatePlayerOneScore");
+             });
+        }
+        
+        function updatePlayerTwoScore()
+        {
+             $.get('/updatePlayerTwoScore', function(data, status){
+                   document.getElementById("numCardsPlayer2").innerHTML = data;
+             });
+        }
+        
+    
         function endGame() {
             
             ClearPile();

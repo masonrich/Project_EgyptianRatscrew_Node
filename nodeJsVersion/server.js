@@ -108,9 +108,21 @@ function route(server) {
         response.send(temp);
     });
     
+    server.get('/updatePlayerOneScore', function(request, response, next){
+        let temp = game.updatePlayerOneScore();
+        
+        response.send(temp);
+    });
+    
+    server.get('/updatePlayerTwoScore', function(request, response, next){
+        let temp = game.updatePlayerTwoScore();
+        
+        response.send(temp);
+    });
+    
     server.get('/gameOver', function(request, response, next) {
        let temp = game.GetGameOver();
-        
+            
         response.send(temp);
     });
 }
