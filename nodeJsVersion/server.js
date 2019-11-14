@@ -107,6 +107,16 @@ function route(server) {
         
         response.send(temp);
     });
+    server.get('/updatePlayerOneScore', function(request, response, next){
+        let temp = game.updatePlayerOneScore();
+        
+        response.send(temp);
+    });
+    server.get('/updatePlayerTwoScore', function(request, response, next){
+        let temp = game.updatePlayerTwoScore();
+        
+        response.send(temp);
+    });
 }
 
 //JSON.stringify();     packages up an array for client side

@@ -243,12 +243,12 @@ function ClearPile(){
 
 function updatePlayerOneScore()
 {
-    return player1Deck.length;
+    return player1Deck.length.toString();
 }
 
 function updatePlayerTwoScore()
 {
-    return player2Deck.length;
+    return player2Deck.length.toString();
 }
 
 
@@ -462,4 +462,5 @@ function EndGame(){
 }
 
 //add functions here that you need to access in html or whatever -- mike 2019
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart}
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart, updatePlayerOneScore: updatePlayerOneScore,
+updatePlayerTwoScore: updatePlayerTwoScore}
