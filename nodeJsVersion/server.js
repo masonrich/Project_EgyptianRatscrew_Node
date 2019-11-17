@@ -8,6 +8,7 @@ var fs = require('fs');
 var express = require('express');
 var path = require('path');
 var game = require('./game');
+var expressSession = require('express-session');
 
 
 //express is a package that node uses
@@ -26,21 +27,61 @@ var io = require('socket.io')(serverInstance);
 
 //Connect to io and use the sockets to "create" player when they connect the server. delete upon disconnection
 
+var sessionMiddleware = expressSession ({
+    resave: true,
+    saveUninitialized: true,
+    secret: { maxAge: 1000 * 60 * 60 * 24 }
+});
 
 //var io = require('../..')(server);
 var connections = [null, null];
 
+io.use(function (socket, next) {
+   sessionMiddleware(socket.request, socket.request.res, next); 
+});
+
 io.on('connection', function (socket) {
+    
     let playerIndex = -1;
+    
     for (var i in connections) {
         if (connections[i] == null) {
             playerIndex = i;
+            connections[i] == playerIndex;
         }
     }
     
     socket.emit('player-number', playerIndex);
     console.log(playerIndex);
     if (playerIndex == -1) return;
+    
+    socket.on('slap', function(data) {
+        //data comes from the browser
+        
+        //when emitting, 2nd paramater is data we send to client
+        socket.emit('slapped', "stuff");
+    });
+    
+    socket.on('play-card', function(data) {
+        //data comes from the browser
+        
+        //when emitting, 2nd paramater is data we send to client
+        socket.emit('card-played', "stuff");
+    });
+    
+    socket.on('start-game', function(data) {
+        //data comes from the browser
+        
+        //when emitting, 2nd paramater is data we send to client
+        socket.emit('game-started', "stuff");
+    });
+    
+    socket.on('end-game', function(data) {
+        //data comes from the browser
+        
+        //when emitting, 2nd paramater is data we send to client
+        socket.emit('game-ended', "stuff");
+    });
     
     socket.on('disconnect', () => {
         console.log(playerIndex);
