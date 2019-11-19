@@ -67,6 +67,7 @@ io.on('connection', function (socket) {
     redis.on("message", function(channel, message) {
         console.log("mew message in queue "+ message + "channel");
         socket.emit(channel, message);
+    });
 
     socket.on('slap', function(data) {
         //data comes from the browser
