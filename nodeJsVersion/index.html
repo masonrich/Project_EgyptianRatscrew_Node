@@ -170,7 +170,7 @@ Date: October 14th, 2019
      <!--<script type="text/javascript" src="scripts/game.js"></script>-->
      <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
            
-        <script src="/socket.io/socket.io.js"></script>
+    <script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
 
      <!--<script src="scripts/cards.js"></script>-->
      <script>   
@@ -184,7 +184,7 @@ Date: October 14th, 2019
             ga('create', 'UA-60043592-1', 'auto');
             ga('send', 'pageview');
 
-       </script> 
+    </script> 
            
     <script>
         
@@ -200,6 +200,7 @@ Date: October 14th, 2019
                 });
             
         }
+
         
         function startGame() {
             $.get('/getGame', function(data, status) {
@@ -230,6 +231,11 @@ Date: October 14th, 2019
                 playCard(start);
             });
             
+            socket.emit('play-card');
+            
+            socket.on('card-played', function(data) {
+                console.log("clicked PLAY CARD");
+            });
 
         }
         
@@ -289,6 +295,8 @@ Date: October 14th, 2019
              $.get('/getCount', function(data, status) {
                     HasPreviousFaceCard(data);
              });
+            
+            
             
              DidGameEnd();
         }
