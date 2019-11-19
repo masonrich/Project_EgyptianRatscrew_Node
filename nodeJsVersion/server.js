@@ -10,6 +10,9 @@ var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
 
+var Redis = require('ioredis');
+var redis = new Redis();
+
 
 //express is a package that node uses
 var server = express();
@@ -33,6 +36,7 @@ var sessionMiddleware = expressSession ({
     secret: { maxAge: 1000 * 60 * 60 * 24 }
 });
 
+
 //var io = require('../..')(server);
 var connections = [null, null];
 
@@ -51,10 +55,20 @@ io.on('connection', function (socket) {
         }
     }
     
+    console.log(connections);
+    
     socket.emit('player-number', playerIndex);
+    
     console.log(playerIndex);
+    
     if (playerIndex == -1) return;
     
+
+    redis.on("message", function(channel, message) {
+        console.log("mew message in queue "+ message + "channel");
+        socket.emit(channel, message);
+    });
+
     socket.on('slap', function(data) {
         //data comes from the browser
         
@@ -84,13 +98,13 @@ io.on('connection', function (socket) {
     });
     
     socket.on('disconnect', () => {
-        console.log(playerIndex);
+        console.log('player ' + playerIndex + ' disconnected');
         connections[playerIndex] = null;
-    })
+    });
 });
 
 
-function route(server) {
+function route(server) {    
     server.get('/', function(request, response, next) {
         
     response.sendFile(path.resolve(__dirname + '/index.html'));
