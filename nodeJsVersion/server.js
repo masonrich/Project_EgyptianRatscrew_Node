@@ -118,9 +118,11 @@ function route(server) {
     });
     
     server.get('/getWait', function(request, response, next) {
+        //game.ToggleGameStart();
        let temp = game.GetWait();
         
         response.send(temp);
+        
     });
     
 //    server.get('/getWait', function(request, response, next) {
