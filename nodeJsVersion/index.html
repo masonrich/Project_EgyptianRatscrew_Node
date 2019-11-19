@@ -50,7 +50,7 @@ Date: October 14th, 2019
     
 <title>Egyptian Ratscrew</title> 
 </head>      
-   <body>
+   <body onload="SetUser()">
        <div class="container-fluid">
        <!-- Jumbo Tron -->
        <div class="jumbotron">
@@ -167,7 +167,8 @@ Date: October 14th, 2019
       
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-     <script type="text/javascript" src="scripts/game.js"></script>
+     <!--<script type="text/javascript" src="scripts/game.js"></script>-->
+     <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
            
         <script src="/socket.io/socket.io.js"></script>
 
@@ -186,6 +187,19 @@ Date: October 14th, 2019
        </script> 
            
     <script>
+        
+        function SetUser() {
+            
+                var socket = io.connect('http://localhost:1337');
+
+                socket.on('connection', function (data) {
+                    console.log("more pants");
+                    $(".progress-bar").css('width',+data+'%');
+                    alert('connection established');
+                    $("#messages").append( "<p>"+data+"</p>" );
+                });
+            
+        }
         
         function startGame() {
             $.get('/getGame', function(data, status) {

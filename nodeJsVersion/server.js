@@ -9,6 +9,9 @@ var express = require('express');
 var path = require('path');
 var game = require('./game');
 
+var Redis = require('ioredis');
+var redis = new Redis();
+
 
 //express is a package that node uses
 var server = express();
@@ -27,6 +30,7 @@ var io = require('socket.io')(serverInstance);
 //Connect to io and use the sockets to "create" player when they connect the server. delete upon disconnection
 
 
+
 //var io = require('../..')(server);
 var connections = [null, null];
 
@@ -38,18 +42,27 @@ io.on('connection', function (socket) {
         }
     }
     
+    console.log(connections);
+    
     socket.emit('player-number', playerIndex);
+    
     console.log(playerIndex);
+    
     if (playerIndex == -1) return;
     
+    redis.on("message", function(channel, message) {
+        console.log("mew message in queue "+ message + "channel");
+        socket.emit(channel, message);
+    });
+    
     socket.on('disconnect', () => {
-        console.log(playerIndex);
+        console.log('player ' + playerIndex + ' disconnected');
         connections[playerIndex] = null;
-    })
+    });
 });
 
 
-function route(server) {
+function route(server) {    
     server.get('/', function(request, response, next) {
         
     response.sendFile(path.resolve(__dirname + '/index.html'));
