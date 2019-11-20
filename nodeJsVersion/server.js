@@ -10,8 +10,8 @@ var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
 
-var Redis = require('ioredis');
-var redis = new Redis();
+//var Redis = require('ioredis');
+//var redis = new Redis();
 
 
 //express is a package that node uses
@@ -55,6 +55,10 @@ io.on('connection', function (socket) {
         }
     }
     
+    //let person_name = prompt("Welcome. Please enter your name");
+    
+    //socket.emit('nickname', person_name);
+    
     console.log(connections);
     
     socket.emit('player-number', playerIndex);
@@ -64,10 +68,10 @@ io.on('connection', function (socket) {
     if (playerIndex == -1) return;
     
 
-    redis.on("message", function(channel, message) {
-        console.log("mew message in queue "+ message + "channel");
-        socket.emit(channel, message);
-    });
+//    redis.on("message", function(channel, message) {
+//        console.log("mew message in queue "+ message + "channel");
+//        socket.emit(channel, message);
+//    });
 
     socket.on('slap', function(data) {
         //data comes from the browser
@@ -88,6 +92,7 @@ io.on('connection', function (socket) {
         
         //when emitting, 2nd paramater is data we send to client
         socket.emit('game-started', "stuff");
+        console.log("game started");
     });
     
     socket.on('end-game', function(data) {
@@ -95,12 +100,21 @@ io.on('connection', function (socket) {
         
         //when emitting, 2nd paramater is data we send to client
         socket.emit('game-ended', "stuff");
+        console.log('game ended');
     });
     
     socket.on('disconnect', () => {
         console.log('player ' + playerIndex + ' disconnected');
         connections[playerIndex] = null;
     });
+    
+  socket.on('NewPlayer', function(data1) {
+    online = online + 1;
+    console.log('Online players : ' + online);
+    //console.log('New player connected : ' + data1);
+    Players[data1] = data1;
+    console.log(Players);
+  });
 });
 
 
@@ -206,6 +220,7 @@ function route(server) {
             
         response.send(temp);
     });
+
 }
 
 //JSON.stringify();     packages up an array for client side

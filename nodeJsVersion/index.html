@@ -99,7 +99,7 @@ Date: October 14th, 2019
                    <section id="leftsection" class="col-sm-12 col-md-4 col-xs-12 col-lg-4 col-xl-4">
                        <div>
                           <fieldset>
-                             <label>Player 1</label>
+                             <label id="Player1Name">Player 1</label>
                               <hr>
                              <img src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
@@ -187,24 +187,30 @@ Date: October 14th, 2019
     </script> 
            
     <script>
+        var socket = io.connect('http://localhost:1337');
         
         function SetUser() {
             
-                var socket = io.connect('http://localhost:1337');
+                //var socket = io.connect('http://localhost:1337');
+            
+
 
                 socket.on('connection', function (data) {
                     console.log("more pants");
                     $(".progress-bar").css('width',+data+'%');
                     alert('connection established');
                     $("#messages").append( "<p>"+data+"</p>" );
+
                 });
             
         }
 
         
         function startGame() {
+            
             $.get('/getGame', function(data, status) {
                 
+                 //socket.emit('send-nickname');
                  document.getElementById("card5").src = "cards/blank.jpeg"; 
                  document.getElementById("card4").src = "cards/blank.jpeg"; 
                  document.getElementById("card3").src = "cards/blank.jpeg"; 
@@ -219,6 +225,22 @@ Date: October 14th, 2019
                  }
                 
             });
+            
+            socket.emit('start-game');
+            
+                //socket.on('connection', function(){
+            socket.on('game-started', function(){
+                person_name = prompt("Welcome to the game");
+                //something to  get user id;
+                //something to limit # of users
+                socket.emit('New Player', person_name);
+                document.getElementById("Player1Name").innerHTML = person_name.toString();
+                console.log(person_name);
+            })
+                    //person_name = prompt("Welcome to the game");
+                
+                    
+                //});
         }   
         
         function prePlayCard() {
@@ -506,6 +528,12 @@ Date: October 14th, 2019
                  
              });
         }
+        
+        //function PlayerName(){
+        //    $.get('/playerName', function(data, status){
+        //        console.log("hotpocket");
+        //    });
+        //}
         
     </script>
            
