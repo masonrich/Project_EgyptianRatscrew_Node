@@ -523,5 +523,11 @@ function EndGame(){
     count = 0;
 }
 
+
+
+//function waitingPlayerTwo(show) {
+//  messageVisibility('.waiting-message', show)
+//}
+
 //add functions here that you need to access in html or whatever -- mike 2019
 module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart, updatePlayerOneScore: updatePlayerOneScore, updatePlayerTwoScore: updatePlayerTwoScore, GetGameOver: GetGameOver}
