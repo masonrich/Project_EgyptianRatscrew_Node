@@ -48,6 +48,7 @@ io.on('connection', function (socket) {
     
     let playerIndex = -1;
     
+    //finding available player number
     for (var i in connections) {
         if (connections[i] == null) {
             playerIndex = i;
@@ -63,8 +64,11 @@ io.on('connection', function (socket) {
     
     socket.emit('player-number', playerIndex);
     
+    socket.broadcast.emit('player-connect', playerIndex);
+    
     console.log(playerIndex);
     
+    //should ignore player 3+
     if (playerIndex == -1) return;
     
 

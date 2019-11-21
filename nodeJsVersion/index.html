@@ -142,7 +142,7 @@ Date: October 14th, 2019
                    <section id="rightsection" class="col-sm-12 col-md-4 col-xs-12 col-lg-4 col-xl-4">
                        <div>
                           <fieldset>
-                             <label>Player 2</label> 
+                             <label id="Player2Name">Player 2</label> 
                               <hr>
                              <img class="draggable" src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
@@ -219,9 +219,9 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML = "Player 1 goes first"; 
+                       document.getElementById("label").innerHTML =  document.getElementById("Player1Name").innerHTML + " goes first"; 
                  } else {
-                      document.getElementById("label").innerHTML = "Player 2 goes first";  
+                      document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " goes first"  
                  }
                 
             });
@@ -229,14 +229,14 @@ Date: October 14th, 2019
             socket.emit('start-game');
             
                 //socket.on('connection', function(){
-            socket.on('game-started', function(){
-                person_name = prompt("Welcome to the game");
-                //something to  get user id;
-                //something to limit # of users
-                socket.emit('New Player', person_name);
-                document.getElementById("Player1Name").innerHTML = person_name.toString();
-                console.log(person_name);
-            })
+//            socket.on('game-started', function(){
+//                person_name = prompt("Welcome to the game");
+//                //something to  get user id;
+//                //something to limit # of users
+//                socket.emit('New Player', person_name);
+//                document.getElementById("Player1Name").innerHTML = person_name.toString();
+//                console.log(person_name);
+//            })
                     //person_name = prompt("Welcome to the game");
                 
                     
@@ -493,9 +493,9 @@ Date: October 14th, 2019
                    return;
                 
                 if (data == "0") {
-                    document.getElementById("label").innerHTML = "Player 1 wins!";
+                    document.getElementById("label").innerHTML = document.getElementById("Player1Name").innerHTML + " wins!";
                 } else {
-                    document.getElementById("label").innerHTML = "Player 2 wins!";
+                    document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
                 } 
             });
         }
@@ -529,12 +529,40 @@ Date: October 14th, 2019
              });
         }
         
-        //function PlayerName(){
-        //    $.get('/playerName', function(data, status){
-        //        console.log("hotpocket");
-        //    });
-        //}
+        socket.on('player-number', function (playerNumber) {
+            if (playerNumber == 1) {
+                //player1Name = prompt("Welcome to the game");
+                person_name = prompt("Please enter your username here:", "Default");
+                socket.emit('New Player', person_name);
+                console.log("Player1 is: " + person_name);
+                //change HTML DOM
+                document.getElementById("Player1Name").innerHTML = person_name.toString();
+                
+                
+                console.log("waiting player 2");
+        //waitingPlayerTwo(true); // Show waiting message
         
+      // On 2nd player connect, start the game
+            socket.on('player-connect', function() {
+          //not waiting for player
+                person_name = prompt("Please enter your username here:", "Default");
+                socket.emit('New Player', person_name);
+                console.log("Player2 is: " + person_name);
+                //change HTML DOM
+                 document.getElementById("Player2Name").innerHTML = person_name.toString();
+                
+                //console.log("waiting player 2");
+                console.log("not waiting for player 2");
+        //waitingPlayerTwo(false); // Hide waiting message
+        //startGame();
+            });
+            } else if (playerNumber === -1) {
+                //disable buttons?
+            console.log("game full");
+        } else { // Immediately start the game if we're player two
+        console.log("can start game");
+    }
+});
     </script>
            
 </div>
