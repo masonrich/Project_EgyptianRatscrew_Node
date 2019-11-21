@@ -10,6 +10,7 @@ var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
 
+
 //var Redis = require('ioredis');
 //var redis = new Redis();
 
@@ -47,6 +48,8 @@ io.use(function (socket, next) {
 io.on('connection', function (socket) {
     
     let playerIndex = -1;
+    
+
     
     for (var i in connections) {
         if (connections[i] == null) {

@@ -15,6 +15,9 @@ playerTurn: counter for player turn
 var faceCard = false;
 var hasPreviousFaceCard = false;
 
+//used to play music
+var music = require('play-sound')();
+
 //used to track gamestart
 var gameStart = false;
 
@@ -141,6 +144,11 @@ function StartGame() {
 	ShuffleDeck();
 	DealDeck();
     count = 0;
+    
+    //added music feel free to add something else
+    music.play('cube.mp3', (err) =>{
+        if(err) console.log("got an error" + err);
+    });
 	
 	pile = new Array();
 	whoFirst();
