@@ -26,7 +26,59 @@ var firstLetter;
 
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
 
+/*
+//username variables
+var $usernameInput = $('.usernameInput');
+var username;
 
+var connected = false;
+var $currentInput = $usernameInput.focus();
+
+var socket = io();
+
+//set up clients username
+const setUsername = () => {
+    username = cleanInput($usernameInput.val().trim());
+    
+    socket.emit('add user', username);
+}
+
+socket.on('login', (data) => {
+    
+    connected = true;
+    
+    var message = "welcome to ERS";
+    log(message, {
+        prepend: true
+    });
+});
+
+  // Whenever the server emits 'user joined', log it in the chat body
+  socket.on('user joined', (data) => {
+    log(data.username + ' joined');
+  });
+
+  // Whenever the server emits 'user left', log it in the chat body
+  socket.on('user left', (data) => {
+    log(data.username + ' left');
+  });
+
+  socket.on('disconnect', () => {
+    log('you have been disconnected');
+  });
+
+  socket.on('reconnect', () => {
+    log('you have been reconnected');
+    if (username) {
+      socket.emit('add user', username);
+    }
+  });
+
+  socket.on('reconnect_error', () => {
+    log('attempt to reconnect has failed');
+  });
+
+*/
 function BuildDeck() {
      deck = [ "AS", "2S", "3D", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS",
               "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C", "JC", "QC", "KC",
