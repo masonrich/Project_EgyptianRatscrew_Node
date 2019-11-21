@@ -59,6 +59,9 @@ io.on('connection', function (socket) {
     
     socket.emit('player-number', playerIndex);
     
+    //needs to be here, SUPER IMPORTANT
+    connections[playerIndex] = socket;
+    
     console.log(playerIndex);
     
     if (playerIndex == -1) return;
