@@ -99,7 +99,7 @@ Date: October 14th, 2019
                    <section id="leftsection" class="col-sm-12 col-md-4 col-xs-12 col-lg-4 col-xl-4">
                        <div>
                           <fieldset>
-                             <label>Player 1</label>
+                             <label id="Player1Name">Player 1</label>
                               <hr>
                              <img src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
@@ -142,7 +142,7 @@ Date: October 14th, 2019
                    <section id="rightsection" class="col-sm-12 col-md-4 col-xs-12 col-lg-4 col-xl-4">
                        <div>
                           <fieldset>
-                             <label>Player 2</label> 
+                             <label id="Player2Name">Player 2</label> 
                               <hr>
                              <img class="draggable" src="/cards/RED_BACK.svg" alt="Back of card">
                              <p class="cardsP">CARDS</p>
@@ -164,6 +164,9 @@ Date: October 14th, 2019
        </section>
       
       
+           
+        <input class="inputMessage" placeholder="type here for name"/>
+           
       
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -210,8 +213,10 @@ Date: October 14th, 2019
 
         
         function startGame() {
+            
             $.get('/getGame', function(data, status) {
                 
+                 //socket.emit('send-nickname');
                  document.getElementById("card5").src = "cards/blank.jpeg"; 
                  document.getElementById("card4").src = "cards/blank.jpeg"; 
                  document.getElementById("card3").src = "cards/blank.jpeg"; 
@@ -220,12 +225,28 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML = "Player 1 goes first"; 
+                       document.getElementById("label").innerHTML =  document.getElementById("Player1Name").innerHTML + " goes first"; 
                  } else {
-                      document.getElementById("label").innerHTML = "Player 2 goes first";  
+                      document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " goes first"  
                  }
                 
             });
+            
+            socket.emit('start-game');
+            
+                //socket.on('connection', function(){
+//            socket.on('game-started', function(){
+//                person_name = prompt("Welcome to the game");
+//                //something to  get user id;
+//                //something to limit # of users
+//                socket.emit('New Player', person_name);
+//                document.getElementById("Player1Name").innerHTML = person_name.toString();
+//                console.log(person_name);
+//            })
+                    //person_name = prompt("Welcome to the game");
+                
+                    
+                //});
         }   
         
         function prePlayCard() {
@@ -477,9 +498,9 @@ Date: October 14th, 2019
                    return;
                 
                 if (data == "0") {
-                    document.getElementById("label").innerHTML = "Player 1 wins!";
+                    document.getElementById("label").innerHTML = document.getElementById("Player1Name").innerHTML + " wins!";
                 } else {
-                    document.getElementById("label").innerHTML = "Player 2 wins!";
+                    document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
                 } 
             });
         }
@@ -513,6 +534,66 @@ Date: October 14th, 2019
              });
         }
         
+    
+        socket.on('player-number', function (playerNumber) {
+            if (playerNumber == 1) {
+                //initial prompt
+                person_name = prompt("Please enter your username here:", "Jotaro Kujo");
+                
+                //loop so player MUST enter user name (might need to be revisited)
+                while(person_name === null || person_name === ""){
+                    console.log("invalid name");
+                    person_name = prompt("Enter user name");
+                    if(person_name != null && person_name != ""){       //probably could be better
+                        break;
+                    }
+                }
+                
+                //emitting player 1 name
+                socket.emit('New Player', person_name);
+                console.log("Player1 is: " + person_name);
+                //change HTML DOM
+                document.getElementById("Player1Name").innerHTML = person_name;
+                
+                
+                console.log("waiting player 2");
+        //waitingPlayerTwo(true); // Show waiting message
+        
+      // On 2nd player connect, start the game
+            socket.on('player-connect', function() {
+          //not waiting for player
+                //while(true){
+                    person_name = prompt("Please enter your username here:", "Dio Brando");
+                
+                //loop so player MUST enter a user name (might need to be revisited)
+                while(person_name === null || person_name === ""){
+                    console.log("invalid name");
+                    person_name = prompt("Enter user name");
+                    if(person_name != null && person_name != ""){   //probably could be better
+                        break;
+                    }
+                }
+                
+                //emitting player 2 name
+                socket.emit('New Player', person_name);
+                
+                console.log("Player2 is: " + person_name);  // error checking
+                //change HTML DOM
+                 document.getElementById("Player2Name").innerHTML = person_name;
+                
+                //console.log("waiting player 2");
+                console.log("not waiting for player 2");
+                
+                //maybe add something to enable buttons
+                //startGame(); 
+            });
+            } else if (playerNumber === -1) {
+                //disable buttons?
+            console.log("game full");
+        } else { // Immediately start the game if we're player two
+        console.log("can start game");
+    }
+});
     </script>
            
 </div>

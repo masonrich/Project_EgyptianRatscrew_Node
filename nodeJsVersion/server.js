@@ -10,9 +10,6 @@ var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
 
-//var Redis = require('ioredis');
-//var redis = new Redis();
-
 
 //express is a package that node uses
 var server = express();
@@ -47,8 +44,9 @@ io.use(function (socket, next) {
 io.on('connection', function (socket) {
     
     let playerIndex = -1;
-    
-    for (var i = 0; i < connections.length; i++){
+ 
+    for (var i in connections) {
+
         if (connections[i] == null) {
             playerIndex = i;
             connections[i] = playerIndex;
@@ -60,15 +58,13 @@ io.on('connection', function (socket) {
     
     socket.emit('player-number', playerIndex);
     
+    //needs to be here, SUPER IMPORTANT
+    connections[playerIndex] = socket;
+    
     console.log(playerIndex);
     
     if (playerIndex == -1) return;
     
-
-//    redis.on("message", function(channel, message) {
-//        console.log("mew message in queue "+ message + "channel");
-//        socket.emit(channel, message);
-//    });
 
     socket.on('slap', function(data) {
         //data comes from the browser
