@@ -25,10 +25,12 @@ var count;
 var firstLetter;
 
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
-
 /*
-//username variables
+$(document).ready(function() {
+    //username variables
 var $usernameInput = $('.usernameInput');
+
+var $loginPage = $('.login.page');
 var username;
 
 var connected = false;
@@ -77,8 +79,11 @@ socket.on('login', (data) => {
   socket.on('reconnect_error', () => {
     log('attempt to reconnect has failed');
   });
+    
+    
+})*/
 
-*/
+
 function BuildDeck() {
      deck = [ "AS", "2S", "3D", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS",
               "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C", "JC", "QC", "KC",
