@@ -130,7 +130,7 @@ Date: October 14th, 2019
                               <button id="slapButton" onclick='preSlap()'>SLAP</button>
                               
                               
-                              <button id="PlayCardButton" onclick='prePlayCard()'>PLAY CARD</button>
+                              <button id="PlayCardButton" onclick='socketPrePlayCard()'>PLAY CARD</button>
                               
                               <p style="font-size: 48px;" id="label"></p>
                                   
@@ -187,19 +187,26 @@ Date: October 14th, 2019
     </script> 
            
     <script>
-        
-        function SetUser() {
-            
-                var socket = io.connect('http://localhost:1337');
+                    
+        var socket = io.connect('http://localhost:1337');
 
-                socket.on('connection', function (data) {
-                    console.log("more pants");
-                    $(".progress-bar").css('width',+data+'%');
-                    alert('connection established');
-                    $("#messages").append( "<p>"+data+"</p>" );
-                });
+        socket.on('connection', function (data) {
+            console.log("more pants");
+            $(".progress-bar").css('width',+data+'%');
+            alert('connection established');
+            $("#messages").append( "<p>"+data+"</p>" );
+        });
+        
+        socket.on('card-played', function(data) {
+            console.log("clicked PLAY CARD");
+            prePlayCard();
+        });
+        
+        function socketPrePlayCard() {
             
+            socket.emit('play-card');
         }
+            
 
         
         function startGame() {
@@ -229,12 +236,6 @@ Date: October 14th, 2019
                 start = data;
 
                 playCard(start);
-            });
-            
-            socket.emit('play-card');
-            
-            socket.on('card-played', function(data) {
-                console.log("clicked PLAY CARD");
             });
 
         }
@@ -308,23 +309,28 @@ Date: October 14th, 2019
                 let pile = JSON.parse(data);
 
                 if (pile.length > 0) {
-                    document.getElementById("card5").src = "cards/" + pile[0] + ".svg";
+                     $("#card5").attr("src", "cards/" + pile[0] + ".svg"); 
+                    //document.getElementById("card5").src = "cards/" + pile[0] + ".svg";
                 }
 
                 if (pile.length > 1) {
-                   document.getElementById("card4").src = "cards/" + pile[1] + ".svg";
+                     $("#card4").attr("src", "cards/" + pile[1] + ".svg"); 
+//                   document.getElementById("card4").src = "cards/" + pile[1] + ".svg";
                 }
 
                 if (pile.length > 2) {
-                     document.getElementById("card3").src = "cards/" + pile[2] + ".svg";
+                     $("#card3").attr("src", "cards/" + pile[2] + ".svg"); 
+//                     document.getElementById("card3").src = "cards/" + pile[2] + ".svg";
                 }
 
                 if (pile.length > 3) {
-                    document.getElementById("card2").src = "cards/" + pile[3] + ".svg";
+                     $("#card2").attr("src", "cards/" + pile[3] + ".svg"); 
+//                    document.getElementById("card2").src = "cards/" + pile[3] + ".svg";
                 }
 
                 if (pile.length > 4) {
-                    document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
+                     $("#card1").attr("src", "cards/" + pile[4] + ".svg"); 
+//                    document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
                 } 
             }); 
         }

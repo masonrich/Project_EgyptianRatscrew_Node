@@ -10,8 +10,8 @@ var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
 
-var Redis = require('ioredis');
-var redis = new Redis();
+//var Redis = require('ioredis');
+//var redis = new Redis();
 
 
 //express is a package that node uses
@@ -48,10 +48,11 @@ io.on('connection', function (socket) {
     
     let playerIndex = -1;
     
-    for (var i in connections) {
+    for (var i = 0; i < connections.length; i++){
         if (connections[i] == null) {
             playerIndex = i;
-            connections[i] == playerIndex;
+            connections[i] = playerIndex;
+            break;
         }
     }
     
@@ -64,10 +65,10 @@ io.on('connection', function (socket) {
     if (playerIndex == -1) return;
     
 
-    redis.on("message", function(channel, message) {
-        console.log("mew message in queue "+ message + "channel");
-        socket.emit(channel, message);
-    });
+//    redis.on("message", function(channel, message) {
+//        console.log("mew message in queue "+ message + "channel");
+//        socket.emit(channel, message);
+//    });
 
     socket.on('slap', function(data) {
         //data comes from the browser
@@ -80,7 +81,7 @@ io.on('connection', function (socket) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        socket.emit('card-played', "stuff");
+        socket.emit('card-played');
     });
     
     socket.on('start-game', function(data) {
@@ -101,6 +102,8 @@ io.on('connection', function (socket) {
         console.log('player ' + playerIndex + ' disconnected');
         connections[playerIndex] = null;
     });
+    
+    socket.emit('connection');
 });
 
 
