@@ -588,65 +588,65 @@ Date: October 14th, 2019
         }
         
     
-        socket.on('player-number', function (playerNumber) {
-            if (playerNumber == 1) {
-                //initial prompt
-                person_name = prompt("Please enter your username here:", "Jotaro Kujo");
-                
-                //loop so player MUST enter user name (might need to be revisited)
-                while(person_name === null || person_name === ""){
-                    console.log("invalid name");
-                    person_name = prompt("Enter user name");
-                    if(person_name != null && person_name != ""){       //probably could be better
-                        break;
-                    }
-                }
-                
-                //emitting player 1 name
-                socket.emit('New Player', person_name);
-                console.log("Player1 is: " + person_name);
-                //change HTML DOM
-                document.getElementById("Player1Name").innerHTML = person_name;
-                
-                
-                console.log("waiting player 2");
-        //waitingPlayerTwo(true); // Show waiting message
-        
-      // On 2nd player connect, start the game
-            socket.on('player-connect', function() {
-          //not waiting for player
-                //while(true){
-                    person_name = prompt("Please enter your username here:", "Dio Brando");
-                
-                //loop so player MUST enter a user name (might need to be revisited)
-                while(person_name === null || person_name === ""){
-                    console.log("invalid name");
-                    person_name = prompt("Enter user name");
-                    if(person_name != null && person_name != ""){   //probably could be better
-                        break;
-                    }
-                }
-                
-                //emitting player 2 name
-                socket.emit('New Player', person_name);
-                
-                console.log("Player2 is: " + person_name);  // error checking
-                //change HTML DOM
-                 document.getElementById("Player2Name").innerHTML = person_name;
-                
-                //console.log("waiting player 2");
-                console.log("not waiting for player 2");
-                
-                //maybe add something to enable buttons
-                //startGame(); 
-            });
-            } else if (playerNumber === -1) {
-                //disable buttons?
-            console.log("game full");
-        } else { // Immediately start the game if we're player two
-        console.log("can start game");
-    }
-});
+//        socket.on('player-number', function (playerNumber) {
+//            if (playerNumber == 1) {
+//                //initial prompt
+//                person_name = prompt("Please enter your username here:", "Jotaro Kujo");
+//                
+//                //loop so player MUST enter user name (might need to be revisited)
+//                while(person_name === null || person_name === ""){
+//                    console.log("invalid name");
+//                    person_name = prompt("Enter user name");
+//                    if(person_name != null && person_name != ""){       //probably could be better
+//                        break;
+//                    }
+//                }
+//                
+//                //emitting player 1 name
+//                socket.emit('New Player', person_name);
+//                console.log("Player1 is: " + person_name);
+//                //change HTML DOM
+//                document.getElementById("Player1Name").innerHTML = person_name;
+//                
+//                
+//                console.log("waiting player 2");
+//        //waitingPlayerTwo(true); // Show waiting message
+//        
+//      // On 2nd player connect, start the game
+//            socket.on('player-connect', function() {
+//          //not waiting for player
+//                //while(true){
+//                    person_name = prompt("Please enter your username here:", "Dio Brando");
+//                
+//                //loop so player MUST enter a user name (might need to be revisited)
+//                while(person_name === null || person_name === ""){
+//                    console.log("invalid name");
+//                    person_name = prompt("Enter user name");
+//                    if(person_name != null && person_name != ""){   //probably could be better
+//                        break;
+//                    }
+//                }
+//                
+//                //emitting player 2 name
+//                socket.emit('New Player', person_name);
+//                
+//                console.log("Player2 is: " + person_name);  // error checking
+//                //change HTML DOM
+//                 document.getElementById("Player2Name").innerHTML = person_name;
+//                
+//                //console.log("waiting player 2");
+//                console.log("not waiting for player 2");
+//                
+//                //maybe add something to enable buttons
+//                //startGame(); 
+//            });
+//            } else if (playerNumber === -1) {
+//                //disable buttons?
+//            console.log("game full");
+//        } else { // Immediately start the game if we're player two
+//        console.log("can start game");
+//    }
+//});
     </script>
            
 </div>

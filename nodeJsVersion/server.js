@@ -81,7 +81,7 @@ io.on('connection', function (socket) {
         socket.username = username;
         ++numUsers;
         addedUser = true;
-        socket.emti('login', {
+        socket.emit('login', {
             numUsers: numUsers
         });
         
