@@ -192,11 +192,15 @@ Date: October 14th, 2019
     <script>
         var socket = io.connect('http://localhost:1337');
         
+        
+        socket.on('card-played', function(data) {
+            console.log("clicked PLAY CARD");
+            DisplayTop5();                
+        });
+        
         function SetUser() {
             
                 //var socket = io.connect('http://localhost:1337');
-            
-
 
                 socket.on('connection', function (data) {
                     console.log("more pants");
@@ -204,8 +208,7 @@ Date: October 14th, 2019
                     alert('connection established');
                     $("#messages").append( "<p>"+data+"</p>" );
 
-                });
-            
+                });            
         }
 
         
@@ -258,8 +261,6 @@ Date: October 14th, 2019
 
                 playCard(start);
             });
-            
-            socket.emit('play-card');
 
         }
         
@@ -279,13 +280,9 @@ Date: October 14th, 2019
         
             updatePlayerOneScore();
             updatePlayerTwoScore();
-            
-            socket.on('card-played', function(data) {
-                console.log("clicked PLAY CARD");
-                DisplayTop5();                
-            });
 
-            
+            socket.emit('play-card');
+            DisplayTop5();
         }
         
         
