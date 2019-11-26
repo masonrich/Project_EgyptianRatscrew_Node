@@ -26,7 +26,7 @@ Date: October 14th, 2019
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<script src="jquery-3.4.1.mins.js"></script>
+<!--<script src="jquery-3.4.1.mins.js"></script>-->
     
 <!-- link for glyphicons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
@@ -40,7 +40,7 @@ Date: October 14th, 2019
 <!-- My style sheet -->
 <link href="/styles/game.css" rel="stylesheet" type="text/css"/>
     
-<script src="scripts/game.js"></script>
+<!--<script src="scripts/game.js"></script>-->
 
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -176,6 +176,7 @@ Date: October 14th, 2019
     <script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
 
      <!--<script src="scripts/cards.js"></script>-->
+<!--
      <script>   
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
@@ -188,14 +189,19 @@ Date: October 14th, 2019
             ga('send', 'pageview');
 
     </script> 
+-->
            
     <script>
-        var socket = io.connect('http://localhost:1337');
+        var socket = io.connect('https://aqueous-anchorage-18888.herokuapp.com/');
         
         
         socket.on('card-played', function(data) {
             console.log("clicked PLAY CARD");
             DisplayTop5();                
+        });
+        
+        socket.on('game-started', function(data) {
+           StartGameHelper(); 
         });
         
         function SetUser() {
@@ -251,6 +257,30 @@ Date: October 14th, 2019
                     
                 //});
         }   
+        
+        function StartGameHelper() {
+            
+             $.get('/getGame', function(data, status) {
+                
+                 //socket.emit('send-nickname');
+                 document.getElementById("card5").src = "cards/blank.jpeg"; 
+                 document.getElementById("card4").src = "cards/blank.jpeg"; 
+                 document.getElementById("card3").src = "cards/blank.jpeg"; 
+                 document.getElementById("card2").src = "cards/blank.jpeg"; 
+                 document.getElementById("card1").src = "cards/blank.jpeg"; 
+                
+                //TODO: Replace 'Player 1'/'Player 2' with the name they give
+                 if (data === '0') {
+                       document.getElementById("label").innerHTML =  document.getElementById("Player1Name").innerHTML + " goes first"; 
+                       playerOneTurn = true;
+
+                 } else {
+                      document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " goes first";
+                      playerTwoTurn = true;
+                 }
+                
+            });
+        }
         
         function prePlayCard() {
                         let start;
