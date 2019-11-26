@@ -295,8 +295,6 @@ Date: October 14th, 2019
 
                 playCard(start);
             });
-            
-            socket.emit('play-card');
 
         }
         
@@ -317,6 +315,7 @@ Date: October 14th, 2019
             updatePlayerOneScore();
             updatePlayerTwoScore();
             
+            socket.emit('play-card');
             DisplayTop5();                
         }
         
