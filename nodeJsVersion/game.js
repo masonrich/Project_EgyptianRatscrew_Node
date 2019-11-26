@@ -18,6 +18,13 @@ var hasPreviousFaceCard = false;
 //used to track gamestart
 var gameStart = false;
 
+//used to keep track if UI has cards displayed still
+var pileHasCards = false;
+
+//keep track of player 1 and player 2 turn
+var playerOneTurn = false;
+var playerTwoTurn = false;
+
 //used to track number of cards needed to play when face card played
 var count;
 
@@ -163,8 +170,11 @@ function PlayCard() {
         hasPreviousFaceCard = true;
     }
     
+    if(pileHasCards == true){
+        return;
+    }
+    
 	if (playerTurn === 0) {    //added additional equals - AC
-		
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
         
@@ -176,10 +186,15 @@ function PlayCard() {
         if(count > 0){
             playerTurn = 0;
             count--;
-            
+            playerOneTurn = true; //MR, code to keep track of highlighting player deck
+            playerTwoTurn = false; //MR, code to keep track of highlighting player deck
             
         } else {
 		  playerTurn = 1; //mikes original code
+          playerOneTurn = false; //MR, code to keep track of highlighting player deck
+          playerTwoTurn = true; //MR, code to keep track of highlighting player deck
+
+
         }
         
         if (player1Deck.length === 0) {    //added additional equals - AC
@@ -271,8 +286,12 @@ function GetWait() {
 function ToggleGameStart() {
     if (gameStart) {
         gameStart = false;
+       // document.getElementById("slapButton").disabled = false;
+        //document.getElementById("PlayCardButton").disabled = false;
     } else {
         gameStart = true;
+      //  document.getElementById("slapButton").disabled = true;
+       // document.getElementById("PlayCardButton").disabled = true;
     }
 }
 
