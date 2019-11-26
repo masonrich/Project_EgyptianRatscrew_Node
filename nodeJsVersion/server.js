@@ -10,8 +10,8 @@ var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
 
-var Redis = require('ioredis');
-var redis = new Redis();
+//var Redis = require('ioredis');
+//var redis = new Redis();
 
 
 //express is a package that node uses
@@ -46,6 +46,8 @@ io.use(function (socket, next) {
 
 io.on('connection', function (socket) {
     
+    var addedUser = false;
+    
     let playerIndex = -1;
     
     for (var i in connections) {
@@ -55,20 +57,40 @@ io.on('connection', function (socket) {
         }
     }
     
-    console.log(connections);
+    //console.log(connections);
     
     socket.emit('player-number', playerIndex);
+    
+    //needs to be here, SUPER IMPORTANT
+    connections[playerIndex] = socket;
     
     console.log(playerIndex);
     
     if (playerIndex == -1) return;
     
 
-    redis.on("message", function(channel, message) {
-        console.log("mew message in queue "+ message + "channel");
-        socket.emit(channel, message);
-    });
+   // redis.on("message", function(channel, message) {
+    //    console.log("mew message in queue "+ message + "channel");
+    //    socket.emit(channel, message);
+    //});
 
+    //when the client emits 'add user', this listens and executes
+    socket.on('add user', (username) => {
+        if (addedUser) return;
+        
+        socket.username = username;
+        ++numUsers;
+        addedUser = true;
+        socket.emti('login', {
+            numUsers: numUsers
+        });
+        
+        socket.broadcast.emit('user joined', {
+            username: socket.username,
+            numUsers: numUsers
+        });
+    });
+    
     socket.on('slap', function(data) {
         //data comes from the browser
         
@@ -98,6 +120,15 @@ io.on('connection', function (socket) {
     });
     
     socket.on('disconnect', () => {
+        if (addedUser) {
+            --numUsers;
+            
+            //echo globally that this client has left
+            socket.broadcast.emi('user left', {
+                username: socket.username,
+                numUsers: numUsers
+            });
+        }
         console.log('player ' + playerIndex + ' disconnected');
         connections[playerIndex] = null;
     });
