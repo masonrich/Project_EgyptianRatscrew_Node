@@ -257,10 +257,6 @@ Date: October 14th, 2019
             });
             
             socket.emit('play-card');
-            
-            socket.on('card-played', function(data) {
-                console.log("clicked PLAY CARD");
-            });
 
         }
         
@@ -280,15 +276,20 @@ Date: October 14th, 2019
         
             updatePlayerOneScore();
             updatePlayerTwoScore();
-            DisplayTop5();
+            
+            socket.on('card-played', function(data) {
+                console.log("clicked PLAY CARD");
+                DisplayTop5();                
+            });
+
             
         }
         
         
-        function DisplayTop5() {
-                       
+        function DisplayTop5() {           
+        
             $.get('/displayTop5', function(data, status) {
-                
+
                 let pile = JSON.parse(data);
 
                 if (pile.length > 0) {
@@ -310,10 +311,9 @@ Date: October 14th, 2019
                 if (pile.length > 4) {
                     document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
                 } 
-                
+
                 GetCount();
             }); 
-            
         }  
         
         function GetCount() {

@@ -102,7 +102,7 @@ io.on('connection', function (socket) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        socket.emit('card-played', "stuff");
+        io.sockets.emit('card-played');
     });
     
     socket.on('start-game', function(data) {
