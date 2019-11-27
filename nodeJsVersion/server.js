@@ -54,7 +54,8 @@ io.on('connection', function (socket) {
     for (var i in connections) {
         if (connections[i] == null) {
             playerIndex = i;
-            connections[i] == playerIndex;
+
+            conecctions[i] = socket.id;
         }
     }
     
@@ -96,7 +97,7 @@ io.on('connection', function (socket) {
         });
     });
     
-    /********random stuff I tried*******/
+    /********random stuff Alec tried*******/
 //    socket.on('getName', function(name){
 //        io.sockets.emit('nombre');
 //        //player.push(name);
@@ -129,25 +130,24 @@ io.on('connection', function (socket) {
     //    console.log("mew message in queue "+ message + "channel");
     //    socket.emit(channel, message);
     //});
-
-    /*******Alec commented out because it was messing with player indexing***********/
-    //when the client emits 'add user', this listens and executes
-//    socket.on('add user', (username) => {
-//        console.log('inside add user');
-//        if (addedUser) return;
-//        
-//        socket.username = username;
-//        ++numUsers;
-//        addedUser = true;
-//        socket.emit('login', {
-//            numUsers: numUsers
-//        });
-//        
-//        io.sockets.emit('user joined', {
-//            username: socket.username,
-//            numUsers: numUsers
-//        });
-//    });
+    
+    //when the client emits 'add user', this listens and executes(might mess with the current prompt implementation -ac)
+    socket.on('connected', (username) => {
+        if (addedUser) return;
+        
+        socket.username = username;
+        ++numUsers;
+        addedUser = true;
+        socket.emit('login', {
+            numUsers: numUsers
+        });
+        
+        socket.broadcast.emit('user joined', {
+            username: socket.username,
+            numUsers: numUsers
+        });
+    });
+    
     
     socket.on('slap', function(data) {
         //data comes from the browser
@@ -156,18 +156,16 @@ io.on('connection', function (socket) {
         socket.emit('slapped', "stuff");
     });
     
-    socket.on('play-card', function(data) {
+    socket.on('play-card', function(v) {
         //data comes from the browser
-        
-        //when emitting, 2nd paramater is data we send to client
-        io.sockets.emit('card-played');
+            io.sockets.emit('card-played', v);
     });
     
     socket.on('start-game', function(data) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        io.sockets.emit('game-started');
+        io.sockets.emit('game-started', "game start yep");
     });
     
     socket.on('end-game', function(data) {
@@ -177,26 +175,18 @@ io.on('connection', function (socket) {
         socket.emit('game-ended', "stuff");
     });
     
-    /********Alec commented out because it was messing with player indexing****************/
-//    socket.on('disconnect', () => {
-//        if (addedUser) {
-//            --numUsers;
-//            
-//            //echo globally that this client has left
-//            io.sockets.emit('user left', {
-//                username: socket.username,
-//                numUsers: numUsers
-//            });
-//        }
-//        console.log('player ' + playerIndex + ' disconnected');
-//        connections[playerIndex] = null;
-//    });
+    socket.on('pile-won', function () {
+       
+        io.sockets.emit('card-played');
+    });
     
-//    socket.on('disconnect', function(){
-//        io.sockets.emit('update', people[socket.id] + " has left the server.");
-//        delete people[socket.id];
-//        io.sockets.emit('update-people', people);
-//    });
+    //disconnects player (might mess with the current prompt implementation -ac)
+    socket.on('disconnect', () => {
+        if (addedUser) {
+            --numUsers;
+            
+            //echo globally that this client has left
+            socket.broadcast.emi('user left', {
 });
 
 
@@ -234,12 +224,7 @@ function route(server) {
         response.send(temp);
         
     });
-    
-//    server.get('/getWait', function(request, response, next) {
-//       game.ToggleGameStart();
-//        
-//    });
-    
+
     server.get('/displayTop5', function(request, response, next) {
        let myPile = game.DisplayTop5();
         
@@ -305,6 +290,12 @@ function route(server) {
         response.send(temp);
     });
     
+
+    server.get('/playerTurn', function(request, response, next) {
+       let turn = game.playerTurn();+
+           
+        response.send(turn);
+    });
 }
 
 //JSON.stringify();     packages up an array for client side

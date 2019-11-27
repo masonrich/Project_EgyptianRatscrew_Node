@@ -198,9 +198,9 @@ Date: October 14th, 2019
         /*********for local**********/
         var socket = io.connect('http://localhost:1337');
         
-        socket.on('card-played', function(data) {
-            console.log("clicked PLAY CARD");
-            DisplayTop5();                
+        socket.on('card-played', (v) => {
+            console.log(v);
+            DisplayTop5(); 
         });
         
         socket.on('card', function(data){
@@ -208,7 +208,7 @@ Date: October 14th, 2019
         });
         
         socket.on('game-started', function(data) {
-           StartGameHelper(); 
+            StartGameHelper(); 
         });
         
         /************just random stuff I tried**********/
@@ -284,17 +284,13 @@ Date: October 14th, 2019
         
         function SetUser() {
             
-                //var socket = io.connect('http://localhost:1337');
-            
+            socket.on('connection', function (data) {
 
+                $(".progress-bar").css('width',+data+'%');
+                alert('connection established');
+                $("#messages").append( "<p>"+data+"</p>" );
 
-                socket.on('connection', function (data) {
-                    console.log("more pants");
-                    $(".progress-bar").css('width',+data+'%');
-                    alert('connection established');
-                    $("#messages").append( "<p>"+data+"</p>" );
-
-                });
+            });
             
         }
 
@@ -392,8 +388,12 @@ Date: October 14th, 2019
             updatePlayerOneScore();
             updatePlayerTwoScore();
             
-            socket.emit('play-card');
-            DisplayTop5();                
+           
+            //playerDisable();
+            let v = socket.id;
+            console.log(v);
+            socket.emit('play-card', '' + v);
+            DisplayTop5(); 
         }
         
         
@@ -423,28 +423,47 @@ Date: October 14th, 2019
                     document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
                 } 
 
-                GetCount();
-                
-                //highlight deck of who ever's turn it is
-                if(playerOneTurn == true){
-                    document.getElementById("player1Card").setAttribute("style:borderColor", "#00FF00");
-                    document.getElementById("player2Card").setAttribute("style:borderColor", "#000000");
-                }
-                else {
-                    document.getElementById("player1Card").setAttribute("style:borderColor", "#000000");
-                    document.getElementById("player2Card").setAttribute("style:borderColor", "#00FF00");
-                }
+                ShowTurn();
 
             }); 
-        }  
+            
+
+        }
+        
+        function ShowTurn(){
+            
+            $.get('/playerTurn', function(data, status) {
+                               
+                //highlight deck of who ever's turn it is
+                if(data === '0'){
+                    document.getElementById("Player1Name").style.backgroundColor="#00FF00"; 
+                    document.getElementById("Player2Name").style.backgroundColor="#FFF";
+
+                }
+                else {
+                    document.getElementById("Player1Name").style.backgroundColor="#FFF";
+                    document.getElementById("Player2Name").style.backgroundColor="#00FF00"; 
+                } 
+                
+                GetCount();
+            });
+        }
+        
+        function playerDisable() {
+            document.getElementById("PlayCardButton").style.opacity = .5;  
+            document.getElementById("PlayCardButton").disabled = true;
+        }
+
+        function playerEnable() {
+            document.getElementById("PlayCardButton").style.opacity = 1.0;  
+            document.getElementById("PlayCardButton").disabled = false;
+        }
         
         function GetCount() {
              $.get('/getCount', function(data, status) {
                     HasPreviousFaceCard(data);
              });
-            
-            
-            
+                  
              DidGameEnd();
         }
         
@@ -513,8 +532,6 @@ Date: October 14th, 2019
             $.get('/getWait', function(data, status) {
             if(data) {
                 
-                
-
                 //ToggleGameStart();
                 
                 document.getElementById("label").innerHTML = "Pile Won!"; 
@@ -644,7 +661,6 @@ Date: October 14th, 2019
         {
              $.get('/updatePlayerOneScore', function(data, status){
                    document.getElementById("numCardsPlayer1").innerHTML = data;
-                 console.log("Got inside updatePlayerOneScore");
              });
         }
         
