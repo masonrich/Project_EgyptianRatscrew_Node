@@ -152,6 +152,7 @@ io.on('connection', function (socket) {
         });
         console.log("numUsers:" + numUsers);
         
+        //might need to use io.sockets.emit so we have access to info, not sure
         socket.broadcast.emit('user_joined', {    //change to a multidimensional array?
             username: socket.username,
             numUsers: numUsers
