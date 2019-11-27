@@ -192,9 +192,11 @@ Date: October 14th, 2019
 -->
            
     <script>
-        var socket = io.connect('https://aqueous-anchorage-18888.herokuapp.com/');
+        /*********for heroku**********/
+        //var socket = io.connect('https://aqueous-anchorage-18888.herokuapp.com/');
     
-        //var socket = io.connect('http://localhost:1337');
+        /*********for local**********/
+        var socket = io.connect('http://localhost:1337');
         
         socket.on('card-played', (v) => {
             console.log(v);
