@@ -206,6 +206,11 @@ Date: October 14th, 2019
         socket.on('game-started', function(data) {
             StartGameHelper(); 
         });
+        
+        socket.on('enableButton', () => {
+           console.log("made it to toggle.");
+           playerEnable();
+        });
     
         function SetUser() {
             
@@ -313,11 +318,9 @@ Date: October 14th, 2019
             updatePlayerOneScore();
             updatePlayerTwoScore();
             
-           
-            //playerDisable();
-            let v = socket.id;
-            console.log(v);
-            socket.emit('play-card', '' + v);
+            playerDisable();
+            socket.emit('play-card', '' + socket.id);
+            socket.emit('toggleButton', '' + socket.id);
             DisplayTop5(); 
         }
         

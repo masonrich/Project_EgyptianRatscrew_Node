@@ -109,8 +109,6 @@ function whoFirst() {
     } else {
         playerTurn = 1;
     }
-	
-	console.log(random);
 }
 
 function ShuffleDeck() {
@@ -259,10 +257,10 @@ function PlayCard() {
 	console.log(player1Deck);
 	console.log(player2Deck);
 	console.log(pile);
-    console.log("Turn: " + playerTurn);
-    console.log("count: " + count);
-    console.log("FaceCard: " + faceCard);
-    console.log("hasPreviousFaceCard: " + hasPreviousFaceCard);
+//    console.log("Turn: " + playerTurn);
+//    console.log("count: " + count);
+//    console.log("FaceCard: " + faceCard);
+//    console.log("hasPreviousFaceCard: " + hasPreviousFaceCard);
 }
 
 //TODO: DOM End game scenario within PlayCard()
@@ -303,7 +301,7 @@ function emptyPile() {
 function ClearPile(){
     emptyPile();
     var isEmpty;
-    console.log("Made it inside JS side ClearPile");
+
     if ((gameStart === true || gameStart === false) && pile.length === 0){  //not sure on this logic -AC
         isEmpty = true;
         console.log("isEmpty = " + isEmpty);
@@ -329,10 +327,10 @@ function updatePlayerTwoScore()
 
 
 function IsPileSlappable() {
-    console.log("Made it inside JS side IsPileSlappable");
-    console.log("Pile length JS side: " + pile.length);
+
+    //console.log("Pile length JS side: " + pile.length);
 	if (pile.length < 2) {
-        console.log("not enought cards");
+
 		return pileCurrentlySlappable = false;
 	} else {
 		if (pile[0].substring(0, 1) === pile[1].substring(0, 1)) {    //added additional equals - AC
@@ -449,7 +447,7 @@ function isCardFace(){
     //console.log("your card: " + pile[0]); //used for testing
     var card = pile[0];
     
-    console.log("first letter: " + card.charAt(0)) //used for testing
+    //console.log("first letter: " + card.charAt(0)) //used for testing
     
     firstLetter = card.charAt(0);
     
