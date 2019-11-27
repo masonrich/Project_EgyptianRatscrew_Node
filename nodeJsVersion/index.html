@@ -260,27 +260,32 @@ Date: October 14th, 2019
         
         var name = prompt('What is your desired username?');    //prompt for user - ac
 
-        var player1Name = "Player1Name";    //was going to use so we could change the variable, thought it might be easier - ac
+        //var player1Name = "Player1Name";    //was going to use so we could change the variable, thought it might be easier - ac
         
         $(function () {
-            socket.emit('newUser', name);
+            socket.emit('connected', name);
         });
         
         //sending player object based on player id -ac
-        socket.on('getName', function(data){
-            console.log("this is the data: " + JSON.stringify(data));
-            JSON.stringify(data);   //make data readable
-            var name = data.playerName;
-            console.log("name: " + name);
-            var id = data.playerId;
-            console.log("id: " + id);
-            //check for first user
-            if(id == 1){
-                player1Name = name;
-                
-            }
+//        socket.on('getName', function(data){
+//            console.log("this is the data: " + JSON.stringify(data));
+//            JSON.stringify(data);   //make data readable
+//            var name = data.playerName;
+//            console.log("name: " + name);
+//            var id = data.playerId;
+//            console.log("id: " + id);
+//            //check for first user
+//            if(id == 1){
+//                player1Name = name;
+//                
+//            }
+//        });
+        socket.on('user_joined', function(data){
+            console.log("got here");
+            var name = data.username;
+            var number = data.numUsers;
+            console.log("name and number: " + name + ", " + number);
         });
-        
 
         socket.on('enableButton', () => {
            console.log("made it to toggle.");

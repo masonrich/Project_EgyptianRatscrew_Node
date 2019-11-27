@@ -53,11 +53,13 @@ io.on('connection', function (socket) {
 
     if (connections[0] === null) {
         playerIndex = 0;
+        console.log(playerIndex);
         connections[0] = '' + socket.id;
 
     } else if (connections[1] === null) {
         playerIndex = 1;
-        connections[1] = '' + socket.id;     
+        connections[1] = '' + socket.id; 
+        console.log(playerIndex);
     }
 //    for (let i = 0; i < connections.length; i++) {
 //        if (connections[i] == null) {
@@ -68,41 +70,41 @@ io.on('connection', function (socket) {
     
     
     //function that gets user information doesn't handle nulls or disconnects
-    socket.on('newUser', function(name){
-            var newUser = name;
-            console.log(newUser + ' connected');
-            //io.sockets.emit('connection2', newUser);
-            if(playerIndex == 1){
-                people['1']['playerId'] = playerIndex;
-                people['1']['playerName'] = newUser;
-                for(var key in people){
-                    console.log(key, ":", people);
-                }
-                console.log("people array: " + people['1']['playerName']);
-                io.sockets.emit('getName', people['1']);    //emitting whole object
-                //io.sockets.emit('getName', people['1']['playerName']);
-            }
-            else if(playerIndex == 0){
-                people['0']['playerName'] = newUser;
-                for(var key in people){
-                    console.log(key, ":", people);
-                }
-                console.log("people array: " + people['0']['playerName']);
-                io.sockets.emit('getName', people['0']);    //emitting whole object
-                //io.sockets.emit('getName', people['0']['playerName']);
-            } else if(playerIndex == -1){
-                console.log("game full");
-                //lock out button control for players
-                //check for available slot
-            
-            }
-        
-            socket.on('disconnect', function(){
-                console.log('disconnected');
-                //socket.emit('disconnection', newUser + ' disconnected.');
-                //need to remove user information somewhere
-        });
-    });
+//    socket.on('newUser', function(name){
+//            var newUser = name;
+//            console.log(newUser + ' connected');
+//            //io.sockets.emit('connection2', newUser);
+//            if(playerIndex == 1){
+//                people['1']['playerId'] = playerIndex;
+//                people['1']['playerName'] = newUser;
+//                for(var key in people){
+//                    console.log(key, ":", people);
+//                }
+//                console.log("people array: " + people['1']['playerName']);
+//                io.sockets.emit('getName', people['1']);    //emitting whole object
+//                //io.sockets.emit('getName', people['1']['playerName']);
+//            }
+//            else if(playerIndex == 0){
+//                people['0']['playerName'] = newUser;
+//                for(var key in people){
+//                    console.log(key, ":", people);
+//                }
+//                console.log("people array: " + people['0']['playerName']);
+//                io.sockets.emit('getName', people['0']);    //emitting whole object
+//                //io.sockets.emit('getName', people['0']['playerName']);
+//            } else if(playerIndex == -1){
+//                console.log("game full");
+//                //lock out button control for players
+//                //check for available slot
+//            
+//            }
+//        
+//            socket.on('disconnect', function(){
+//                console.log('disconnected');
+//                //socket.emit('disconnection', newUser + ' disconnected.');
+//                //need to remove user information somewhere
+//        });
+//    });
     
     /********random stuff Alec tried*******/
 //    socket.on('getName', function(name){
@@ -139,6 +141,7 @@ io.on('connection', function (socket) {
     
     //when the client emits 'add user', this listens and executes(might mess with the current prompt implementation -ac)
     socket.on('connected', (username) => {
+        var numUsers = -1;  //start at 0
         if (addedUser) return;
         
         socket.username = username;
@@ -147,8 +150,9 @@ io.on('connection', function (socket) {
         socket.emit('login', {
             numUsers: numUsers
         });
+        console.log("numUsers:" + numUsers);
         
-        socket.broadcast.emit('user joined', {
+        socket.broadcast.emit('user_joined', {    //change to a multidimensional array?
             username: socket.username,
             numUsers: numUsers
         });
@@ -201,6 +205,7 @@ io.on('connection', function (socket) {
     
     //disconnects player (might mess with the current prompt implementation -ac)
     socket.on('disconnect', () => {
+        var numUsers = -1;  //start at 0
         if (addedUser) {
             --numUsers;
             
