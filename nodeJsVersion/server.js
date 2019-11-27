@@ -9,6 +9,7 @@ var express = require('express');
 var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
+var people = { '1':{}, '0':{}}; //the people array storing index, name and turn
 
 //var Redis = require('ioredis');
 //var redis = new Redis();
@@ -57,14 +58,69 @@ io.on('connection', function (socket) {
         }
     }
     
+    
+    //function that gets user information doesn't handle nulls or disconnects
+    socket.on('newUser', function(name){
+            var newUser = name;
+            console.log(newUser + ' connected');
+            //io.sockets.emit('connection2', newUser);
+            if(playerIndex == 1){
+                people['1']['playerId'] = playerIndex;
+                people['1']['playerName'] = newUser;
+                for(var key in people){
+                    console.log(key, ":", people);
+                }
+                console.log("people array: " + people['1']['playerName']);
+                io.sockets.emit('getName', people['1']);    //emitting whole object
+                //io.sockets.emit('getName', people['1']['playerName']);
+            }
+            else if(playerIndex == 0){
+                people['0']['playerName'] = newUser;
+                for(var key in people){
+                    console.log(key, ":", people);
+                }
+                console.log("people array: " + people['0']['playerName']);
+                io.sockets.emit('getName', people['0']);    //emitting whole object
+                //io.sockets.emit('getName', people['0']['playerName']);
+            } else if(playerIndex == -1){
+                console.log("game full");
+                //lock out button control for players
+                //check for available slot
+            
+            }
+        
+            socket.on('disconnect', function(){
+                console.log('disconnected');
+                //socket.emit('disconnection', newUser + ' disconnected.');
+                //need to remove user information somewhere
+        });
+    });
+    
+    /********random stuff I tried*******/
+//    socket.on('getName', function(name){
+//        io.sockets.emit('nombre');
+//        //player.push(name);
+//    });
+    
+    //socket.on('connection', function(player){
+//    socket.on('join', function(name){
+//            people[socket.id] = name;
+//            socket.emit('update',"You have connected to the server.");
+//            io.sockets.emit('update', name + " has joined the server.");
+//            io.sockets.emit('update-people', people);
+//    });
+    //});
+    
     //console.log(connections);
     
-    socket.emit('player-number', playerIndex);
+//    socket.on('player-number', function(data){
+//        io.socket.emit('player-name');
+//    });
     
     //needs to be here, SUPER IMPORTANT
     connections[playerIndex] = socket;
     
-    console.log(playerIndex);
+    console.log("the player index: ", playerIndex);
     
     if (playerIndex == -1) return;
     
@@ -74,22 +130,24 @@ io.on('connection', function (socket) {
     //    socket.emit(channel, message);
     //});
 
+    /*******Alec commented out because it was messing with player indexing***********/
     //when the client emits 'add user', this listens and executes
-    socket.on('add user', (username) => {
-        if (addedUser) return;
-        
-        socket.username = username;
-        ++numUsers;
-        addedUser = true;
-        socket.emit('login', {
-            numUsers: numUsers
-        });
-        
-        socket.broadcast.emit('user joined', {
-            username: socket.username,
-            numUsers: numUsers
-        });
-    });
+//    socket.on('add user', (username) => {
+//        console.log('inside add user');
+//        if (addedUser) return;
+//        
+//        socket.username = username;
+//        ++numUsers;
+//        addedUser = true;
+//        socket.emit('login', {
+//            numUsers: numUsers
+//        });
+//        
+//        io.sockets.emit('user joined', {
+//            username: socket.username,
+//            numUsers: numUsers
+//        });
+//    });
     
     socket.on('slap', function(data) {
         //data comes from the browser
@@ -119,19 +177,26 @@ io.on('connection', function (socket) {
         socket.emit('game-ended', "stuff");
     });
     
-    socket.on('disconnect', () => {
-        if (addedUser) {
-            --numUsers;
-            
-            //echo globally that this client has left
-            socket.broadcast.emi('user left', {
-                username: socket.username,
-                numUsers: numUsers
-            });
-        }
-        console.log('player ' + playerIndex + ' disconnected');
-        connections[playerIndex] = null;
-    });
+    /********Alec commented out because it was messing with player indexing****************/
+//    socket.on('disconnect', () => {
+//        if (addedUser) {
+//            --numUsers;
+//            
+//            //echo globally that this client has left
+//            io.sockets.emit('user left', {
+//                username: socket.username,
+//                numUsers: numUsers
+//            });
+//        }
+//        console.log('player ' + playerIndex + ' disconnected');
+//        connections[playerIndex] = null;
+//    });
+    
+//    socket.on('disconnect', function(){
+//        io.sockets.emit('update', people[socket.id] + " has left the server.");
+//        delete people[socket.id];
+//        io.sockets.emit('update-people', people);
+//    });
 });
 
 
@@ -239,6 +304,7 @@ function route(server) {
             
         response.send(temp);
     });
+    
 }
 
 //JSON.stringify();     packages up an array for client side
