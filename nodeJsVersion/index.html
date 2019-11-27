@@ -330,7 +330,6 @@ Date: October 14th, 2019
             });
             
             socket.emit('start-game');
-            playerDisable();
             
                 //socket.on('connection', function(){
 //            socket.on('game-started', function(){
@@ -368,6 +367,7 @@ Date: October 14th, 2019
                       playerTwoTurn = true;
                  }
                 
+                 playerDisable();
             });
         }
         
