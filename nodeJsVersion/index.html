@@ -329,6 +329,7 @@ Date: October 14th, 2019
             });
             
             socket.emit('start-game');
+            playerDisable();
             
                 //socket.on('connection', function(){
 //            socket.on('game-started', function(){
@@ -457,14 +458,19 @@ Date: October 14th, 2019
         }
         
         function playerDisable() {
-            document.getElementById("PlayCardButton").style.opacity = .5;  
-            document.getElementById("PlayCardButton").disabled = true;
+             $.get('/playerTurnSocket', function(data, status) {
+                
+                if (data !== socket.id) {
+                    document.getElementById("PlayCardButton").style.opacity = .5;  
+                    document.getElementById("PlayCardButton").disabled = true;
+                }
+             });
         }
 
         function playerEnable() {
             
             $.get('/playerTurnSocket', function(data, status) {
-                console.log('playerTurn: ' + data);
+                
                 if (data === socket.id) {
                     document.getElementById("PlayCardButton").style.opacity = 1.0;  
                     document.getElementById("PlayCardButton").disabled = false;
@@ -565,6 +571,8 @@ Date: October 14th, 2019
                      
                  //ToggleGameStart();
                  document.getElementById("label").innerHTML = "";
+                     
+                 playerDisable();
 
                 }, 1300);
                 
