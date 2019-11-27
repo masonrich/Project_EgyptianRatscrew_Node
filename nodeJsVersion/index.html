@@ -289,7 +289,6 @@ Date: October 14th, 2019
         });
 
         socket.on('enableButton', () => {
-           console.log("made it to toggle.");
            playerEnable();
         });
     
@@ -388,7 +387,6 @@ Date: October 14th, 2019
             document.getElementById("label").innerHTML = "";
             
             if (!start) {
-                console.log('bleh');
                 return;
             }
                 
@@ -465,8 +463,15 @@ Date: October 14th, 2019
         }
 
         function playerEnable() {
-            document.getElementById("PlayCardButton").style.opacity = 1.0;  
-            document.getElementById("PlayCardButton").disabled = false;
+            
+            $.get('/playerTurnSocket', function(data, status) {
+                console.log('playerTurn: ' + data);
+                if (data === socket.id) {
+                    document.getElementById("PlayCardButton").style.opacity = 1.0;  
+                    document.getElementById("PlayCardButton").disabled = false;
+                }
+            });
+
         }
         
         function GetCount() {
