@@ -186,7 +186,14 @@ io.on('connection', function (socket) {
             --numUsers;
             
             //echo globally that this client has left
-            socket.broadcast.emi('user left', {
+            socket.broadcast.emit('user left', {
+                username: socket.username,
+                numUsers: numUsers
+            });
+        }
+        console.log('player ' + playerIndex + ' disconnected');
+        connections[playerIndex] = null;
+    });
 });
 
 
