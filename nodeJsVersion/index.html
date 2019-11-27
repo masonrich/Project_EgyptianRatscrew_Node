@@ -203,14 +203,95 @@ Date: October 14th, 2019
             DisplayTop5(); 
         });
         
+        socket.on('card', function(data){
+            console.log("Player connected");
+        });
+        
         socket.on('game-started', function(data) {
             StartGameHelper(); 
         });
         
+
+        /************just random stuff I tried**********/
+//        
+//        socket.on('update', function(data){
+//            
+//        });
+//        
+//        socket.on("update-people", function(people){
+//            if(ready) {
+//                //$("#people").empty();
+//                console.log(people);
+//                $.each(people, function(clientid, name) {
+//                    console.log(people);
+//                });
+//            }
+//        });
+//        
+//        socket.on("disconnect", function(){
+//            console.log("The server is not available");
+//
+//        });
+//        
+//        
+//        $('#start-game').click(function){
+//            person_name = prompt("Enter user name");
+//            while(person_name === null || person_name === ""){
+//                    console.log("invalid name");
+//                    person_name = prompt("Enter user name");
+//                    if(person_name != null && person_name != ""){       //probably could be better
+//                        break;
+//                    }
+//                }
+//            socket.emit('join', person_name);
+//            ready = true;
+//            
+//            
+//        }
+//        
+//        socket.on('entrance', function(data){
+//            alert(data.message);
+//            console.log('made it aqui');
+//            socket.on('nombre',function(){
+//                console.log('made it HERE');
+//               socket.emit('getName', prompt("what is your name?")); 
+//            });
+//        });
+        
+        var name = prompt('What is your desired username?');    //prompt for user - ac
+
+        //var player1Name = "Player1Name";    //was going to use so we could change the variable, thought it might be easier - ac
+        
+        $(function () {
+            socket.emit('connected', name);
+        });
+        
+        //sending player object based on player id -ac
+//        socket.on('getName', function(data){
+//            console.log("this is the data: " + JSON.stringify(data));
+//            JSON.stringify(data);   //make data readable
+//            var name = data.playerName;
+//            console.log("name: " + name);
+//            var id = data.playerId;
+//            console.log("id: " + id);
+//            //check for first user
+//            if(id == 1){
+//                player1Name = name;
+//                
+//            }
+//        });
+        socket.on('user_joined', function(data){
+            console.log("got here");
+            var name = data.username;
+            var number = data.numUsers;
+            console.log("name and number: " + name + ", " + number);
+        });
+
         socket.on('enableButton', () => {
            playerEnable();
         });
     
+
         function SetUser() {
             
             socket.on('connection', function (data) {
@@ -237,7 +318,7 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML =  document.getElementById("Player1Name").innerHTML + " goes first"; 
+                       document.getElementById("label").innerHTML =  document.getElementById(player1Name).innerHTML + " goes first"; 
                        playerOneTurn = true;
 
                  } else {
@@ -277,7 +358,7 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML =  document.getElementById("Player1Name").innerHTML + " goes first"; 
+                       document.getElementById("label").innerHTML =  document.getElementById(player1Name).innerHTML + " goes first"; 
                        playerOneTurn = true;
 
                  } else {
@@ -582,7 +663,7 @@ Date: October 14th, 2019
                    return;
                 
                 if (data == "0") {
-                    document.getElementById("label").innerHTML = document.getElementById("Player1Name").innerHTML + " wins!";
+                    document.getElementById("label").innerHTML = document.getElementById(player1Name).innerHTML + " wins!";
                 } else {
                     document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
                 } 
@@ -615,6 +696,10 @@ Date: October 14th, 2019
              $.get('/end', function(data, status){
                  
              });
+        }
+        
+        function getName() {
+            
         }
         
     
