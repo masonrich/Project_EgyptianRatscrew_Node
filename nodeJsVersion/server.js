@@ -113,13 +113,14 @@ io.on('connection', function (socket) {
         console.log('id                           ' + id);
         console.log('connections at 0: ' + connections[0]);
         console.log('connections at 1: ' + connections[1]);
-       if (id === connections[0]) {
-           console.log("enable 1");
-           socket.to(connections[1]).emit('enableButton');
-       } else if (id === connections[1]) {
-           console.log("enable 0");
-           socket.to(connections[0]).emit('enableButton');
-       }
+//       if (id === connections[0]) {
+//           console.log("enable 1");
+//           socket.to(connections[1]).emit('enableButton');
+//       } else if (id === connections[1]) {
+//           console.log("enable 0");
+//           socket.to(connections[0]).emit('enableButton');
+//       }
+        io.sockets.emit('enableButton')
     });
     
     socket.on('play-card', function(data) {
@@ -263,7 +264,19 @@ function route(server) {
     });
     
     server.get('/playerTurn', function(request, response, next) {
-       let turn = game.playerTurn();+
+       let turn = game.playerTurn();
+           
+        response.send(turn);
+    });
+    
+    server.get('/playerTurnSocket', function(request, response, next) {
+       let turn = game.playerTurn();
+        
+        if (turn === '0') {
+            turn = connections[0];
+        } else if (turn === '1') {
+            turn = connections[1];
+        }
            
         response.send(turn);
     });
