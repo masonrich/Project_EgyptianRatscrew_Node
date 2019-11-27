@@ -50,14 +50,21 @@ io.on('connection', function (socket) {
     var addedUser = false;
     
     let playerIndex = -1;
-    
-    for (var i in connections) {
-        if (connections[i] == null) {
-            playerIndex = i;
 
-            conecctions[i] = socket.id;
-        }
+    if (connections[0] === null) {
+        playerIndex = 0;
+        connections[0] = '' + socket.id;
+
+    } else if (connections[1] === null) {
+        playerIndex = 1;
+        connections[1] = '' + socket.id;     
     }
+//    for (let i = 0; i < connections.length; i++) {
+//        if (connections[i] == null) {
+//            playerIndex = i;
+//            connections[i] = socket.id;
+//        }
+//    }
     
     
     //function that gets user information doesn't handle nulls or disconnects
@@ -119,11 +126,10 @@ io.on('connection', function (socket) {
 //    });
     
     //needs to be here, SUPER IMPORTANT
-    connections[playerIndex] = socket;
+    //connections[playerIndex] = socket;
     
-    console.log("the player index: ", playerIndex);
     
-    if (playerIndex == -1) return;
+    if (playerIndex === -1) return;
     
 
    // redis.on("message", function(channel, message) {
@@ -156,16 +162,29 @@ io.on('connection', function (socket) {
         socket.emit('slapped', "stuff");
     });
     
-    socket.on('play-card', function(v) {
+    socket.on('toggleButton', (id) => {
+        console.log('id                           ' + id);
+        console.log('connections at 0: ' + connections[0]);
+        console.log('connections at 1: ' + connections[1]);
+       if (id === connections[0]) {
+           console.log("enable 1");
+           socket.to(connections[1]).emit('enableButton');
+       } else if (id === connections[1]) {
+           console.log("enable 0");
+           socket.to(connections[0]).emit('enableButton');
+       }
+    });
+    
+    socket.on('play-card', function(data) {
         //data comes from the browser
-            io.sockets.emit('card-played', v);
+            io.sockets.emit('card-played', data);
     });
     
     socket.on('start-game', function(data) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        io.sockets.emit('game-started', "game start yep");
+        io.sockets.emit('game-started');
     });
     
     socket.on('end-game', function(data) {
