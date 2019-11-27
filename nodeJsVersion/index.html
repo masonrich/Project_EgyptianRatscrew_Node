@@ -285,6 +285,7 @@ Date: October 14th, 2019
             var name = data.username;
             var number = data.numUsers;
             console.log("name and number: " + name + ", " + number);
+            //socket.emit('gotName', name, number);
         });
 
         socket.on('enableButton', () => {
@@ -319,7 +320,7 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML =  document.getElementById(player1Name).innerHTML + " goes first"; 
+                       document.getElementById("label").innerHTML = document.getElementById(player1Name).innerHTML + " goes first"; 
                        playerOneTurn = true;
 
                  } else {
