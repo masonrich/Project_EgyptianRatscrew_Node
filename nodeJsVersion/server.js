@@ -53,7 +53,8 @@ io.on('connection', function (socket) {
     for (var i in connections) {
         if (connections[i] == null) {
             playerIndex = i;
-            connections[i] == playerIndex;
+
+            conecctions[i] = socket.id;
         }
     }
     
@@ -74,8 +75,9 @@ io.on('connection', function (socket) {
     //    socket.emit(channel, message);
     //});
 
+    
     //when the client emits 'add user', this listens and executes
-    socket.on('add user', (username) => {
+    socket.on('connected', (username) => {
         if (addedUser) return;
         
         socket.username = username;
@@ -91,6 +93,7 @@ io.on('connection', function (socket) {
         });
     });
     
+    
     socket.on('slap', function(data) {
         //data comes from the browser
         
@@ -98,18 +101,16 @@ io.on('connection', function (socket) {
         socket.emit('slapped', "stuff");
     });
     
-    socket.on('play-card', function(data) {
+    socket.on('play-card', function(v) {
         //data comes from the browser
-        
-        //when emitting, 2nd paramater is data we send to client
-        io.sockets.emit('card-played');
+            io.sockets.emit('card-played', v);
     });
     
     socket.on('start-game', function(data) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        io.sockets.emit('game-started');
+        io.sockets.emit('game-started', "game start yep");
     });
     
     socket.on('end-game', function(data) {
@@ -117,6 +118,11 @@ io.on('connection', function (socket) {
         
         //when emitting, 2nd paramater is data we send to client
         socket.emit('game-ended', "stuff");
+    });
+    
+    socket.on('pile-won', function () {
+       
+        io.sockets.emit('card-played');
     });
     
     socket.on('disconnect', () => {
@@ -169,12 +175,7 @@ function route(server) {
         response.send(temp);
         
     });
-    
-//    server.get('/getWait', function(request, response, next) {
-//       game.ToggleGameStart();
-//        
-//    });
-    
+
     server.get('/displayTop5', function(request, response, next) {
        let myPile = game.DisplayTop5();
         
@@ -238,6 +239,12 @@ function route(server) {
        let temp = game.GetGameOver();
             
         response.send(temp);
+    });
+    
+    server.get('/playerTurn', function(request, response, next) {
+       let turn = game.playerTurn();+
+           
+        response.send(turn);
     });
 }
 
