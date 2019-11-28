@@ -284,9 +284,15 @@ Date: October 14th, 2019
 //        });
         socket.on('user_joined', function(data){
             console.log("got here");
-            var name = data.username;
-            var number = data.numUsers;
+            let name = data.username;
+            let number = data.numUsers;
             console.log("name and number: " + name + ", " + number);
+            //if(data.numUsers === 0){
+
+                    //document.getElementById("label").innerHTML = //document.getElementById("player1Name").innerHTML
+            //}else{
+                //updateTags(name);
+            //}
             //socket.emit('gotName', name, number);
         });
 
@@ -321,7 +327,7 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML = document.getElementById(player1Name).innerHTML + " goes first"; 
+                       document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " goes first"; 
                        playerOneTurn = true;
 
                  } else {
@@ -332,6 +338,8 @@ Date: October 14th, 2019
             });
             
             socket.emit('start-game');
+
+            playerDisable();
             
                 //socket.on('connection', function(){
 //            socket.on('game-started', function(){
@@ -361,7 +369,7 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML =  document.getElementById(player1Name).innerHTML + " goes first"; 
+                       document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " goes first"; 
                        playerOneTurn = true;
 
                  } else {
@@ -369,6 +377,7 @@ Date: October 14th, 2019
                       playerTwoTurn = true;
                  }
                 
+                 playerDisable();
             });
         }
         
@@ -460,14 +469,19 @@ Date: October 14th, 2019
         }
         
         function playerDisable() {
-            document.getElementById("PlayCardButton").style.opacity = .5;  
-            document.getElementById("PlayCardButton").disabled = true;
+             $.get('/playerTurnSocket', function(data, status) {
+                
+                if (data !== socket.id) {
+                    document.getElementById("PlayCardButton").style.opacity = .5;  
+                    document.getElementById("PlayCardButton").disabled = true;
+                }
+             });
         }
 
         function playerEnable() {
             
             $.get('/playerTurnSocket', function(data, status) {
-                console.log('playerTurn: ' + data);
+                
                 if (data === socket.id) {
                     document.getElementById("PlayCardButton").style.opacity = 1.0;  
                     document.getElementById("PlayCardButton").disabled = false;
@@ -568,6 +582,8 @@ Date: October 14th, 2019
                      
                  //ToggleGameStart();
                  document.getElementById("label").innerHTML = "";
+                     
+                 playerDisable();
 
                 }, 1300);
                 
@@ -666,7 +682,7 @@ Date: October 14th, 2019
                    return;
                 
                 if (data == "0") {
-                    document.getElementById("label").innerHTML = document.getElementById(player1Name).innerHTML + " wins!";
+                    document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " wins!";
                 } else {
                     document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
                 } 
@@ -701,9 +717,10 @@ Date: October 14th, 2019
              });
         }
         
-        function getName() {
-            
-        }
+        
+//        function getName(){
+//            $.get('/getName',)
+//        }
         
     
 //        socket.on('player-number', function (playerNumber) {

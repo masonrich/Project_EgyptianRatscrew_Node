@@ -9,10 +9,9 @@ var express = require('express');
 var path = require('path');
 var game = require('./game');
 var expressSession = require('express-session');
+var numUsers = -1;  //start at 0
 var people = { '1':{}, '0':{}}; //the people array storing index, name and turn
 
-//var Redis = require('ioredis');
-//var redis = new Redis();
 
 
 //express is a package that node uses
@@ -141,9 +140,9 @@ io.on('connection', function (socket) {
     
     //when the client emits 'add user', this listens and executes(might mess with the current prompt implementation -ac)
     socket.on('connected', (username) => {
-        var numUsers = -1;  //start at 0
         if (addedUser) return;
         
+        // we store the username in the socket session for this client
         socket.username = username;
         ++numUsers;
         addedUser = true;
@@ -152,7 +151,7 @@ io.on('connection', function (socket) {
         });
         console.log("numUsers:" + numUsers);
         
-        //might need to use io.sockets.emit so we have access to info, not sure
+        // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user_joined', {    //change to a multidimensional array?
             username: socket.username,
             numUsers: numUsers
@@ -186,6 +185,11 @@ io.on('connection', function (socket) {
             io.sockets.emit('card-played', data);
     });
     
+    //probably doesn't do anything - AC
+    socket.on('gotName', function(data){
+       io.sockets.emit('names', data); 
+    });
+    
     socket.on('start-game', function(data) {
         //data comes from the browser
         
@@ -205,9 +209,8 @@ io.on('connection', function (socket) {
         io.sockets.emit('card-played');
     });
     
-    //disconnects player (might mess with the current prompt implementation -ac)
+    //disconnects player
     socket.on('disconnect', () => {
-        var numUsers = -1;  //start at 0
         if (addedUser) {
             --numUsers;
             
@@ -340,6 +343,15 @@ function route(server) {
         }
            
         response.send(turn);
+    });
+    
+    server.get('/playerName', function(request, response, next){
+       let name = game.getName();
+        let turn = game.playerTurn();
+        
+        //if (turn === '0') {
+        //    name = 
+        //}
     });
 }
 

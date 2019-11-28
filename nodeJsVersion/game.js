@@ -1,6 +1,6 @@
 //TODO: Once 2 player stuff works, we need slap to determine who slapped, so pile goes to correct player / correct player places 2 cards on bottom of pile on incorrecty slap
 
-var deck, player1Deck, player2Deck, pile, playerTurn, player1Name, player2Name, pileCurrentlySlappable, pileCount, hadPreviousFaceCard, wait;
+var deck, player1Deck, player2Deck, pile, playerTurn, playerName, pileCurrentlySlappable, pileCount, hadPreviousFaceCard, wait;
 
 
 /*
@@ -549,11 +549,17 @@ function EndGame(){
     count = 0;
 }
 
+function getName(){
+    return '' + playerName;
+}
 
-
+//function to update tags?
+//function updateTags(){
+//    
+//}
 //function waitingPlayerTwo(show) {
 //  messageVisibility('.waiting-message', show)
 //}
 
 //add functions here that you need to access in html or whatever -- mike 2019
-module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart, updatePlayerOneScore: updatePlayerOneScore, updatePlayerTwoScore: updatePlayerTwoScore, GetGameOver: GetGameOver, playerTurn: playerTurn}
+module.exports = { StartGame: StartGame, PlayCard: PlayCard, slap: slap, GetWait: GetWait, ToggleGameStart: ToggleGameStart, HasPreviousFaceCard: HasPreviousFaceCard, DisplayTop5: DisplayTop5, IsPileSlappable: IsPileSlappable, ClearPile: ClearPile, emptyPile: emptyPile, GetCount: GetCount, EndGame: EndGame, getGameStart: getGameStart, updatePlayerOneScore: updatePlayerOneScore, updatePlayerTwoScore: updatePlayerTwoScore, GetGameOver: GetGameOver, playerTurn: playerTurn, getName: getName}
