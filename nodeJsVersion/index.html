@@ -118,11 +118,11 @@ Date: October 14th, 2019
                               <div id="cardHolder" class="hand fan active-hand" style="width: 318px; height: 154px;">
 
                              
-                                    <img class="card" id="card1" src="/cards/QS.svg" style="left: 50px; top: 6px; transform: rotate(350deg) translateZ(0px);">
-                                    <img class="card" id="card2" src="/cards/JS.svg" style="left: 68px; top: 4px; transform: rotate(352deg) translateZ(0px);">
-                                    <img class="card" id="card3" src="/cards/10S.svg" style="left: 86px; top: 2px; transform: rotate(355deg) translateZ(0px);">
-                                    <img class="card" id="card4" src="/cards/9H.svg" style="left: 104px; top: 0px; transform: rotate(357deg) translateZ(0px);">
-                                    <img class="card" id="card5" src="/cards/3H.svg" style="left: 122px; top: 0px; transform: rotate(360deg) translateZ(0px);">
+                                    <img class="card" id="card1" src="/cards/QS.svg" style="left: 50px; top: 6px; transform: rotate(350deg) translateZ(0px); display: none;">
+                                    <img class="card" id="card2" src="/cards/JS.svg" style="left: 68px; top: 4px; transform: rotate(352deg) translateZ(0px); display: none;">
+                                    <img class="card" id="card3" src="/cards/10S.svg" style="left: 86px; top: 2px; transform: rotate(355deg) translateZ(0px); display: none;">
+                                    <img class="card" id="card4" src="/cards/9H.svg" style="left: 104px; top: 0px; transform: rotate(357deg) translateZ(0px); display: none;">
+                                    <img class="card" id="card5" src="/cards/3H.svg" style="left: 122px; top: 0px; transform: rotate(360deg) translateZ(0px); display: none;">
                                   
                        
 	                           </div>
@@ -164,9 +164,7 @@ Date: October 14th, 2019
        </section>
       
       
-           
-        <input class="inputMessage" placeholder="type here for name"/>
-           
+                      
       
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -201,6 +199,8 @@ Date: October 14th, 2019
         socket.on('card-played', (v) => {
             console.log(v);
             DisplayTop5(); 
+            updatePlayerOneScore();
+            updatePlayerTwoScore();
         });
         
         socket.on('card', function(data){
@@ -209,6 +209,26 @@ Date: October 14th, 2019
         
         socket.on('game-started', function(data) {
             StartGameHelper(); 
+        });
+        
+        socket.on('slapped', function(data) {
+            $.get('/IsPileSlappable', function(data, status){
+                callSlap(data);
+                console.log("Got to socket on slapped");
+                console.log("logging data: " + data);
+            });  
+            DisplayTop5(); 
+            updatePlayerOneScore();
+            updatePlayerTwoScore();
+        });
+        
+                
+        socket.on('correctSlapped', function(data) {
+            
+            document.getElementById("label").innerHTML = "SLAP!";
+            ClearPile();
+            DisplayTop5(); 
+    
         });
         
 
@@ -420,22 +440,27 @@ Date: October 14th, 2019
 
                 if (pile.length > 0) {
                     document.getElementById("card5").src = "cards/" + pile[0] + ".svg";
+                    document.getElementById("card5").style.display = "block";
                 }
 
                 if (pile.length > 1) {
                    document.getElementById("card4").src = "cards/" + pile[1] + ".svg";
+                    document.getElementById("card4").style.display = "block";
                 }
 
                 if (pile.length > 2) {
                      document.getElementById("card3").src = "cards/" + pile[2] + ".svg";
+                    document.getElementById("card3").style.display = "block";
                 }
 
                 if (pile.length > 3) {
                     document.getElementById("card2").src = "cards/" + pile[3] + ".svg";
+                    document.getElementById("card2").style.display = "block";
                 }
 
                 if (pile.length > 4) {
                     document.getElementById("card1").src = "cards/" + pile[4] + ".svg";
+                    document.getElementById("card1").style.display = "block";
                 } 
 
                 ShowTurn();
@@ -570,6 +595,12 @@ Date: October 14th, 2019
                  document.getElementById("card3").src = "cards/blank.jpeg"; 
                  document.getElementById("card2").src = "cards/blank.jpeg"; 
                  document.getElementById("card1").src = "cards/blank.jpeg"; 
+                 document.getElementById("card5").style.display = "none"; 
+                 document.getElementById("card4").style.display = "none"; 
+                 document.getElementById("card3").style.display = "none"; 
+                 document.getElementById("card2").style.display = "none";  
+                 document.getElementById("card1").style.display = "none"; 
+
                 
                  document.getElementById("slapButton").style.opacity = 1;
                  document.getElementById("PlayCardButton").style.opacity = 1;  
@@ -589,7 +620,12 @@ Date: October 14th, 2019
                       document.getElementById("card4").src = "cards/blank.jpeg"; 
                       document.getElementById("card3").src = "cards/blank.jpeg"; 
                       document.getElementById("card2").src = "cards/blank.jpeg"; 
-                      document.getElementById("card1").src = "cards/blank.jpeg";    
+                      document.getElementById("card1").src = "cards/blank.jpeg";  
+                      document.getElementById("card5").style.display = "none"; 
+                      document.getElementById("card4").style.display = "none"; 
+                      document.getElementById("card3").style.display = "none"; 
+                      document.getElementById("card2").style.display = "none";  
+                      document.getElementById("card1").style.display = "none"; 
                 }
                 
 
@@ -633,6 +669,8 @@ Date: October 14th, 2019
                 
                 callSlap(slappable);
                 
+                socket.emit('slap', '' + socket.id);
+                
                  updatePlayerOneScore();
                  updatePlayerTwoScore();
 
@@ -646,6 +684,7 @@ Date: October 14th, 2019
             
             
             if (slappable) {
+                socket.emit('correctSlap', '' + socket.id);
                 document.getElementById("label").innerHTML = "SLAP!";
             }
             
@@ -665,7 +704,12 @@ Date: October 14th, 2019
                   document.getElementById("card4").src = "cards/blank.jpeg"; 
                   document.getElementById("card3").src = "cards/blank.jpeg"; 
                   document.getElementById("card2").src = "cards/blank.jpeg"; 
-                  document.getElementById("card1").src = "cards/blank.jpeg";   
+                  document.getElementById("card1").src = "cards/blank.jpeg";  
+                  document.getElementById("card5").style.display = "none"; 
+                  document.getElementById("card4").style.display = "none"; 
+                  document.getElementById("card3").style.display = "none"; 
+                  document.getElementById("card2").style.display = "none";  
+                  document.getElementById("card1").style.display = "none"; 
                 }
                 
             });
