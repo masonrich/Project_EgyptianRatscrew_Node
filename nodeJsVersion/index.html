@@ -201,6 +201,8 @@ Date: October 14th, 2019
         socket.on('card-played', (v) => {
             console.log(v);
             DisplayTop5(); 
+            updatePlayerOneScore();
+            updatePlayerTwoScore();
         });
         
         socket.on('card', function(data){
