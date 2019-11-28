@@ -202,7 +202,7 @@ io.on('connection', function (socket) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        socket.emit('game-ended', "stuff");
+        io.sockets.emit('game-ended', data);
     });
     
     socket.on('pile-won', function () {
