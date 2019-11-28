@@ -282,10 +282,16 @@ Date: October 14th, 2019
 //        });
         socket.on('user_joined', function(data){
             console.log("got here");
-            var name = data.username;
-            var number = data.numUsers;
+            let name = data.username;
+            let number = data.numUsers;
             console.log("name and number: " + name + ", " + number);
-            socket.emit('gotName', name, number);
+            //if(data.numUsers === 0){
+
+                    //document.getElementById("label").innerHTML = //document.getElementById("player1Name").innerHTML
+            //}else{
+                //updateTags(name);
+            //}
+            //socket.emit('gotName', name, number);
         });
 
         socket.on('enableButton', () => {
@@ -330,6 +336,7 @@ Date: October 14th, 2019
             });
             
             socket.emit('start-game');
+
             playerDisable();
             
                 //socket.on('connection', function(){
@@ -360,7 +367,7 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML =  document.getElementById("player1Name").innerHTML + " goes first"; 
+                       document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " goes first"; 
                        playerOneTurn = true;
 
                  } else {
@@ -672,7 +679,7 @@ Date: October 14th, 2019
                    return;
                 
                 if (data == "0") {
-                    document.getElementById("label").innerHTML = document.getElementById(player1Name).innerHTML + " wins!";
+                    document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " wins!";
                 } else {
                     document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
                 } 
@@ -707,9 +714,12 @@ Date: October 14th, 2019
              });
         }
         
-        function getName() {
-            
-        }
+//        function updateTags() {
+//            $.get('/updateTags', function(data, status){
+//                
+//            });
+//            
+//        }
         
     
 //        socket.on('player-number', function (playerNumber) {

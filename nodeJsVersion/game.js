@@ -549,8 +549,10 @@ function EndGame(){
     count = 0;
 }
 
-
-
+//function to update tags?
+//function updateTags(){
+//    
+//}
 //function waitingPlayerTwo(show) {
 //  messageVisibility('.waiting-message', show)
 //}
