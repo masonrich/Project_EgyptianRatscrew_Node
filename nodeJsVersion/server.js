@@ -167,6 +167,14 @@ io.on('connection', function (socket) {
 
     });
     
+    socket.on('correctSlap', function(data) {
+        //data comes from the browser
+        
+        //when emitting, 2nd paramater is data we send to client
+        io.sockets.emit('correctSlapped', "stuff");
+
+    });
+    
     socket.on('toggleButton', (id) => {
         console.log('id                           ' + id);
         console.log('connections at 0: ' + connections[0]);
