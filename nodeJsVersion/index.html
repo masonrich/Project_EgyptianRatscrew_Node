@@ -257,11 +257,9 @@ Date: October 14th, 2019
 //               socket.emit('getName', prompt("what is your name?")); 
 //            });
 //        });
-        
         var name = prompt('What is your desired username?');    //prompt for user - ac
 
         //var player1Name = "Player1Name";    //was going to use so we could change the variable, thought it might be easier - ac
-        
         $(function () {
             socket.emit('connected', name);
         });
@@ -285,12 +283,12 @@ Date: October 14th, 2019
             let name = data.username;
             let number = data.numUsers;
             console.log("name and number: " + name + ", " + number);
-            //if(data.numUsers === 0){
-
-                    //document.getElementById("label").innerHTML = //document.getElementById("player1Name").innerHTML
-            //}else{
-                //updateTags(name);
-            //}
+//            if(data.numUsers === '0'){
+//                    document.getElementById("Player1Name").innerHTML = name;
+//                    //document.getElementById("label").innerHTML = //document.getElementById("player1Name").innerHTML
+//            }else{
+//                //updateTags(name);
+//            }
             //socket.emit('gotName', name, number);
         });
 

@@ -99,8 +99,6 @@ function BuildDeck() {
 }
 
 
-
-
 //find first player at game start
 function whoFirst() {
     var random = Math.random();

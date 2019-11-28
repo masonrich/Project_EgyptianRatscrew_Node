@@ -152,7 +152,7 @@ io.on('connection', function (socket) {
         console.log("numUsers:" + numUsers);
         
         // echo globally (all clients) that a person has connected
-        socket.broadcast.emit('user_joined', {    //change to a multidimensional array?
+        io.sockets.emit('user_joined', {    //change to a multidimensional array?
             username: socket.username,
             numUsers: numUsers
         });
@@ -215,7 +215,7 @@ io.on('connection', function (socket) {
             --numUsers;
             
             //echo globally that this client has left
-            socket.broadcast.emit('user left', {
+            io.sockets.emit('user left', {
                 username: socket.username,
                 numUsers: numUsers
             });
@@ -345,13 +345,12 @@ function route(server) {
         response.send(turn);
     });
     
-    server.get('/playerName', function(request, response, next){
+    server.get('/getName', function(request, response, next){
        let name = game.getName();
-        let turn = game.playerTurn();
+        //let turn = game.playerTurn();
         
-        //if (turn === '0') {
-        //    name = 
-        //}
+        response.send(temp);
+//        if (turn === '0')
     });
 }
 
