@@ -1,7 +1,6 @@
 //TODO: REMINDER!!!!!!! Don't forget to pull files up a level in directory for deployment.
 
 
-
 //modules
 var http = require('http');
 var fs = require('fs');
@@ -163,7 +162,9 @@ io.on('connection', function (socket) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        socket.emit('slapped', "stuff");
+        //socket.emit('slapped', "stuff");
+        io.sockets.emit('slapped', "stuff");
+
     });
     
     socket.on('toggleButton', (id) => {
