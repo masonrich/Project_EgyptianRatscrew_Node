@@ -344,6 +344,15 @@ function route(server) {
            
         response.send(turn);
     });
+    
+    server.get('/playerName', function(request, response, next){
+       let name = game.getName();
+        let turn = game.playerTurn();
+        
+        //if (turn === '0') {
+        //    name = 
+        //}
+    });
 }
 
 //JSON.stringify();     packages up an array for client side
