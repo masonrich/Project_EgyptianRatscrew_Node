@@ -10,7 +10,7 @@ var game = require('./game');
 var expressSession = require('express-session');
 var numUsers = -1;  //start at 0
 var people = { '1':{}, '0':{}}; //the people array storing index, name and turn
-
+ var id = -1;
 
 
 //express is a package that node uses
@@ -38,6 +38,8 @@ var sessionMiddleware = expressSession ({
 
 //var io = require('../..')(server);
 var connections = [null, null];
+var names = ['Player1', 'Player2'];
+var playerWhoSlapped = '0';
 
 io.use(function (socket, next) {
    sessionMiddleware(socket.request, socket.request.res, next); 
@@ -145,6 +147,11 @@ io.on('connection', function (socket) {
         socket.username = username;
         ++numUsers;
         addedUser = true;
+        if (numUsers === 0) {
+            names[0] = username;
+        } else if (numUsers === 1) {
+            names[1] = username;
+        }
         socket.emit('login', {
             numUsers: numUsers
         });
@@ -152,7 +159,8 @@ io.on('connection', function (socket) {
         
         // echo globally (all clients) that a person has connected
         io.sockets.emit('user_joined', {    //change to a multidimensional array?
-            username: socket.username,
+            username1: names[0],
+            username2: names[1],
             numUsers: numUsers
         });
     });
@@ -162,7 +170,6 @@ io.on('connection', function (socket) {
         //data comes from the browser
         
         //when emitting, 2nd paramater is data we send to client
-        //socket.emit('slapped', "stuff");
         io.sockets.emit('slapped', "stuff");
 
     });
@@ -176,9 +183,6 @@ io.on('connection', function (socket) {
     });
     
     socket.on('toggleButton', (id) => {
-        console.log('id                           ' + id);
-        console.log('connections at 0: ' + connections[0]);
-        console.log('connections at 1: ' + connections[1]);
 //       if (id === connections[0]) {
 //           console.log("enable 1");
 //           socket.to(connections[1]).emit('enableButton');
@@ -232,6 +236,11 @@ io.on('connection', function (socket) {
         console.log('player ' + playerIndex + ' disconnected');
         connections[playerIndex] = null;
     });
+    
+    socket.on('playerWhoSlapped', (data) => {
+        playerWhoSlapped = data;
+        console.log('who slapped: ' + playerWhoSlapped);
+    });
 });
 
 
@@ -278,7 +287,17 @@ function route(server) {
     
     
     server.get('/slap', function(request, response, next) {
-            let temp = game.slap();
+        
+       
+        console.log("node server slap. Value: " + playerWhoSlapped);
+        if (playerWhoSlapped === connections[0]) {
+            id = 0;
+        } else if (playerWhoSlapped === connections[1]) {
+            id = 1;
+        }
+        
+        console.log('id: ' + id);
+            let temp = game.slap(id);
             response.send(temp);
     });
     

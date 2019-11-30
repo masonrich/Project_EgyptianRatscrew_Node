@@ -131,6 +131,7 @@ Date: October 14th, 2019
                               
                               
                               <button id="PlayCardButton" onclick='prePlayCard()'>PLAY CARD</button>
+
                               
                               <p style="font-size: 48px;" id="label"></p>
                                   
@@ -192,11 +193,15 @@ Date: October 14th, 2019
     <script>
         /*********for heroku**********/
         //var socket = io.connect('https://aqueous-anchorage-18888.herokuapp.com/');
-    
+        document.getElementById("PlayCardButton").style.opacity = .5;  
+        document.getElementById("PlayCardButton").disabled = true;
+        document.getElementById("slapButton").style.opacity = .5;  
+        document.getElementById("slapButton").disabled = true;
         /*********for local**********/
         var socket = io.connect('http://localhost:1337');
         
         socket.on('card-played', (v) => {
+            document.getElementById("label").innerHTML = "";
             console.log(v);
             DisplayTop5(); 
             updatePlayerOneScore();
@@ -213,9 +218,7 @@ Date: October 14th, 2019
         
         socket.on('slapped', function(data) {
             $.get('/IsPileSlappable', function(data, status){
-                callSlap(data);
-                console.log("Got to socket on slapped");
-                console.log("logging data: " + data);
+                callSlapSimple(data);
             });  
             DisplayTop5(); 
             updatePlayerOneScore();
@@ -302,17 +305,18 @@ Date: October 14th, 2019
 //        });
         /********currently works**********/
         socket.on('user_joined', function(data){
-            console.log("got here");
-            let name = data.username;
+
+            let name1 = data.username1;
+            let name2 = data.username2;
             let number = data.numUsers; //does not as string or char
-            console.log("name and number: " + name + ", " + number);
-            if(number === 0){   
-                console.log("this is the number:" + number);
-                document.getElementById("Player1Name").innerHTML = name;
-            } else {
-                console.log("this is the number:" + number);
-                document.getElementById("Player2Name").innerHTML = name;
-            }
+            //console.log("name and number: " + name + ", " + number);
+//            if(number === 0){   
+                //console.log("this is the number:" + number);
+                document.getElementById("Player1Name").innerHTML = name1;
+//            } else {
+                //console.log("this is the number:" + number);
+                document.getElementById("Player2Name").innerHTML = name2;
+//            }
                 //some sort of emit here
         });
 
@@ -347,17 +351,17 @@ Date: October 14th, 2019
                 
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " goes first"; 
-                       playerOneTurn = true;
+                       document.getElementById("label").innerHTML = document.getElementById("Player1Name").innerHTML + " goes first"; 
 
                  } else {
                       document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " goes first";
-                      playerTwoTurn = true;
                  }
                 
             });
             
             socket.emit('start-game');
+            document.getElementById("slapButton").style.opacity = 1.0;  
+            document.getElementById("slapButton").disabled = false;
 
             playerDisable();
             
@@ -378,26 +382,28 @@ Date: October 14th, 2019
         
         function StartGameHelper() {
             
-             $.get('/getGame', function(data, status) {
+             $.get('/playerTurn', function(data, status) {
                 
                  //socket.emit('send-nickname');
                  document.getElementById("card5").src = "cards/blank.jpeg"; 
                  document.getElementById("card4").src = "cards/blank.jpeg"; 
                  document.getElementById("card3").src = "cards/blank.jpeg"; 
                  document.getElementById("card2").src = "cards/blank.jpeg"; 
-                 document.getElementById("card1").src = "cards/blank.jpeg"; 
+                 document.getElementById("card1").src = "cards/blank.jpeg";
+                 document.getElementById("slapButton").style.opacity = 1.0;  
+                 document.getElementById("slapButton").disabled = false;
                 
+                 //console.log('first player: ' + data);
+                 //console.log('first player: ' + data);
                 //TODO: Replace 'Player 1'/'Player 2' with the name they give
                  if (data === '0') {
-                       document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " goes first"; 
-                       playerOneTurn = true;
+                       document.getElementById("label").innerHTML = document.getElementById("Player1Name").innerHTML + " goes first"; 
 
                  } else {
                       document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " goes first";
-                      playerTwoTurn = true;
                  }
                 
-                 playerDisable();
+                 playerEnable();
             });
         }
         
@@ -652,13 +658,17 @@ Date: October 14th, 2019
 
                     return;
                 }
+                
+                socket.emit('playerWhoSlapped', '' + socket.id);
+                
                 slap();
             });
         }
         
         //still not done, need to look into it more
         function slap(){
-            
+ 
+          
 
             
             $.get('/IsPileSlappable', function(data, status){
@@ -667,12 +677,10 @@ Date: October 14th, 2019
 
                 if (slappable) {
                     ClearPile(); 
-                } 
-                
-                console.log('Slappable: ' + slappable);       
+                }       
                 
                 callSlap(slappable);
-                
+                    
                 socket.emit('slap', '' + socket.id);
                 
                  updatePlayerOneScore();
@@ -682,10 +690,21 @@ Date: October 14th, 2019
         }
         
         function callSlap(slappable) {
+            
             $.get('/slap', function(data, status){
-                
+
             });    
             
+            
+            if (slappable) {
+                socket.emit('correctSlap', '' + socket.id);
+                document.getElementById("label").innerHTML = "SLAP!";
+            }
+            
+            DisplayTop5Simple();
+        }
+        
+        function callSlapSimple(slappable) {
             
             if (slappable) {
                 socket.emit('correctSlap', '' + socket.id);
@@ -755,6 +774,8 @@ Date: October 14th, 2019
             document.getElementById("label").innerHTML = "";
             document.getElementById("numCardsPlayer1").innerHTML = "";
             document.getElementById("numCardsPlayer2").innerHTML = "";
+            document.getElementById("PlayCardButton").style.opacity = .5;  
+            document.getElementById("PlayCardButton").disabled = true;
             
              $.get('/end', function(data, status){
                  

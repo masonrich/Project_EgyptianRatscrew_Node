@@ -32,67 +32,9 @@ var count;
 var firstLetter;
 
 //0 is player1 and 1 is player 2. We toggle 0 and 1 to see who's turn it is.
-/*
-$(document).ready(function() {
-    //username variables
-var $usernameInput = $('.usernameInput');
-
-var $loginPage = $('.login.page');
-var username;
-
-var connected = false;
-var $currentInput = $usernameInput.focus();
-
-var socket = io();
-
-//set up clients username
-const setUsername = () => {
-    username = cleanInput($usernameInput.val().trim());
-    
-    socket.emit('add user', username);
-}
-
-socket.on('login', (data) => {
-    
-    connected = true;
-    
-    var message = "welcome to ERS";
-    log(message, {
-        prepend: true
-    });
-});
-
-  // Whenever the server emits 'user joined', log it in the chat body
-  socket.on('user joined', (data) => {
-    log(data.username + ' joined');
-  });
-
-  // Whenever the server emits 'user left', log it in the chat body
-  socket.on('user left', (data) => {
-    log(data.username + ' left');
-  });
-
-  socket.on('disconnect', () => {
-    log('you have been disconnected');
-  });
-
-  socket.on('reconnect', () => {
-    log('you have been reconnected');
-    if (username) {
-      socket.emit('add user', username);
-    }
-  });
-
-  socket.on('reconnect_error', () => {
-    log('attempt to reconnect has failed');
-  });
-    
-    
-})*/
-
 
 function BuildDeck() {
-     deck = [ "AS", "2S", "3D", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS",
+     deck = [ "AS", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS",
               "AC", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C", "JC", "QC", "KC",
               "AH", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "10H", "JH", "QH", "KH",
               "AD", "2D", "3D", "4D", "5D", "6D", "7D", "8D", "9D", "10D", "JD", "QD", "KD"];
@@ -119,11 +61,6 @@ function ShuffleDeck() {
 }
 
 
-
-//document.getElementById("slapButton").onclick = function() { if(gameStart){slap()}};
-//document.getElementById("PlayCardButton").onclick = function() {if(gameStart){PlayCard()}};
-
-
 function DealDeck() {
 	player1Deck = new Array();
 	player2Deck = new Array();
@@ -141,6 +78,7 @@ function DealDeck() {
 	console.log(player1Deck);
 	console.log(player2Deck);
 }
+
 
 function StartGame() {
     
@@ -174,9 +112,6 @@ function PlayCard() {
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
         
-        
-        //Mostly Client Side Now
-        //DisplayTop5();
         
         /*******************************/
         if(count > 0){
@@ -282,12 +217,10 @@ function GetWait() {
 function ToggleGameStart() {
     if (gameStart) {
         gameStart = false;
-       // document.getElementById("slapButton").disabled = false;
-        //document.getElementById("PlayCardButton").disabled = false;
+
     } else {
         gameStart = true;
-      //  document.getElementById("slapButton").disabled = true;
-       // document.getElementById("PlayCardButton").disabled = true;
+
     }
 }
 
@@ -348,8 +281,11 @@ function IsPileSlappable() {
 
 
 
-function slap() {
-	console.log("Worked");
+function slap(playerId) {
+    
+    console.log('playerId: ' + playerId);
+    console.log('playerId type: ' + typeof(playerId));
+    console.log('pile length: ' + pile.length);
     
     if (pile.length === 0) {    //added additional equals - AC
 		return;
@@ -366,8 +302,8 @@ function slap() {
 		
 		//thie represents # of cards in pile at time of slap.
 		var length = pile.length;
-		
-		if (playerTurn === 0) {             //added additional equals - AC
+        
+		if (playerId === 0) {             //added additional equals - AC
 			for (var i = 0; i < length; i++) {
 				if (pile.length === 0) {    //added additional equals - AC
 					break;
@@ -381,7 +317,7 @@ function slap() {
 				if (pile.length === 0) {    //added additional equals - AC
 					break;
 				}
-				
+
 				player2Deck.splice(0, 0, pile[pile.length - 1]);
 				pile.pop();
 			}
@@ -389,33 +325,22 @@ function slap() {
 		ClearPile();
         
 	} else {
-		var whoSlapped;       //let to var - ac
-		//TODO: Accomplish the below comment
-		//Need asnyc to determine which player incorrectly slapped.
-		if (playerTurn === 0) {   //changed original undeclared variable to this one -AC
-			whoSlapped = 0;
-		} else if (playerTurn === 1){
-			whoSlapped = 1;
-		}
-		
+		var whoSlapped;       //let to var - ac		
 		//current player plays 2 cards from bottom of deck to bottom of pile
-		if (whoSlapped === 0) {
+
+		if (playerId === 0) {
                 pile.splice(pile.length, 0, player1Deck[0]); //adds cards to the bottom of pile - AC
                 player1Deck.shift(); 
                 
                 pile.splice(pile.length, 0, player1Deck[0]);
-                //console.log(pile);    //for testing
                 player1Deck.shift();  //because players remove from the top of their decks
-                //console.log(player1Deck); //for testing
 		} else {
                 pile.splice(pile.length, 0, player2Deck[0]); //adds cards to the bottom of pile -AC
-                //console.log(pile);    //for testing
                 player2Deck.shift();  //because players remove from the top of their decks -AC
-                //console.log(player2Deck); //for testing
                 pile.splice(pile.length, 0, player2Deck[0]);
                 player2Deck.shift();
 		}
-		
+        
 		//check to see if this triggers end game condition
 		if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
