@@ -345,11 +345,15 @@ function slap(playerId) {
 		if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//player 2 wins and game ends
+            GetGameOver();
+            EndGame();
             gameStart = false;
 		} else if (player2Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
 			//player 1 wins and game ends
             gameStart = false;
+            EndGame();
+            GetGameOver();
 		}
 	}
     

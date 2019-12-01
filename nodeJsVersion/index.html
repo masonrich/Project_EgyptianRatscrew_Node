@@ -753,8 +753,10 @@ Date: October 14th, 2019
                 
                 if (data == "0") {
                     document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " wins!";
+                    endGame();
                 } else {
                     document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
+                    endGame();
                 } 
             });
         }
