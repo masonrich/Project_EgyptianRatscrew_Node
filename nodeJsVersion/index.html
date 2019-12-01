@@ -235,6 +235,9 @@ Date: October 14th, 2019
         });
         
 
+        socket.on('game-ended', function(data){
+            DidGameEnd();
+        })
         /************just random stuff I tried**********/
 //        
 //        socket.on('update', function(data){

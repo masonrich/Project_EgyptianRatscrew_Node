@@ -352,8 +352,8 @@ function slap(playerId) {
 			//TODO: Accomplish the below comment
 			//player 1 wins and game ends
             gameStart = false;
-            EndGame();
             GetGameOver();
+            EndGame();
 		}
 	}
     
@@ -474,6 +474,7 @@ function EndGame(){
     hasPreviousFaceCard = false;
     hadPreviousFaceCard = false;
     count = 0;
+    return gameStart;
 }
 
 function getName(){

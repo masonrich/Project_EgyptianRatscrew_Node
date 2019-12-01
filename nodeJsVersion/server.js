@@ -327,7 +327,9 @@ function route(server) {
     });
     
     server.get('/end', function(request, response, next){
-            game.EndGame();
+        let temp = game.EndGame();
+        
+        response.send('' + temp);
     });
     
     server.get('/gameStart', function(request, response, next){
