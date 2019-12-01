@@ -66,14 +66,14 @@ Date: October 14th, 2019
            </button>
            
            <div class="collapse navbar-collapse" id="collapse_target">
-              <a href="index.html" class ="navbar-brand">
+              <a href="/" class ="navbar-brand">
                    <span class="fa fa-home" active="active" aria-hidden="true"></span>
               </a>
                      
               <ul class="navbar-nav ml-auto">
                  <li class="nav-item" onclick='startGame()'><a id="start-game" class="nav-link" href="#">Start</a> </li>
                  <li class="nav-item" onclick='endGame()'><a id="end-game" class="nav-link" href="#" >End</a></li>
-                  <li class="nav-item"><a class="nav-link" href="rules.html" ><i class="fa fa-question-circle"></i></a></li>
+                  <li class="nav-item"><a id="help" class="nav-link" href="/rules" ><i class="fa fa-question-circle"></i></a></li>
               </ul> 
            </div>
        
@@ -284,6 +284,7 @@ Date: October 14th, 2019
 //            });
 //        });
         var name = prompt('What is your desired username?');    //prompt for user - ac
+        var rules = 
         //var uName;
         //var number;
 
@@ -339,6 +340,12 @@ Date: October 14th, 2019
             });
             
         }
+        
+//        $(function){
+//            $.get('/rules', function(data, status){
+//                
+//            })
+//        }
 
         
         function startGame() {
