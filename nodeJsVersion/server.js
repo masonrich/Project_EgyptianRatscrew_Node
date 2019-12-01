@@ -258,6 +258,12 @@ function route(server) {
        response.send('' + temp); 
     });
     
+    /******************************/
+    server.get('/rules', function(request, response){
+        response.sendFile(path.resolve(__dirname + '/rules.html'));
+    });
+    /******************************/
+    
     server.get('/playCard', function(request, response, next) {
         
         let temp = game.PlayCard();
