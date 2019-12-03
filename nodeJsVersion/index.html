@@ -71,7 +71,8 @@ Date: October 14th, 2019
               </a>
                      
               <ul class="navbar-nav ml-auto">
-                 <li class="nav-item" onclick='startGame()'><a id="start-game" class="nav-link" href="#">Start</a> </li>
+                <!--onclick="startGame()"-->
+                 <li class="nav-item"><a id="start-game" class="nav-link" href="#">Start</a> </li>
                  <li class="nav-item" onclick='endGame()'><a id="end-game" class="nav-link" href="#" >End</a></li>
                   <li class="nav-item"><a id="help" class="nav-link" target="_blank" href="/rules" ><i class="fa fa-question-circle"></i></a></li>
               </ul> 
@@ -231,7 +232,9 @@ Date: October 14th, 2019
             document.getElementById("label").innerHTML = "SLAP!";
             ClearPile();
             DisplayTop5(); 
-    
+            
+            playerDisable();
+            playerEnable();
         });
         
 
@@ -313,7 +316,11 @@ Date: October 14th, 2019
             let name1 = data.username1;
             let name2 = data.username2;
             let number = data.numUsers; //does not as string or char
-                          
+            
+            //checks for 2 players then enables start button
+            if(!(number < 1 || number > 1)){
+                document.getElementById("start-game").setAttribute("onclick", "startGame()");
+            }
             //console.log("name and number: " + name + ", " + number);
 //            if(number === 0){   
                 //console.log("this is the number:" + number);
