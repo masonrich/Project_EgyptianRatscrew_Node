@@ -53,13 +53,13 @@ io.on('connection', function (socket) {
 
     if (connections[0] === null) {
         playerIndex = 0;
-        console.log(playerIndex);
+        //console.log(playerIndex);
         connections[0] = '' + socket.id;
 
     } else if (connections[1] === null) {
         playerIndex = 1;
         connections[1] = '' + socket.id; 
-        console.log(playerIndex);
+        //console.log(playerIndex);
     }
 //    for (let i = 0; i < connections.length; i++) {
 //        if (connections[i] == null) {
@@ -155,7 +155,7 @@ io.on('connection', function (socket) {
         socket.emit('login', {
             numUsers: numUsers
         });
-        console.log("numUsers:" + numUsers);
+        //console.log("numUsers:" + numUsers);
         
         // echo globally (all clients) that a person has connected
         io.sockets.emit('user_joined', {    //change to a multidimensional array?
@@ -233,13 +233,13 @@ io.on('connection', function (socket) {
                 numUsers: numUsers
             });
         }
-        console.log('player ' + playerIndex + ' disconnected');
+        //console.log('player ' + playerIndex + ' disconnected');
         connections[playerIndex] = null;
     });
     
     socket.on('playerWhoSlapped', (data) => {
         playerWhoSlapped = data;
-        console.log('who slapped: ' + playerWhoSlapped);
+        //console.log('who slapped: ' + playerWhoSlapped);
     });
 });
 
@@ -295,14 +295,14 @@ function route(server) {
     server.get('/slap', function(request, response, next) {
         
        
-        console.log("node server slap. Value: " + playerWhoSlapped);
+        //console.log("node server slap. Value: " + playerWhoSlapped);
         if (playerWhoSlapped === connections[0]) {
             id = 0;
         } else if (playerWhoSlapped === connections[1]) {
             id = 1;
         }
         
-        console.log('id: ' + id);
+        //console.log('id: ' + id);
             let temp = game.slap(id);
             response.send(temp);
     });
