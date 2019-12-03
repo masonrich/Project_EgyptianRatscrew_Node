@@ -1,6 +1,6 @@
 //TODO: Once 2 player stuff works, we need slap to determine who slapped, so pile goes to correct player / correct player places 2 cards on bottom of pile on incorrecty slap
 
-var deck, player1Deck, player2Deck, pile, playerTurn, playerName, pileCurrentlySlappable, pileCount, hadPreviousFaceCard, wait;
+var deck, player1Deck, player2Deck, pile, pile2, playerTurn, playerName, pileCurrentlySlappable, pileCount, hadPreviousFaceCard, wait;
 
 
 /*
@@ -75,8 +75,8 @@ function DealDeck() {
 	deck.pop();
 	}
 	
-	console.log(player1Deck);
-	console.log(player2Deck);
+	//console.log(player1Deck);
+	//console.log(player2Deck);
 }
 
 
@@ -89,6 +89,7 @@ function StartGame() {
     count = 0;
 	
 	pile = new Array();
+    pile2 = new Array();
 	whoFirst();
     ClearPile();
 	return(playerTurn);
@@ -111,7 +112,7 @@ function PlayCard() {
 	if (playerTurn === 0) {    //added additional equals - AC
 		pile.splice(0, 0, player1Deck[player1Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player1Deck.pop();
-        
+        pile2 = pile.slice();
         
         /*******************************/
         if(count > 0){
@@ -139,6 +140,7 @@ function PlayCard() {
 
 		pile.splice(0, 0, player2Deck[player2Deck.length - 1]); //changed 0 to pile (builds deck 0) - AC
 		player2Deck.pop();
+        pile2 = pile.slice();
         
          //Mostly Client side now
         //DisplayTop5();
@@ -187,9 +189,9 @@ function PlayCard() {
         //ClearPile();
     }
 	
-	console.log(player1Deck);
-	console.log(player2Deck);
-	console.log(pile);
+//	  console.log(player1Deck);
+//	  console.log(player2Deck);
+//	  console.log(pile);
 //    console.log("Turn: " + playerTurn);
 //    console.log("count: " + count);
 //    console.log("FaceCard: " + faceCard);
@@ -235,13 +237,13 @@ function ClearPile(){
 
     if ((gameStart === true || gameStart === false) && pile.length === 0){  //not sure on this logic -AC
         isEmpty = true;
-        console.log("isEmpty = " + isEmpty);
+        //console.log("isEmpty = " + isEmpty);
         return isEmpty;
     }
     else
     {
         isEmpty = false;
-        console.log("isEmpty = " + isEmpty);
+        //console.log("isEmpty = " + isEmpty);
         return isEmpty;
     }
 }
@@ -265,10 +267,10 @@ function IsPileSlappable() {
 		return pileCurrentlySlappable = false;
 	} else {
 		if (pile[0].substring(0, 1) === pile[1].substring(0, 1)) {    //added additional equals - AC
-            console.log("pile is slappable");
+            //console.log("pile is slappable");
 			return pileCurrentlySlappable = true;
 		} else {
-            console.log("no matching cards");
+            //console.log("no matching cards");
 			return pileCurrentlySlappable = false;
 		}
 	}
@@ -283,11 +285,11 @@ function IsPileSlappable() {
 
 function slap(playerId) {
     
-    console.log('playerId: ' + playerId);
-    console.log('playerId type: ' + typeof(playerId));
-    console.log('pile length: ' + pile.length);
+    //console.log('playerId: ' + playerId);
+    //console.log('playerId type: ' + typeof(playerId));
+    //console.log('pile length: ' + pile2.length);
     
-    if (pile.length === 0) {    //added additional equals - AC
+    if (pile2.length === 0) {    //added additional equals - AC
 		return;
 	}
 		
@@ -301,28 +303,37 @@ function slap(playerId) {
 		//}
 		
 		//thie represents # of cards in pile at time of slap.
-		var length = pile.length;
+		var length = pile2.length;
         
 		if (playerId === 0) {             //added additional equals - AC
 			for (var i = 0; i < length; i++) {
-				if (pile.length === 0) {    //added additional equals - AC
+				if (pile2.length === 0) {    //added additional equals - AC
 					break;
 				}
 
-                player1Deck.splice(0, 0, pile[pile.length - 1]);
-                pile.pop();
+                player1Deck.splice(0, 0, pile2[pile2.length - 1]);
+                pile2.pop();
 			}
+            playerTurn = 0;
+            playerOneTurn = true;
+            playerTwoTurn = false;
 		} else {
 			for (var i = 0; i < length; i++) {
-				if (pile.length === 0) {    //added additional equals - AC
+				if (pile2.length === 0) {    //added additional equals - AC
 					break;
 				}
 
-				player2Deck.splice(0, 0, pile[pile.length - 1]);
-				pile.pop();
+				player2Deck.splice(0, 0, pile2[pile2.length - 1]);
+				pile2.pop();
 			}
+            playerTurn = 1;
+            playerOneTurn = false;
+            playerTwoTurn = true;
 		}
 		ClearPile();
+        pile2.length = 0;
+        count = 0;
+        hasPreviousFaceCard = false;
         
 	} else {
 		var whoSlapped;       //let to var - ac		
@@ -359,9 +370,10 @@ function slap(playerId) {
     
     DisplayTop5();
     
-    console.log(player1Deck);
-    console.log(player2Deck);
-    console.log(pile);
+    //console.log(player1Deck);
+    //console.log(player2Deck);
+    //console.log(pile);
+    //console.log('player turn: ' + playerTurn);
 }
 
 //TODO: DOM end game scenario in slap function
@@ -393,7 +405,7 @@ function isCardFace(){
                     isKing();
                     break;
                 default:
-                    console.log("no match");
+                    //console.log("no match");
         }
     } else {
         faceCard = false;
@@ -469,6 +481,7 @@ function playerTurn() {
 function EndGame(){
     gameStart = false;
     pile.length = 0;
+    pile2.length = 0;
     player1Deck.length = 0;
     player2Deck.length = 0;
     hasPreviousFaceCard = false;
