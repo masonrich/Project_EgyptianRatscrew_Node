@@ -20,7 +20,7 @@ route(server);
 //sets up to serve css and images
 
 server.use(express.static(path.resolve(__dirname + '/assets')));
-//var appDir = path.dirname(require.)
+
 
 //express server based off node
 var serverInstance = http.createServer(server).listen(process.env.PORT || 1337);
@@ -61,83 +61,12 @@ io.on('connection', function (socket) {
         connections[1] = '' + socket.id; 
         //console.log(playerIndex);
     }
-//    for (let i = 0; i < connections.length; i++) {
-//        if (connections[i] == null) {
-//            playerIndex = i;
-//            connections[i] = socket.id;
-//        }
-//    }
-    
-    
-    //function that gets user information doesn't handle nulls or disconnects
-//    socket.on('newUser', function(name){
-//            var newUser = name;
-//            console.log(newUser + ' connected');
-//            //io.sockets.emit('connection2', newUser);
-//            if(playerIndex == 1){
-//                people['1']['playerId'] = playerIndex;
-//                people['1']['playerName'] = newUser;
-//                for(var key in people){
-//                    console.log(key, ":", people);
-//                }
-//                console.log("people array: " + people['1']['playerName']);
-//                io.sockets.emit('getName', people['1']);    //emitting whole object
-//                //io.sockets.emit('getName', people['1']['playerName']);
-//            }
-//            else if(playerIndex == 0){
-//                people['0']['playerName'] = newUser;
-//                for(var key in people){
-//                    console.log(key, ":", people);
-//                }
-//                console.log("people array: " + people['0']['playerName']);
-//                io.sockets.emit('getName', people['0']);    //emitting whole object
-//                //io.sockets.emit('getName', people['0']['playerName']);
-//            } else if(playerIndex == -1){
-//                console.log("game full");
-//                //lock out button control for players
-//                //check for available slot
-//            
-//            }
-//        
-//            socket.on('disconnect', function(){
-//                console.log('disconnected');
-//                //socket.emit('disconnection', newUser + ' disconnected.');
-//                //need to remove user information somewhere
-//        });
-//    });
-    
-    /********random stuff Alec tried*******/
-//    socket.on('getName', function(name){
-//        io.sockets.emit('nombre');
-//        //player.push(name);
-//    });
-    
-    //socket.on('connection', function(player){
-//    socket.on('join', function(name){
-//            people[socket.id] = name;
-//            socket.emit('update',"You have connected to the server.");
-//            io.sockets.emit('update', name + " has joined the server.");
-//            io.sockets.emit('update-people', people);
-//    });
-    //});
-    
-    //console.log(connections);
-    
-//    socket.on('player-number', function(data){
-//        io.socket.emit('player-name');
-//    });
-    
-    //needs to be here, SUPER IMPORTANT
-    //connections[playerIndex] = socket;
+
     
     
     if (playerIndex === -1) return;
     
 
-   // redis.on("message", function(channel, message) {
-    //    console.log("mew message in queue "+ message + "channel");
-    //    socket.emit(channel, message);
-    //});
     
     //when the client emits 'add user', this listens and executes(might mess with the current prompt implementation -ac)
     socket.on('connected', (username) => {
@@ -183,13 +112,7 @@ io.on('connection', function (socket) {
     });
     
     socket.on('toggleButton', (id) => {
-//       if (id === connections[0]) {
-//           console.log("enable 1");
-//           socket.to(connections[1]).emit('enableButton');
-//       } else if (id === connections[1]) {
-//           console.log("enable 0");
-//           socket.to(connections[0]).emit('enableButton');
-//       }
+
         io.sockets.emit('enableButton')
     });
     
@@ -212,9 +135,9 @@ io.on('connection', function (socket) {
     
     socket.on('end-game', function(data) {
         //data comes from the browser
-        
+        game.EndGame();
         //when emitting, 2nd paramater is data we send to client
-        io.sockets.emit('game-ended', data);
+        //io.sockets.emit('game-ended', data);
     });
     
     socket.on('pile-won', function () {
@@ -333,9 +256,9 @@ function route(server) {
     });
     
     server.get('/end', function(request, response, next){
-        let temp = game.EndGame();
+        let temp = game.GetGameOver();
         
-        response.send('' + temp);
+        response.send(temp);
     });
     
     server.get('/gameStart', function(request, response, next){
