@@ -238,7 +238,7 @@ Date: October 14th, 2019
         
 
         socket.on('game-ended', function(data){
-            DidGameEnd();
+            endGame2(data);
         })
         /************just random stuff I tried**********/
 //        
@@ -759,10 +759,10 @@ Date: October 14th, 2019
                 
                 if (data == "0") {
                     document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " wins!";
-                    endGame();
+                    socket.emit('end-game', document.getElementById("player1Name").innerHTML + "");
                 } else {
                     document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
-                    endGame();
+                    socket.emit('end-game', document.getElementById("player2Name").innerHTML + "");
                 } 
             });
         }
@@ -785,22 +785,24 @@ Date: October 14th, 2019
     
         function endGame() {
             socket.emit('end-game');
-
-             $.get('/end', function(data, status){
-                 if (data !== 2)
-                     {
-                        ClearPile();
-                        document.getElementById("label").innerHTML = "";
-                        document.getElementById("numCardsPlayer1").innerHTML = "";
-                        document.getElementById("numCardsPlayer2").innerHTML = "";
-                        document.getElementById("PlayCardButton").style.opacity = .5;  
-                        document.getElementById("PlayCardButton").disabled = true;
-
-                        socket.emit('end-game');
-                     }
-             });
         }
         
+        function endGame2(data) {
+
+            if (data === null) {
+              document.getElementById("label").innerHTML = "";  
+            } else if (data === "") {
+                document.getElementById("label").innerHTML = "";  
+            } else {
+                document.getElementById("label").innerHTML = data + "Wins!";
+            }
+            document.getElementById("numCardsPlayer1").innerHTML = "";
+            document.getElementById("numCardsPlayer2").innerHTML = "";
+            document.getElementById("PlayCardButton").style.opacity = .5;  
+            document.getElementById("PlayCardButton").disabled = true;
+            document.getElementById("slapButton").style.opacity = .5;  
+            document.getElementById("slapButton").disabled = true;
+        }
 
     </script>
            

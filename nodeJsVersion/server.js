@@ -137,7 +137,7 @@ io.on('connection', function (socket) {
         //data comes from the browser
         game.EndGame();
         //when emitting, 2nd paramater is data we send to client
-        //io.sockets.emit('game-ended', data);
+        io.sockets.emit('game-ended', data);
     });
     
     socket.on('pile-won', function () {

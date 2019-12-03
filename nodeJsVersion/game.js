@@ -83,13 +83,25 @@ function DealDeck() {
 function StartGame() {
     
     gameStart = true;
-	BuildDeck();
-	ShuffleDeck();
-	DealDeck();
+
     count = 0;
 	
 	pile = new Array();
     pile2 = new Array();
+    player1Deck = new Array();
+    player2Deck = new Array();
+    
+    pile.length = 0;
+    pile2.length = 0;
+    player1Deck.length = 0;
+    player2Deck.length = 0;
+    hasPreviousFaceCard = false;
+    hadPreviousFaceCard = false;
+    
+    BuildDeck();
+	ShuffleDeck();
+	DealDeck();
+    
 	whoFirst();
     ClearPile();
 	return(playerTurn);
