@@ -305,10 +305,10 @@ function route(server) {
     });
     
     server.get('/getName', function(request, response, next){
-       let name = game.getName();
+       //let name = game.getName();
         //let turn = game.playerTurn();
         
-        response.send(temp);
+        response.send(JSON.stringify(names));
 //        if (turn === '0')
     });
 }

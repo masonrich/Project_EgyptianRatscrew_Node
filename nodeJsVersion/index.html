@@ -203,7 +203,7 @@ Date: October 14th, 2019
         
         socket.on('card-played', (v) => {
             document.getElementById("label").innerHTML = "";
-            console.log(v);
+            //console.log(v);
             DisplayTop5(); 
             updatePlayerOneScore();
             updatePlayerTwoScore();
@@ -735,11 +735,11 @@ Date: October 14th, 2019
         
         //i think this will work, not sure where to put it though - AC
         function ClearPile(){
-            console.log("made it to clearpile");
+
             $.get('/ClearPile', function(data, status){
                 let thePile = JSON.parse(data);
                 //let currentPile = JSON.parse(thePile);
-                console.log("the pile:" + thePile);
+
                 if(thePile === true){
                   document.getElementById("card5").src = "cards/blank.jpeg"; 
                   document.getElementById("card4").src = "cards/blank.jpeg"; 
@@ -759,19 +759,34 @@ Date: October 14th, 2019
 
         function DidGameEnd() {
             $.get('/gameOver', function(data, status) {
+                
                if (data === "2")
                    return;
-                
-                if (data == "0") {
-                    document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " wins!";
-                    socket.emit('end-game', document.getElementById("player1Name").innerHTML + "");
-                } else {
-                    document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
-                    socket.emit('end-game', document.getElementById("player2Name").innerHTML + "");
-                } 
+
+                DidGameEndHelper(data);
+//                if (data == "0") {
+//                    //document.getElementById("label").innerHTML = document.getElementById("player1Name").innerHTML + " wins!";
+//                    socket.emit('end-game', document.getElementById("player1Name").textContent + "");
+//                } else {
+//                    //document.getElementById("label").innerHTML = document.getElementById("Player2Name").innerHTML + " wins!";
+//                    socket.emit('end-game', document.getElementById("player2Name").textContent + "");
+//                } 
             });
         }
         
+        function DidGameEndHelper(data) {
+             $.get('/getName', function(data2, status) {
+                 
+                 let names = JSON.parse(data2);
+                 
+                    if (data === "0") {
+                        socket.emit('end-game', names[0]);
+                    } else {
+                          socket.emit('end-game', names[1]);
+                    }
+             });
+
+        }
 
         function updatePlayerOneScore()
         {
@@ -796,9 +811,7 @@ Date: October 14th, 2019
 
             if (data === null) {
               document.getElementById("label").innerHTML = "";  
-            } else if (data === "") {
-                document.getElementById("label").innerHTML = "";  
-            } else {
+            } else if (data.length > 0) {
                 document.getElementById("label").innerHTML = data + "Wins!";
             }
             document.getElementById("numCardsPlayer1").innerHTML = "";
