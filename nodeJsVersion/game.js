@@ -296,7 +296,7 @@ function IsPileSlappable() {
 
 
 function slap(playerId) {
-    
+    hadPreviousFaceCard = false; //added to reset value on slap
     //console.log('playerId: ' + playerId);
     //console.log('playerId type: ' + typeof(playerId));
     //console.log('pile length: ' + pile2.length);
@@ -351,19 +351,21 @@ function slap(playerId) {
 		var whoSlapped;       //let to var - ac		
 		//current player plays 2 cards from bottom of deck to bottom of pile
 
-		if (playerId === 0) {
-                pile.splice(pile.length, 0, player1Deck[0]); //adds cards to the bottom of pile - AC
-                player1Deck.shift(); 
+		if(pile.length > 0){    //added so player cannot slap an empty deck
+        //current player plays 2 cards from bottom of deck to bottom of pile -AC
+		  if (playerId === 0) {
+                    pile.splice(pile.length, 0, player1Deck[0]); //adds cards to the bottom of pile - AC
+                    player1Deck.shift(); 
                 
-                pile.splice(pile.length, 0, player1Deck[0]);
-                player1Deck.shift();  //because players remove from the top of their decks
-		} else {
-                pile.splice(pile.length, 0, player2Deck[0]); //adds cards to the bottom of pile -AC
-                player2Deck.shift();  //because players remove from the top of their decks -AC
-                pile.splice(pile.length, 0, player2Deck[0]);
-                player2Deck.shift();
-		}
-        
+                    pile.splice(pile.length, 0, player1Deck[0]);
+                    player1Deck.shift();  //because players remove from the top of their decks
+		  } else {
+                    pile.splice(pile.length, 0, player2Deck[0]); //adds cards to the bottom of pile -AC
+                    player2Deck.shift();  //because players remove from the top of their decks -AC
+                    pile.splice(pile.length, 0, player2Deck[0]);
+                    player2Deck.shift();
+		  }
+        }//end if
 		//check to see if this triggers end game condition
 		if (player1Deck.length === 0) {    //added additional equals - AC
 			//TODO: Accomplish the below comment
